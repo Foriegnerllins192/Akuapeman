@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Town — Akuapeman.com</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    @media (max-width: 768px) {
+      .town-detail-body { max-width: 100% !important; }
+      .cards-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .news-grid { grid-template-columns: 1fr !important; }
+      .town-tabs { overflow-x: auto; flex-wrap: nowrap; }
+      .town-tab { flex-shrink: 0; }
+    }
+    @media (max-width: 480px) {
+      .cards-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -22,7 +34,7 @@
   </div>
 
   <div id="history-tab" class="tab-content active">
-    <div style="max-width: 800px; line-height: 1.9; color: #333;">
+    <div class="town-detail-body" style="max-width: 800px; line-height: 1.9; color: #333;">
       <h2 style="color: var(--green); margin-bottom: 1rem;" id="historyTitle">History</h2>
       <p id="historyText">Loading town history...</p>
     </div>

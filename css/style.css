@@ -155,11 +155,95 @@ footer {
 .footer-bottom { text-align: center; padding-top: 2rem; margin-top: 2rem; border-top: 1px solid #333; color: #666; font-size: 0.85rem; }
 
 /* ===== RESPONSIVE ===== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .hero h1 { font-size: 2.4rem; }
+  .section { padding: 3rem 1.5rem; }
+  .cards-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .news-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .towns-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
-  .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--green); padding: 1rem; }
+  /* Nav */
+  .nav-links {
+    display: none; flex-direction: column;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--green); padding: 0.5rem 1rem 1rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
   .nav-links.open { display: flex; }
   .hamburger { display: flex; }
-  .hero h1 { font-size: 2rem; }
+  nav { padding: 0 1rem; }
+
+  /* Hero */
+  .hero { padding: 3rem 1.2rem; }
+  .hero h1 { font-size: 1.8rem; }
+  .hero p { font-size: 1rem; }
+  .btn-outline { margin-left: 0; margin-top: 0.8rem; }
+  .hero-content .btn { display: block; width: 100%; text-align: center; margin-bottom: 0.5rem; }
+
+  /* Page banner */
+  .page-banner { padding: 2rem 1.2rem; }
+  .page-banner h1 { font-size: 1.8rem; }
+
+  /* Sections */
+  .section { padding: 2rem 1rem; }
+  .section-title h2 { font-size: 1.5rem; }
+
+  /* Cards */
+  .cards-grid { grid-template-columns: 1fr; }
+  .news-grid { grid-template-columns: 1fr; }
+  .towns-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Forms */
   .form-row { grid-template-columns: 1fr; }
-  .town-tabs { overflow-x: auto; }
+
+  /* Town tabs */
+  .town-tabs { overflow-x: auto; white-space: nowrap; flex-wrap: nowrap; }
+  .town-tab { flex-shrink: 0; padding: 0.7rem 1rem; font-size: 0.85rem; }
+
+  /* Connect tabs */
+  .connect-tabs { gap: 0.4rem; }
+  .tab-btn { padding: 0.5rem 0.9rem; font-size: 0.82rem; }
+
+  /* Chat layout */
+  .chat-layout { grid-template-columns: 1fr !important; }
+  .chat-box { max-width: 100% !important; }
+
+  /* Music */
+  .music-list { max-width: 100% !important; }
+  .music-card { flex-wrap: wrap; }
+
+  /* About / Contact two-col grids */
+  .two-col-grid { grid-template-columns: 1fr !important; }
+  .about-hero-img { display: none; }
+
+  /* News featured */
+  .news-featured { grid-template-columns: 1fr !important; }
+  .news-featured-img { min-height: 180px !important; font-size: 3rem !important; }
+
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Biz grid */
+  .biz-grid { grid-template-columns: 1fr !important; }
+
+  /* Product grid */
+  .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .hero h1 { font-size: 1.5rem; }
+  .page-banner h1 { font-size: 1.4rem; }
+  .towns-grid { grid-template-columns: repeat(2, 1fr); }
+  .product-grid { grid-template-columns: 1fr !important; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .connect-tabs { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 0.3rem; }
+  .tab-btn { flex-shrink: 0; }
+  .music-card { gap: 0.7rem; }
+  .social-links { flex-direction: column; }
 }

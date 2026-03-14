@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us — Akuapeman.com</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    @media (max-width: 768px) {
+      .two-col-grid { grid-template-columns: 1fr !important; }
+      .social-links { flex-wrap: wrap !important; }
+      .social-links a { flex: 1 1 calc(50% - 0.4rem); text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .social-links a { flex: 1 1 100%; }
+    }
+  </style>
 </head>
 <body>
 
@@ -15,7 +25,7 @@
 </div>
 
 <div class="section">
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; max-width:1000px; margin:0 auto; align-items:start;">
+  <div class="two-col-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; max-width:1000px; margin:0 auto; align-items:start;">
 
     <div>
       <h2 style="color:var(--green); margin-bottom:1.5rem;">Get In Touch</h2>
@@ -79,7 +89,7 @@
 
       <div style="margin-top:2rem;">
         <h3 style="color:var(--green); margin-bottom:1rem;">Follow Us</h3>
-        <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+        <div class="social-links" style="display:flex; gap:0.8rem; flex-wrap:wrap;">
           <a href="#" style="background:var(--green); color:white; padding:0.6rem 1.2rem; border-radius:8px; font-size:0.9rem;">📘 Facebook</a>
           <a href="#" style="background:var(--green); color:white; padding:0.6rem 1.2rem; border-radius:8px; font-size:0.9rem;">📸 Instagram</a>
           <a href="#" style="background:var(--green); color:white; padding:0.6rem 1.2rem; border-radius:8px; font-size:0.9rem;">🐦 Twitter/X</a>

@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Akuapeman.com — Home of the Akuapem Community</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    @media (max-width: 768px) {
+      .hero-btns { display: flex; flex-direction: column; align-items: center; gap: 0.8rem; }
+      .hero-btns .btn { margin: 0; width: 100%; max-width: 280px; text-align: center; }
+      .cta-section { padding: 2.5rem 1.2rem !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -12,8 +19,10 @@
   <div class="hero-content">
     <h1>Welcome to <span>Akuapeman.com</span></h1>
     <p>Your all-in-one platform for the Akuapem community — history, culture, business, news, and connection.</p>
-    <a href="history.html" class="btn btn-gold">Explore History</a>
-    <a href="towns.html" class="btn btn-outline">Our Towns</a>
+    <div class="hero-btns">
+      <a href="history.html" class="btn btn-gold">Explore History</a>
+      <a href="towns.html" class="btn btn-outline">Our Towns</a>
+    </div>
   </div>
 </section>
 
@@ -75,7 +84,7 @@
   </div>
 </div>
 
-<div style="background: var(--green); color: white; text-align: center; padding: 3rem 2rem;">
+<div class="cta-section" style="background: var(--green); color: white; text-align: center; padding: 3rem 2rem;">
   <h2 style="font-size: 1.8rem; margin-bottom: 1rem;">Join the Akuapem Community</h2>
   <p style="opacity: 0.85; margin-bottom: 1.5rem;">Connect with thousands of Akuapem people at home and in the diaspora.</p>
   <a href="connect.html" class="btn btn-gold">Join Now</a>

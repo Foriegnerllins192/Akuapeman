@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us — Akuapeman.com</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    @media (max-width: 768px) {
+      .two-col-grid { grid-template-columns: 1fr !important; }
+      .about-hero-img { display: none; }
+      .cards-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -16,12 +23,12 @@
 
 <div class="section">
   <div style="max-width:860px; margin:0 auto;">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; margin-bottom:3rem;">
+    <div class="two-col-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; margin-bottom:3rem;">
       <div>
         <h2 style="color:var(--green); margin-bottom:1rem; font-size:1.8rem;">Who We Are</h2>
         <p style="line-height:1.9; color:#333;">Akuapeman.com is a multipurpose digital platform built for and by the Akuapem community. We are a team of passionate Akuapem people who believe that technology can strengthen our cultural bonds, support our local economy, and keep our community connected — whether you live on the ridge or in the diaspora.</p>
       </div>
-      <div style="background:linear-gradient(135deg,var(--green),#0d3d22); border-radius:16px; height:250px; display:flex; align-items:center; justify-content:center; font-size:5rem;">🇬🇭</div>
+      <div class="about-hero-img" style="background:linear-gradient(135deg,var(--green),#0d3d22); border-radius:16px; height:250px; display:flex; align-items:center; justify-content:center; font-size:5rem;">🇬🇭</div>
     </div>
 
     <div style="background:white; border-radius:16px; padding:2.5rem; box-shadow:var(--shadow); margin-bottom:2rem;">

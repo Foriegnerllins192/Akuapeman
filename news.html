@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>News — Akuapeman.com</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    @media (max-width: 768px) {
+      .news-featured { grid-template-columns: 1fr !important; }
+      .news-featured-img { min-height: 160px !important; font-size: 3rem !important; }
+      .news-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -26,8 +33,8 @@
   </div>
 
   <!-- Featured -->
-  <div style="background:white; border-radius:16px; overflow:hidden; box-shadow:var(--shadow); display:grid; grid-template-columns:1fr 1fr; margin-bottom:2rem;">
-    <div style="background:linear-gradient(135deg,var(--green),#0d3d22); display:flex; align-items:center; justify-content:center; font-size:5rem; min-height:250px;">🎊</div>
+  <div class="news-featured" style="background:white; border-radius:16px; overflow:hidden; box-shadow:var(--shadow); display:grid; grid-template-columns:1fr 1fr; margin-bottom:2rem;">
+    <div class="news-featured-img" style="background:linear-gradient(135deg,var(--green),#0d3d22); display:flex; align-items:center; justify-content:center; font-size:5rem; min-height:250px;">🎊</div>
     <div style="padding:2rem;">
       <span class="news-tag">Featured</span>
       <h2 style="margin:0.8rem 0; font-size:1.4rem;">Odwira Festival 2026 — A Grand Celebration of Akuapem Heritage</h2>
