@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Town — Akuapeman.com</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="page-banner" id="townBanner">
+  <h1 id="townName">Loading...</h1>
+  <p>Akuapem Ridge, Eastern Region, Ghana</p>
+  <div class="breadcrumb"><a href="index.html">Home</a> / <a href="towns.html">Towns</a> / <span id="townBreadcrumb"></span></div>
+</div>
+
+<div class="section">
+  <div class="town-tabs">
+    <div class="town-tab active" data-tab="history-tab">📜 History</div>
+    <div class="town-tab" data-tab="activities-tab">🎉 Activities</div>
+    <div class="town-tab" data-tab="news-tab">📰 News</div>
+  </div>
+
+  <div id="history-tab" class="tab-content active">
+    <div style="max-width: 800px; line-height: 1.9; color: #333;">
+      <h2 style="color: var(--green); margin-bottom: 1rem;" id="historyTitle">History</h2>
+      <p id="historyText">Loading town history...</p>
+    </div>
+  </div>
+
+  <div id="activities-tab" class="tab-content">
+    <h2 style="color: var(--green); margin-bottom: 1.5rem;">Activities & Events</h2>
+    <div class="cards-grid" id="activitiesGrid"></div>
+  </div>
+
+  <div id="news-tab" class="tab-content">
+    <h2 style="color: var(--green); margin-bottom: 1.5rem;">Latest News</h2>
+    <div class="news-grid" id="newsGrid"></div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+const townData = {
+  Akropong: {
+    history: "Akropong is the capital of the Akuapem Traditional Area and the seat of the Okuapehene. Founded in the 18th century, it became a major center of Christianity and education when the Basel Mission established its headquarters here in 1835. The Akropong Presbyterian Training College, one of Ghana's oldest teacher training institutions, is located here. The town is known for its cool climate, beautiful scenery, and the annual Odwira festival.",
+    activities: ["Odwira Festival 🎊", "Presbyterian Church Services ⛪", "Akropong Market 🛒", "Cultural Durbar 🥁", "Hiking Trails 🥾", "Basel Mission Museum 🏛️"],
+    news: ["Odwira Festival 2026 Dates Announced", "New Road Construction Begins in Akropong", "Akropong Presbyterian College Celebrates 150 Years"]
+  },
+  Aburi: {
+    history: "Aburi is one of the most well-known towns on the Akuapem Ridge, famous for the Aburi Botanical Gardens established in 1890. The town sits at about 450m above sea level and enjoys a pleasant climate. Aburi is also historically significant as the site of the 1967 Aburi Accord, where Nigerian leaders met to negotiate during the Nigerian Civil War crisis.",
+    activities: ["Aburi Botanical Gardens 🌺", "Craft Market 🎨", "Aburi Girls School Visit 🏫", "Nature Walks 🌿", "Weekend Getaways 🏡", "Local Food Fair 🍲"],
+    news: ["Aburi Botanical Gardens Renovation Complete", "New Craft Village Opens in Aburi", "Aburi Girls School Tops National Exams"]
+  },
+  Mampong: {
+    history: "Mampong-Akuapem is a historic town on the ridge known for its traditional governance and cultural heritage. The town has a strong agricultural base and is known for producing some of the finest yams and plantains in the region. Mampong has a vibrant community life centered around its traditional festivals and church activities.",
+    activities: ["Yam Festival 🌽", "Traditional Drumming 🥁", "Community Market 🛒", "Church Choir Festival 🎵", "Football Tournament ⚽", "Farming Cooperative 🌾"],
+    news: ["Mampong Yam Festival Draws Large Crowd", "New Health Center Opens in Mampong", "Mampong FC Wins Regional League"]
+  }
+};
+
+const defaultData = {
+  history: "This town is one of the proud communities on the Akuapem Ridge. With a rich cultural heritage and strong community bonds, it contributes uniquely to the tapestry of Akuapem life. The town has its own chief, traditional festivals, and a growing population both at home and in the diaspora.",
+  activities: ["Community Festival 🎊", "Local Market 🛒", "Cultural Dance 💃", "Sports Day ⚽", "Church Events ⛪", "Farming Activities 🌾"],
+  news: ["Community Development Project Launched", "Local School Receives New Equipment", "Annual Festival Dates Confirmed"]
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+  const town = params.get('town') || 'Akropong';
+  const data = townData[town] || defaultData;
+
+  document.title = town + ' — Akuapeman.com';
+  document.getElementById('townName').textContent = '🏘️ ' + town;
+  document.getElementById('townBreadcrumb').textContent = town;
+  document.getElementById('historyTitle').textContent = 'History of ' + town;
+  document.getElementById('historyText').textContent = data.history;
+
+  const activitiesGrid = document.getElementById('activitiesGrid');
+  data.activities.forEach(act => {
+    activitiesGrid.innerHTML += `<div class="card"><div class="card-body" style="text-align:center; padding:2rem;"><div style="font-size:2rem;">${act.split(' ').pop()}</div><h3 style="margin-top:0.5rem;">${act.replace(/[^\w\s]/g,'').trim()}</h3></div></div>`;
+  });
+
+  const newsGrid = document.getElementById('newsGrid');
+  data.news.forEach(n => {
+    newsGrid.innerHTML += `<div class="news-card"><div class="news-img">📰</div><div class="news-body"><span class="news-tag">${town}</span><h3>${n}</h3><p>Stay tuned for more details on this story from ${town}.</p><div class="news-meta">📅 March 2026</div></div></div>`;
+  });
+
+  // Town tabs
+  document.querySelectorAll('.town-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.town-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
