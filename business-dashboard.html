@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Dashboard — Akuapeman.com</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .dash-wrap { display: grid; grid-template-columns: 230px 1fr; min-height: calc(100vh - 60px); }
+    .sidebar { background: var(--dark); color: white; padding: 0; }
+    .sidebar-user { padding: 1.5rem; border-bottom: 1px solid #333; }
+    .sidebar-user .biz-avatar { width: 56px; height: 56px; border-radius: 12px; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 0.7rem; }
+    .sidebar-user h4 { font-size: 0.9rem; margin-bottom: 0.1rem; }
+    .sidebar-user p { font-size: 0.75rem; color: #aaa; }
+    .sidebar-user .status-badge { display: inline-block; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 10px; margin-top: 0.4rem; font-weight: 600; }
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-active { background: #d4edda; color: #155724; }
+    .sidebar-nav { list-style: none; padding: 0.8rem 0; }
+    .sidebar-nav li a { display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 1.4rem; color: #bbb; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; border-left: 3px solid transparent; }
+    .sidebar-nav li a:hover, .sidebar-nav li a.active { color: white; background: rgba(255,255,255,0.07); border-left-color: var(--gold); }
+    .sidebar-nav li a .ni { font-size: 1rem; width: 18px; text-align: center; }
+    .sidebar-nav .divider { border-top: 1px solid #333; margin: 0.5rem 0; }
+    .dash-main { background: #f5f5f0; padding: 2rem; overflow-y: auto; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .panel-title { font-size: 1.3rem; color: var(--dark); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.6rem; }
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: white; border-radius: 12px; padding: 1.2rem; box-shadow: var(--shadow); text-align: center; }
+    .stat-card .s-icon { font-size: 1.6rem; margin-bottom: 0.3rem; }
+    .stat-card .s-val { font-size: 1.5rem; font-weight: 800; color: var(--green); }
+    .stat-card .s-lbl { font-size: 0.75rem; color: var(--gray); margin-top: 0.2rem; }
+    .edit-card { background: white; border-radius: 14px; padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
+    .edit-card h3 { color: var(--green); font-size: 1rem; margin-bottom: 1.2rem; padding-bottom: 0.5rem; border-bottom: 2px solid #f0f0f0; }
+    .team-row { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid #f5f5f5; }
+    .team-avatar-sm { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; color: white; flex-shrink: 0; }
+    .team-info { flex: 1; }
+    .team-info h4 { font-size: 0.88rem; margin-bottom: 0.1rem; }
+    .team-info p { font-size: 0.78rem; color: var(--gray); }
+    .del-btn { background: #ffeaea; color: #c0392b; border: none; border-radius: 7px; padding: 0.3rem 0.6rem; font-size: 0.78rem; cursor: pointer; }
+    .service-tag { display: inline-flex; align-items: center; gap: 0.4rem; background: #f0f8f4; border: 1px solid #c8e6c9; color: var(--green); border-radius: 20px; padding: 0.3rem 0.8rem; font-size: 0.82rem; margin: 0.2rem; }
+    .service-tag button { background: none; border: none; color: #c0392b; cursor: pointer; font-size: 0.9rem; line-height: 1; }
+    .video-preview { background: #1a1a2e; border-radius: 10px; padding: 1rem; display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem; }
+    .video-preview .vp-thumb { width: 60px; height: 44px; border-radius: 6px; background: linear-gradient(135deg, var(--green), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .video-preview .vp-info { flex: 1; }
+    .video-preview .vp-info h4 { color: white; font-size: 0.85rem; margin-bottom: 0.2rem; }
+    .video-preview .vp-info p { color: #888; font-size: 0.75rem; }
+    .plan-info { background: linear-gradient(135deg, var(--green), #0d3d22); color: white; border-radius: 14px; padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .plan-info h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+    .plan-info p { opacity: 0.85; font-size: 0.85rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.8rem; margin-top: 1rem; }
+    .gallery-thumb { width: 100%; aspect-ratio: 1; border-radius: 10px; object-fit: cover; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 2rem; overflow: hidden; }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-thumb .del-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; border-radius: 10px; cursor: pointer; }
+    .gallery-item { position: relative; }
+    .gallery-item:hover .del-overlay { display: flex; }
+    .quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .qa-btn { background: white; border: 2px solid #eee; border-radius: 12px; padding: 1.2rem; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .qa-btn:hover { border-color: var(--green); background: #f0f8f4; }
+    .qa-btn .qa-icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .qa-btn span { font-size: 0.82rem; font-weight: 600; color: var(--dark); display: block; }
+    .tip-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 8px; padding: 1rem 1.2rem; font-size: 0.85rem; color: #856404; margin-bottom: 1rem; }
+    .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--green); color: white; padding: 0.8rem 1.4rem; border-radius: 10px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,0.2); transform: translateY(80px); opacity: 0; transition: all 0.3s; z-index: 9999; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    @media(max-width: 768px) {
+      .dash-wrap { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .sidebar.open { display: block; position: fixed; inset: 0; z-index: 500; overflow-y: auto; }
+      .dash-main { padding: 1rem; }
+      #menuBtn { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+<nav style="background:var(--green); padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:var(--shadow); height:60px;">
+  <div style="display:flex; align-items:center; gap:0.6rem;">
+    <img src="https://flagcdn.com/gh.svg" alt="logo" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+    <span style="color:var(--gold); font-size:1.1rem; font-weight:700;">Business Dashboard</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:1rem;">
+    <a id="viewProfileLink" href="business.html" target="_blank" style="color:white; font-size:0.82rem; opacity:0.85;">👁 View Profile</a>
+    <button onclick="logout()" style="background:rgba(255,255,255,0.15); border:none; color:white; padding:0.35rem 0.9rem; border-radius:20px; cursor:pointer; font-size:0.82rem;">Sign Out</button>
+    <button onclick="document.getElementById('sidebar').classList.toggle('open')" style="background:none; border:none; color:white; font-size:1.3rem; cursor:pointer; display:none;" id="menuBtn">☰</button>
+  </div>
+</nav>
+
+<div class="dash-wrap">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+      <div class="biz-avatar" id="sideIcon">🏢</div>
+      <h4 id="sideName">Loading...</h4>
+      <p id="sideIndustry"></p>
+      <span class="status-badge status-pending" id="sideStatus">Pending Verification</span>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="#" class="active" onclick="show('overview',this)"><span class="ni">📊</span> Overview</a></li>
+      <li><a href="#" onclick="show('profile',this)"><span class="ni">🏢</span> Edit Profile</a></li>
+      <li><a href="#" onclick="show('services',this)"><span class="ni">⚙️</span> Services</a></li>
+      <li><a href="#" onclick="show('team',this)"><span class="ni">👥</span> Team Members</a></li>
+      <li><a href="#" onclick="show('videos',this)"><span class="ni">🎬</span> Videos</a></li>
+      <li><a href="#" onclick="show('gallery',this)"><span class="ni">🖼️</span> Gallery</a></li>
+      <li><a href="#" onclick="show('contact',this)"><span class="ni">📞</span> Contact Info</a></li>
+      <li class="divider"></li>
+      <li><a href="#" onclick="show('billing',this)"><span class="ni">💳</span> Billing & Plan</a></li>
+      <li><a href="#" onclick="show('settings',this)"><span class="ni">⚙️</span> Settings</a></li>
+    </ul>
+  </aside>
+
+  <main class="dash-main">
+
+    <!-- OVERVIEW -->
+    <div class="panel active" id="panel-overview">
+      <div class="panel-title">📊 Overview</div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="s-icon">👁</div><div class="s-val" id="ov-views">—</div><div class="s-lbl">Profile Views</div></div>
+        <div class="stat-card"><div class="s-icon">💳</div><div class="s-val" id="ov-plan">—</div><div class="s-lbl">Current Plan</div></div>
+        <div class="stat-card"><div class="s-icon">📅</div><div class="s-val" id="ov-days">—</div><div class="s-lbl">Days Remaining</div></div>
+        <div class="stat-card"><div class="s-icon">⚙️</div><div class="s-val" id="ov-services">0</div><div class="s-lbl">Services Listed</div></div>
+        <div class="stat-card"><div class="s-icon">👥</div><div class="s-val" id="ov-team">0</div><div class="s-lbl">Team Members</div></div>
+      </div>
+      <div class="tip-box">💡 <strong>Tip:</strong> Keep your profile up to date — businesses with complete profiles get more enquiries from the community.</div>
+      <div class="quick-actions">
+        <div class="qa-btn" onclick="show('profile', null)"><div class="qa-icon">✏️</div><span>Edit Profile</span></div>
+        <div class="qa-btn" onclick="show('team', null)"><div class="qa-icon">👥</div><span>Add Team Member</span></div>
+        <div class="qa-btn" onclick="show('videos', null)"><div class="qa-icon">🎬</div><span>Add Video</span></div>
+        <div class="qa-btn" onclick="show('gallery', null)"><div class="qa-icon">🖼️</div><span>Upload Photos</span></div>
+        <div class="qa-btn" onclick="show('contact', null)"><div class="qa-icon">📞</div><span>Update Contact</span></div>
+        <div class="qa-btn" onclick="window.open(document.getElementById('viewProfileLink').href,'_blank')"><div class="qa-icon">👁</div><span>View Profile</span></div>
+      </div>
+      <div class="edit-card">
+        <h3>📋 Registration Summary</h3>
+        <div id="ov-summary" style="font-size:0.88rem; line-height:2; color:#444;"></div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="panel" id="panel-profile">
+      <div class="panel-title">🏢 Edit Business Profile</div>
+      <div class="edit-card">
+        <h3>Basic Information</h3>
+        <div class="form-group"><label>Business Name</label><input type="text" id="p-name" placeholder="Business name"></div>
+        <div class="form-group"><label>Tagline</label><input type="text" id="p-tagline" placeholder="Short catchy tagline" maxlength="100"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Industry</label><input type="text" id="p-industry" placeholder="e.g. Construction"></div>
+          <div class="form-group"><label>Town</label><input type="text" id="p-town" placeholder="e.g. Akropong"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Year Established</label><input type="number" id="p-year" placeholder="e.g. 2010"></div>
+          <div class="form-group"><label>Number of Employees</label>
+            <select id="p-employees">
+              <option>1-5</option><option>6-20</option><option>21-50</option><option>51-100</option><option>100+</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Opening Hours</label><input type="text" id="p-hours" placeholder="e.g. Mon–Fri: 8am–5pm"></div>
+      </div>
+      <div class="edit-card">
+        <h3>About Us</h3>
+        <div class="form-group"><label>First Paragraph</label><textarea id="p-about1" rows="3" placeholder="Tell the community about your business..." maxlength="400"></textarea></div>
+        <div class="form-group"><label>Second Paragraph (optional)</label><textarea id="p-about2" rows="2" placeholder="More about your team, achievements, or mission..." maxlength="300"></textarea></div>
+      </div>
+      <div class="edit-card">
+        <h3>Key Statistics (optional)</h3>
+        <div class="form-group"><label>Stat 1</label>
+          <div style="display:grid; grid-template-columns:1fr 2fr; gap:0.6rem;">
+            <input type="text" id="p-stat1val" placeholder="200+">
+            <input type="text" id="p-stat1lbl" placeholder="Projects Completed">
+          </div>
+        </div>
+        <div class="form-group"><label>Stat 2</label>
+          <div style="display:grid; grid-template-columns:1fr 2fr; gap:0.6rem;">
+            <input type="text" id="p-stat2val" placeholder="15+">
+            <input type="text" id="p-stat2lbl" placeholder="Years Experience">
+          </div>
+        </div>
+        <div class="form-group"><label>Stat 3</label>
+          <div style="display:grid; grid-template-columns:1fr 2fr; gap:0.6rem;">
+            <input type="text" id="p-stat3val" placeholder="50+">
+            <input type="text" id="p-stat3lbl" placeholder="Team Members">
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-gold" onclick="saveProfile()">💾 Save Profile</button>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="panel" id="panel-services">
+      <div class="panel-title">⚙️ Services / Products</div>
+      <div class="edit-card">
+        <h3>Your Services</h3>
+        <p style="font-size:0.85rem; color:var(--gray); margin-bottom:1rem;">These appear as cards on your public profile. Add each service on a new line or use the form below.</p>
+        <div id="services-tags" style="margin-bottom:1.2rem;"></div>
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:flex-end;">
+          <div class="form-group" style="flex:1; min-width:160px; margin:0;">
+            <label>Service / Product Name</label>
+            <input type="text" id="svc-name" placeholder="e.g. Home Delivery">
+          </div>
+          <div class="form-group" style="flex:1; min-width:60px; margin:0;">
+            <label>Icon (emoji)</label>
+            <input type="text" id="svc-icon" placeholder="🚚" maxlength="2" style="width:60px;">
+          </div>
+          <div class="form-group" style="flex:2; min-width:200px; margin:0;">
+            <label>Short Description</label>
+            <input type="text" id="svc-desc" placeholder="Brief description of this service">
+          </div>
+          <button class="btn btn-gold" style="height:42px; margin-bottom:0;" onclick="addService()">+ Add</button>
+        </div>
+      </div>
+      <button class="btn btn-gold" onclick="saveServices()">💾 Save Services</button>
+    </div>
+
+    <!-- TEAM -->
+    <div class="panel" id="panel-team">
+      <div class="panel-title">👥 Team Members</div>
+      <div class="edit-card">
+        <h3>Current Team</h3>
+        <div id="team-list"></div>
+        <p id="team-empty" style="color:var(--gray); font-size:0.85rem; display:none;">No team members added yet.</p>
+      </div>
+      <div class="edit-card">
+        <h3>Add Team Member</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Full Name *</label><input type="text" id="tm-name" placeholder="Kofi Mensah"></div>
+          <div class="form-group"><label>Role / Title *</label><input type="text" id="tm-role" placeholder="CEO & Founder"></div>
+        </div>
+        <div class="form-group"><label>Short Bio</label><input type="text" id="tm-bio" placeholder="Brief description..." maxlength="120"></div>
+        <div class="form-group"><label>Avatar Colour</label>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.3rem;">
+            <div class="color-swatch" style="background:#1a6b3c;" onclick="pickColor('#1a6b3c',this)"></div>
+            <div class="color-swatch" style="background:#d4a017;" onclick="pickColor('#d4a017',this)"></div>
+            <div class="color-swatch" style="background:#1a1a2e;" onclick="pickColor('#1a1a2e',this)"></div>
+            <div class="color-swatch" style="background:#2e7d32;" onclick="pickColor('#2e7d32',this)"></div>
+            <div class="color-swatch" style="background:#6a1a6b;" onclick="pickColor('#6a1a6b',this)"></div>
+            <div class="color-swatch" style="background:#b8860b;" onclick="pickColor('#b8860b',this)"></div>
+          </div>
+        </div>
+        <button class="btn btn-gold" onclick="addTeamMember()">+ Add Member</button>
+      </div>
+    </div>
+
+    <!-- VIDEOS -->
+    <div class="panel" id="panel-videos">
+      <div class="panel-title">🎬 Videos</div>
+      <div class="edit-card">
+        <h3>Your Videos</h3>
+        <p style="font-size:0.85rem; color:var(--gray); margin-bottom:1rem;">Add YouTube video links to showcase your work. Videos are optional — a placeholder will show if none are added.</p>
+        <div id="video-list"></div>
+        <p id="video-empty" style="color:var(--gray); font-size:0.85rem; display:none;">No videos added yet. Add a YouTube link below.</p>
+      </div>
+      <div class="edit-card">
+        <h3>Add a Video</h3>
+        <div class="form-group"><label>Video Title</label><input type="text" id="vid-title" placeholder="e.g. Our Construction Process"></div>
+        <div class="form-group"><label>YouTube URL</label><input type="url" id="vid-url" placeholder="https://www.youtube.com/watch?v=..."></div>
+        <div class="form-group"><label>Short Description (optional)</label><input type="text" id="vid-desc" placeholder="What is this video about?"></div>
+        <button class="btn btn-gold" onclick="addVideo()">+ Add Video</button>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+    <div class="panel" id="panel-gallery">
+      <div class="panel-title">🖼️ Photo Gallery</div>
+      <div class="edit-card">
+        <h3>Upload Photos</h3>
+        <p style="font-size:0.85rem; color:var(--gray); margin-bottom:1rem;">Upload photos of your business, products, or team. These appear in your gallery section.</p>
+        <label style="display:inline-block; background:var(--green); color:white; padding:0.6rem 1.2rem; border-radius:8px; cursor:pointer; font-size:0.88rem;">
+          📷 Choose Photos
+          <input type="file" id="gallery-input" accept="image/*" multiple style="display:none;" onchange="handleGalleryUpload(this)">
+        </label>
+        <div class="gallery-grid" id="gallery-grid"></div>
+        <p id="gallery-empty" style="color:var(--gray); font-size:0.85rem; margin-top:1rem;">No photos uploaded yet.</p>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="panel" id="panel-contact">
+      <div class="panel-title">📞 Contact Information</div>
+      <div class="edit-card">
+        <h3>Contact Details</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="c-phone" placeholder="+233 24 000 0000"></div>
+          <div class="form-group"><label>WhatsApp Number</label><input type="tel" id="c-whatsapp" placeholder="+233 24 000 0000"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email Address</label><input type="email" id="c-email" placeholder="business@example.com"></div>
+          <div class="form-group"><label>Website (optional)</label><input type="url" id="c-website" placeholder="https://yoursite.com"></div>
+        </div>
+        <div class="form-group"><label>Business Address</label><input type="text" id="c-address" placeholder="Street / Area, Town"></div>
+      </div>
+      <div class="edit-card">
+        <h3>Social Media Links (optional)</h3>
+        <div class="form-group"><label>Facebook</label><input type="url" id="c-facebook" placeholder="https://facebook.com/yourpage"></div>
+        <div class="form-group"><label>Instagram</label><input type="url" id="c-instagram" placeholder="https://instagram.com/yourhandle"></div>
+        <div class="form-group"><label>Twitter / X</label><input type="url" id="c-twitter" placeholder="https://twitter.com/yourhandle"></div>
+      </div>
+      <button class="btn btn-gold" onclick="saveContact()">💾 Save Contact Info</button>
+    </div>
+
+    <!-- BILLING -->
+    <div class="panel" id="panel-billing">
+      <div class="panel-title">💳 Billing & Plan</div>
+      <div class="plan-info" id="billing-plan-info">
+        <div>
+          <h3 id="bill-plan-name">Monthly Plan</h3>
+          <p id="bill-plan-desc">GH₵ 50 / month</p>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:1.8rem; font-weight:800;" id="bill-amount">GH₵ 50</div>
+          <div style="font-size:0.8rem; opacity:0.8;" id="bill-period">per month</div>
+        </div>
+      </div>
+      <div class="edit-card" style="margin-top:1.5rem;">
+        <h3>Plan Details</h3>
+        <div id="bill-details" style="font-size:0.88rem; line-height:2.2; color:#444;"></div>
+      </div>
+      <div class="edit-card">
+        <h3>Upgrade / Change Plan</h3>
+        <p style="font-size:0.85rem; color:var(--gray); margin-bottom:1rem;">Want to switch to a yearly plan and save? Contact us to upgrade.</p>
+        <a href="mailto:info@akuapeman.com?subject=Plan Upgrade Request" class="btn btn-gold">📧 Contact Us to Upgrade</a>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="panel" id="panel-settings">
+      <div class="panel-title">⚙️ Account Settings</div>
+      <div class="edit-card">
+        <h3>Owner Details</h3>
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" id="s-first" placeholder="Kofi"></div>
+          <div class="form-group"><label>Last Name</label><input type="text" id="s-last" placeholder="Mensah"></div>
+        </div>
+        <div class="form-group"><label>Login Email</label><input type="email" id="s-email" placeholder="you@example.com"></div>
+        <button class="btn btn-gold" onclick="saveOwner()">💾 Save Details</button>
+      </div>
+      <div class="edit-card">
+        <h3>Change Password</h3>
+        <div class="form-group"><label>Current Password</label><input type="password" id="s-oldpass" placeholder="Current password"></div>
+        <div class="form-group"><label>New Password</label><input type="password" id="s-newpass" placeholder="New password (min. 6 chars)" minlength="6"></div>
+        <div class="form-group"><label>Confirm New Password</label><input type="password" id="s-newpass2" placeholder="Repeat new password"></div>
+        <button class="btn btn-gold" onclick="changePassword()">🔒 Change Password</button>
+      </div>
+      <div class="edit-card" style="border:2px solid #ffeaea;">
+        <h3 style="color:#c0392b;">Danger Zone</h3>
+        <p style="font-size:0.85rem; color:var(--gray); margin-bottom:1rem;">Signing out will end your current session. Your data is saved.</p>
+        <button class="btn" style="background:#ffeaea; color:#c0392b; border:none;" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<style>
+  .color-swatch { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: border-color 0.2s; }
+  .color-swatch.selected { border-color: white; outline: 2px solid var(--green); }
+</style>
+
+<script src="js/app.js"></script>
+<script>
+// ===== STATE =====
+let biz = null;
+let selectedColor = '#1a6b3c';
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  const session = localStorage.getItem('akm_biz_session');
+  if (!session) { window.location.href = 'business-register.html'; return; }
+  biz = JSON.parse(session);
+  // Ensure arrays exist
+  if (!biz.team) biz.team = [];
+  if (!biz.videos) biz.videos = [];
+  if (!biz.gallery) biz.gallery = [];
+  if (!biz.servicesList) {
+    // Convert old services string to array
+    biz.servicesList = (biz.services || '').split('\n').filter(s => s.trim()).map(s => ({ icon: '⚙️', name: s.trim(), desc: '' }));
+  }
+  renderAll();
+});
+
+// ===== PANEL SWITCHER =====
+function show(panelId, linkEl) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + panelId).classList.add('active');
+  document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  // Close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== RENDER ALL =====
+function renderAll() {
+  // Sidebar
+  document.getElementById('sideName').textContent = biz.name || 'My Business';
+  document.getElementById('sideIndustry').textContent = biz.industry || '';
+  const statusEl = document.getElementById('sideStatus');
+  statusEl.textContent = biz.status === 'active' ? 'Active' : 'Pending Verification';
+  statusEl.className = 'status-badge ' + (biz.status === 'active' ? 'status-active' : 'status-pending');
+
+  // View profile link
+  document.getElementById('viewProfileLink').href = 'business.html?id=' + encodeURIComponent(biz.id || biz.name);
+
+  // Overview
+  document.getElementById('ov-plan').textContent = biz.plan === 'yearly' ? 'Yearly' : 'Monthly';
+  document.getElementById('ov-views').textContent = biz.views || '0';
+  const days = biz.plan === 'yearly' ? 365 : 30;
+  const elapsed = biz.date ? Math.floor((Date.now() - biz.date) / 86400000) : 0;
+  document.getElementById('ov-days').textContent = Math.max(0, days - elapsed);
+  document.getElementById('ov-services').textContent = (biz.servicesList || []).length;
+  document.getElementById('ov-team').textContent = (biz.team || []).length;
+  document.getElementById('ov-summary').innerHTML = `
+    <strong>Business:</strong> ${biz.name || '—'}<br>
+    <strong>Industry:</strong> ${biz.industry || '—'}<br>
+    <strong>Town:</strong> ${biz.town || '—'}<br>
+    <strong>Registered:</strong> ${biz.date ? new Date(biz.date).toLocaleDateString() : '—'}<br>
+    <strong>Plan:</strong> ${biz.plan === 'yearly' ? 'Yearly — GH₵ 600/yr' : 'Monthly — GH₵ 50/mo'}<br>
+    <strong>Reference:</strong> ${biz.id || '—'}<br>
+    <strong>Status:</strong> ${biz.status === 'active' ? '✅ Active' : '⏳ Pending Verification'}
+  `;
+
+  // Profile panel
+  document.getElementById('p-name').value = biz.name || '';
+  document.getElementById('p-tagline').value = biz.tagline || '';
+  document.getElementById('p-industry').value = biz.industry || '';
+  document.getElementById('p-town').value = biz.town || '';
+  document.getElementById('p-year').value = biz.year || '';
+  document.getElementById('p-hours').value = biz.hours || '';
+  document.getElementById('p-about1').value = biz.about1 || '';
+  document.getElementById('p-about2').value = biz.about2 || '';
+  document.getElementById('p-stat1val').value = biz.stat1?.val || '';
+  document.getElementById('p-stat1lbl').value = biz.stat1?.lbl || '';
+  document.getElementById('p-stat2val').value = biz.stat2?.val || '';
+  document.getElementById('p-stat2lbl').value = biz.stat2?.lbl || '';
+  document.getElementById('p-stat3val').value = biz.stat3?.val || '';
+  document.getElementById('p-stat3lbl').value = biz.stat3?.lbl || '';
+  const empSel = document.getElementById('p-employees');
+  if (biz.employees) { for (let o of empSel.options) { if (o.value === biz.employees) o.selected = true; } }
+
+  // Services
+  renderServiceTags();
+
+  // Team
+  renderTeam();
+
+  // Videos
+  renderVideos();
+
+  // Gallery
+  renderGallery();
+
+  // Contact
+  document.getElementById('c-phone').value = biz.phone || '';
+  document.getElementById('c-whatsapp').value = biz.whatsapp || '';
+  document.getElementById('c-email').value = biz.email || '';
+  document.getElementById('c-website').value = biz.website || '';
+  document.getElementById('c-address').value = biz.address || '';
+  document.getElementById('c-facebook').value = biz.facebook || '';
+  document.getElementById('c-instagram').value = biz.instagram || '';
+  document.getElementById('c-twitter').value = biz.twitter || '';
+
+  // Billing
+  const isYearly = biz.plan === 'yearly';
+  document.getElementById('bill-plan-name').textContent = isYearly ? 'Yearly Plan' : 'Monthly Plan';
+  document.getElementById('bill-plan-desc').textContent = isYearly ? 'GH₵ 600 / year' : 'GH₵ 50 / month';
+  document.getElementById('bill-amount').textContent = isYearly ? 'GH₵ 600' : 'GH₵ 50';
+  document.getElementById('bill-period').textContent = isYearly ? 'per year' : 'per month';
+  const renewDate = biz.date ? new Date(biz.date + (isYearly ? 365 : 30) * 86400000).toLocaleDateString() : '—';
+  document.getElementById('bill-details').innerHTML = `
+    <strong>Plan:</strong> ${isYearly ? 'Yearly' : 'Monthly'}<br>
+    <strong>Amount:</strong> ${isYearly ? 'GH₵ 600 / year' : 'GH₵ 50 / month'}<br>
+    <strong>Payment Method:</strong> ${biz.payMethod || '—'}<br>
+    <strong>Renewal Date:</strong> ${renewDate}<br>
+    <strong>Reference:</strong> ${biz.id || '—'}
+  `;
+
+  // Settings
+  const nameParts = (biz.owner || '').split(' ');
+  document.getElementById('s-first').value = nameParts[0] || '';
+  document.getElementById('s-last').value = nameParts.slice(1).join(' ') || '';
+  document.getElementById('s-email').value = biz.ownerEmail || '';
+}
+
+// ===== SAVE HELPERS =====
+function persist() {
+  localStorage.setItem('akm_biz_session', JSON.stringify(biz));
+  // Update in businesses array too
+  const all = JSON.parse(localStorage.getItem('akm_businesses') || '[]');
+  const idx = all.findIndex(b => b.id === biz.id);
+  if (idx >= 0) all[idx] = biz; else all.push(biz);
+  localStorage.setItem('akm_businesses', JSON.stringify(all));
+}
+
+function toast(msg, isErr) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isErr ? '#c0392b' : 'var(--green)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== PROFILE SAVE =====
+function saveProfile() {
+  biz.name = document.getElementById('p-name').value.trim();
+  biz.tagline = document.getElementById('p-tagline').value.trim();
+  biz.industry = document.getElementById('p-industry').value.trim();
+  biz.town = document.getElementById('p-town').value.trim();
+  biz.year = document.getElementById('p-year').value.trim();
+  biz.hours = document.getElementById('p-hours').value.trim();
+  biz.about1 = document.getElementById('p-about1').value.trim();
+  biz.about2 = document.getElementById('p-about2').value.trim();
+  biz.employees = document.getElementById('p-employees').value;
+  biz.stat1 = { val: document.getElementById('p-stat1val').value.trim(), lbl: document.getElementById('p-stat1lbl').value.trim() };
+  biz.stat2 = { val: document.getElementById('p-stat2val').value.trim(), lbl: document.getElementById('p-stat2lbl').value.trim() };
+  biz.stat3 = { val: document.getElementById('p-stat3val').value.trim(), lbl: document.getElementById('p-stat3lbl').value.trim() };
+  persist();
+  document.getElementById('sideName').textContent = biz.name;
+  document.getElementById('sideIndustry').textContent = biz.industry;
+  toast('✅ Profile saved!');
+}
+
+// ===== SERVICES =====
+function renderServiceTags() {
+  const list = biz.servicesList || [];
+  const container = document.getElementById('services-tags');
+  if (!list.length) { container.innerHTML = '<p style="color:var(--gray); font-size:0.85rem;">No services added yet.</p>'; return; }
+  container.innerHTML = list.map((s, i) => `
+    <span class="service-tag">${s.icon} ${s.name}${s.desc ? ' — <em style="font-weight:400;">' + s.desc + '</em>' : ''}
+      <button onclick="removeService(${i})" title="Remove">×</button>
+    </span>`).join('');
+}
+
+function addService() {
+  const name = document.getElementById('svc-name').value.trim();
+  const icon = document.getElementById('svc-icon').value.trim() || '⚙️';
+  const desc = document.getElementById('svc-desc').value.trim();
+  if (!name) { toast('Enter a service name', true); return; }
+  if (!biz.servicesList) biz.servicesList = [];
+  biz.servicesList.push({ icon, name, desc });
+  document.getElementById('svc-name').value = '';
+  document.getElementById('svc-icon').value = '';
+  document.getElementById('svc-desc').value = '';
+  renderServiceTags();
+}
+
+function removeService(i) {
+  biz.servicesList.splice(i, 1);
+  renderServiceTags();
+}
+
+function saveServices() {
+  persist();
+  document.getElementById('ov-services').textContent = (biz.servicesList || []).length;
+  toast('✅ Services saved!');
+}
+
+// ===== TEAM =====
+function renderTeam() {
+  const list = biz.team || [];
+  const container = document.getElementById('team-list');
+  const empty = document.getElementById('team-empty');
+  if (!list.length) { container.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  container.innerHTML = list.map((m, i) => {
+    const initials = m.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    return `<div class="team-row">
+      <div class="team-avatar-sm" style="background:${m.color || '#1a6b3c'}">${initials}</div>
+      <div class="team-info"><h4>${m.name}</h4><p>${m.role}${m.bio ? ' — ' + m.bio : ''}</p></div>
+      <button class="del-btn" onclick="removeTeam(${i})">Remove</button>
+    </div>`;
+  }).join('');
+}
+
+function addTeamMember() {
+  const name = document.getElementById('tm-name').value.trim();
+  const role = document.getElementById('tm-role').value.trim();
+  const bio = document.getElementById('tm-bio').value.trim();
+  if (!name || !role) { toast('Name and role are required', true); return; }
+  if (!biz.team) biz.team = [];
+  biz.team.push({ name, role, bio, color: selectedColor });
+  document.getElementById('tm-name').value = '';
+  document.getElementById('tm-role').value = '';
+  document.getElementById('tm-bio').value = '';
+  persist();
+  renderTeam();
+  document.getElementById('ov-team').textContent = biz.team.length;
+  toast('✅ Team member added!');
+}
+
+function removeTeam(i) {
+  biz.team.splice(i, 1);
+  persist();
+  renderTeam();
+  document.getElementById('ov-team').textContent = biz.team.length;
+  toast('Team member removed');
+}
+
+function pickColor(color, el) {
+  selectedColor = color;
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ===== VIDEOS =====
+function renderVideos() {
+  const list = biz.videos || [];
+  const container = document.getElementById('video-list');
+  const empty = document.getElementById('video-empty');
+  if (!list.length) { container.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  container.innerHTML = list.map((v, i) => `
+    <div class="video-preview">
+      <div class="vp-thumb">🎬</div>
+      <div class="vp-info">
+        <h4>${v.title || 'Untitled Video'}</h4>
+        <p>${v.url || ''}</p>
+      </div>
+      <button class="del-btn" onclick="removeVideo(${i})">Remove</button>
+    </div>`).join('');
+}
+
+function addVideo() {
+  const title = document.getElementById('vid-title').value.trim();
+  const url = document.getElementById('vid-url').value.trim();
+  const desc = document.getElementById('vid-desc').value.trim();
+  if (!title) { toast('Enter a video title', true); return; }
+  if (!biz.videos) biz.videos = [];
+  // Extract YouTube ID
+  let ytId = '';
+  const match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if (match) ytId = match[1];
+  biz.videos.push({ title, url, desc, ytId });
+  document.getElementById('vid-title').value = '';
+  document.getElementById('vid-url').value = '';
+  document.getElementById('vid-desc').value = '';
+  persist();
+  renderVideos();
+  toast('✅ Video added!');
+}
+
+function removeVideo(i) {
+  biz.videos.splice(i, 1);
+  persist();
+  renderVideos();
+  toast('Video removed');
+}
+
+// ===== GALLERY =====
+function renderGallery() {
+  const list = biz.gallery || [];
+  const grid = document.getElementById('gallery-grid');
+  const empty = document.getElementById('gallery-empty');
+  if (!list.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  grid.innerHTML = list.map((src, i) => `
+    <div class="gallery-item">
+      <div class="gallery-thumb"><img src="${src}" alt="Gallery photo ${i+1}"></div>
+      <div class="del-overlay" onclick="removePhoto(${i})">🗑️</div>
+    </div>`).join('');
+}
+
+function handleGalleryUpload(input) {
+  const files = Array.from(input.files);
+  if (!biz.gallery) biz.gallery = [];
+  let loaded = 0;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      biz.gallery.push(e.target.result);
+      loaded++;
+      if (loaded === files.length) { persist(); renderGallery(); toast('✅ Photos uploaded!'); }
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function removePhoto(i) {
+  biz.gallery.splice(i, 1);
+  persist();
+  renderGallery();
+  toast('Photo removed');
+}
+
+// ===== CONTACT SAVE =====
+function saveContact() {
+  biz.phone = document.getElementById('c-phone').value.trim();
+  biz.whatsapp = document.getElementById('c-whatsapp').value.trim();
+  biz.email = document.getElementById('c-email').value.trim();
+  biz.website = document.getElementById('c-website').value.trim();
+  biz.address = document.getElementById('c-address').value.trim();
+  biz.facebook = document.getElementById('c-facebook').value.trim();
+  biz.instagram = document.getElementById('c-instagram').value.trim();
+  biz.twitter = document.getElementById('c-twitter').value.trim();
+  persist();
+  toast('✅ Contact info saved!');
+}
+
+// ===== SETTINGS =====
+function saveOwner() {
+  const first = document.getElementById('s-first').value.trim();
+  const last = document.getElementById('s-last').value.trim();
+  const email = document.getElementById('s-email').value.trim();
+  if (!first || !email) { toast('Name and email are required', true); return; }
+  biz.owner = first + ' ' + last;
+  biz.ownerEmail = email;
+  persist();
+  toast('✅ Details saved!');
+}
+
+function changePassword() {
+  const oldPass = document.getElementById('s-oldpass').value;
+  const newPass = document.getElementById('s-newpass').value;
+  const newPass2 = document.getElementById('s-newpass2').value;
+  if (oldPass !== biz.ownerPass) { toast('Current password is incorrect', true); return; }
+  if (newPass.length < 6) { toast('New password must be at least 6 characters', true); return; }
+  if (newPass !== newPass2) { toast('New passwords do not match', true); return; }
+  biz.ownerPass = newPass;
+  persist();
+  document.getElementById('s-oldpass').value = '';
+  document.getElementById('s-newpass').value = '';
+  document.getElementById('s-newpass2').value = '';
+  toast('✅ Password changed!');
+}
+
+// ===== LOGOUT =====
+function logout() {
+  localStorage.removeItem('akm_biz_session');
+  window.location.href = 'business-register.html';
+}
+</script>
+</body>
+</html>

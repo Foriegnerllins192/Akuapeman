@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Profile — Akuapeman.com</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Hero */
+    .biz-hero {
+      background: linear-gradient(135deg, var(--green), #0d3d22);
+      color: white; padding: 3.5rem 2rem 2rem; text-align: center; position: relative; overflow: hidden;
+    }
+    .biz-hero::before { content:''; position:absolute; inset:0; background:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400') center/cover; opacity:0.1; }
+    .biz-hero-inner { position:relative; max-width:700px; margin:0 auto; }
+    .biz-logo { width:90px; height:90px; border-radius:16px; background:white; display:flex; align-items:center; justify-content:center; font-size:2.8rem; margin:0 auto 1.2rem; box-shadow:0 4px 20px rgba(0,0,0,0.2); }
+    .biz-hero h1 { font-size:2rem; margin-bottom:0.4rem; }
+    .biz-hero .tagline { opacity:0.88; font-size:1rem; margin-bottom:1rem; }
+    .biz-meta { display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap; margin-bottom:1.2rem; }
+    .biz-meta span { background:rgba(255,255,255,0.15); padding:0.3rem 0.9rem; border-radius:20px; font-size:0.82rem; }
+    .biz-hero-btns { display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap; }
+
+    /* Sticky nav */
+    .biz-nav { background:white; border-bottom:2px solid #eee; position:sticky; top:64px; z-index:50; }
+    .biz-nav-inner { display:flex; gap:0; max-width:1100px; margin:0 auto; overflow-x:auto; }
+    .biz-nav-link { padding:1rem 1.4rem; font-size:0.88rem; font-weight:600; color:var(--gray); white-space:nowrap; cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s; }
+    .biz-nav-link:hover, .biz-nav-link.active { color:var(--green); border-bottom-color:var(--green); }
+
+    /* Sections */
+    .biz-section { padding:4rem 2rem; max-width:1100px; margin:0 auto; }
+    .biz-section-title { margin-bottom:2rem; }
+    .biz-section-title h2 { font-size:1.6rem; color:var(--dark); margin-bottom:0.3rem; }
+    .biz-section-title .line { width:50px; height:4px; background:var(--gold); border-radius:2px; margin-top:0.5rem; }
+
+    /* About */
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; }
+    .about-img { border-radius:16px; background:linear-gradient(135deg,#e8f5e9,#c8e6c9); height:300px; display:flex; align-items:center; justify-content:center; font-size:6rem; }
+    .about-text p { line-height:1.9; color:#444; margin-bottom:1rem; }
+    .about-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1.5rem; }
+    .about-stat { text-align:center; background:#f0f8f4; border-radius:10px; padding:1rem; }
+    .about-stat .val { font-size:1.6rem; font-weight:800; color:var(--green); }
+    .about-stat .lbl { font-size:0.78rem; color:var(--gray); margin-top:0.2rem; }
+
+    /* Services / Products */
+    .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.2rem; }
+    .service-card { background:white; border-radius:12px; padding:1.5rem; box-shadow:var(--shadow); border-top:4px solid var(--gold); }
+    .service-card .s-icon { font-size:2rem; margin-bottom:0.8rem; }
+    .service-card h3 { font-size:1rem; margin-bottom:0.4rem; color:var(--dark); }
+    .service-card p { font-size:0.85rem; color:var(--gray); line-height:1.6; }
+
+    /* Video */
+    .video-section { background:var(--dark); padding:4rem 2rem; }
+    .video-inner { max-width:1100px; margin:0 auto; }
+    .video-inner h2 { color:white; font-size:1.6rem; margin-bottom:0.4rem; }
+    .video-inner p { color:#aaa; margin-bottom:2rem; }
+    .video-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; }
+    .video-card { border-radius:12px; overflow:hidden; background:#111; }
+    .video-thumb { position:relative; height:200px; background:linear-gradient(135deg,#1a3a2a,#0d2018); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+    .video-thumb .play-circle { width:60px; height:60px; border-radius:50%; background:rgba(212,160,23,0.9); display:flex; align-items:center; justify-content:center; font-size:1.4rem; transition:transform 0.2s; }
+    .video-thumb:hover .play-circle { transform:scale(1.1); }
+    .video-thumb .v-emoji { position:absolute; font-size:4rem; opacity:0.2; }
+    .video-info { padding:1rem; }
+    .video-info h4 { color:white; font-size:0.92rem; margin-bottom:0.3rem; }
+    .video-info p { color:#888; font-size:0.8rem; }
+    .video-embed { display:none; }
+    .video-embed iframe { width:100%; height:200px; border:none; }
+
+    /* Team */
+    .team-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1.5rem; }
+    .team-card { background:white; border-radius:14px; padding:1.5rem 1rem; text-align:center; box-shadow:var(--shadow); }
+    .team-avatar { width:72px; height:72px; border-radius:50%; margin:0 auto 0.8rem; display:flex; align-items:center; justify-content:center; font-size:1.8rem; font-weight:700; color:white; }
+    .team-card h4 { font-size:0.95rem; margin-bottom:0.2rem; }
+    .team-card .role { font-size:0.8rem; color:var(--gold); font-weight:600; margin-bottom:0.4rem; }
+    .team-card p { font-size:0.8rem; color:var(--gray); line-height:1.5; }
+
+    /* Location */
+    .location-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start; }
+    .map-placeholder { background:linear-gradient(135deg,#e8f5e9,#c8e6c9); border-radius:14px; height:280px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:3rem; color:var(--green); }
+    .map-placeholder p { font-size:0.9rem; color:var(--gray); margin-top:0.5rem; }
+    .location-details { display:flex; flex-direction:column; gap:1rem; }
+    .loc-item { background:white; border-radius:10px; padding:1rem 1.2rem; box-shadow:var(--shadow); display:flex; gap:1rem; align-items:flex-start; }
+    .loc-item .loc-icon { font-size:1.4rem; flex-shrink:0; }
+    .loc-item h4 { font-size:0.88rem; font-weight:700; margin-bottom:0.2rem; }
+    .loc-item p { font-size:0.85rem; color:var(--gray); }
+
+    /* Contact */
+    .contact-section { background:linear-gradient(135deg,var(--green),#0d3d22); padding:4rem 2rem; }
+    .contact-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+    .contact-inner h2 { color:white; font-size:1.6rem; margin-bottom:0.5rem; }
+    .contact-inner > div:first-child p { color:rgba(255,255,255,0.8); line-height:1.8; margin-bottom:1.5rem; }
+    .contact-form { background:white; border-radius:14px; padding:1.8rem; }
+    .contact-form h3 { color:var(--green); margin-bottom:1.2rem; font-size:1rem; }
+    .social-row { display:flex; gap:0.7rem; flex-wrap:wrap; margin-top:1rem; }
+    .social-btn { background:rgba(255,255,255,0.15); color:white; padding:0.5rem 1rem; border-radius:8px; font-size:0.85rem; transition:background 0.2s; }
+    .social-btn:hover { background:var(--gold); color:var(--dark); }
+
+    /* Responsive */
+    @media(max-width:900px) {
+      .about-grid, .location-grid, .contact-inner { grid-template-columns:1fr; }
+      .about-img { height:200px; font-size:4rem; }
+    }
+    @media(max-width:600px) {
+      .biz-hero h1 { font-size:1.5rem; }
+      .biz-section { padding:2.5rem 1rem; }
+      .about-stats { grid-template-columns:repeat(3,1fr); gap:0.6rem; }
+      .video-section { padding:2.5rem 1rem; }
+      .contact-section { padding:2.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top breadcrumb nav -->
+<div style="background:var(--green); padding:0.6rem 2rem;">
+  <div style="max-width:1100px; margin:0 auto; font-size:0.82rem; color:rgba(255,255,255,0.75);">
+    <a href="index.html" style="color:var(--gold);">Home</a> /
+    <a href="connect.html" style="color:rgba(255,255,255,0.75);">Connect</a> /
+    Business / <span id="breadcrumbName">Loading...</span>
+  </div>
+</div>
+
+<!-- Business Hero -->
+<div class="biz-hero">
+  <div class="biz-hero-inner">
+    <div class="biz-logo" id="bizLogo">🏢</div>
+    <h1 id="bizName">Loading...</h1>
+    <p class="tagline" id="bizTagline"></p>
+    <div class="biz-meta">
+      <span id="bizCat"></span>
+      <span id="bizLocation"></span>
+      <span id="bizPhone"></span>
+    </div>
+    <div class="biz-hero-btns">
+      <a href="#contact" class="btn btn-gold" onclick="event.preventDefault(); scrollToSection('contact')">Contact Us</a>
+      <a href="#services" class="btn btn-outline" onclick="event.preventDefault(); scrollToSection('services')">Our Services</a>
+    </div>
+  </div>
+</div>
+
+<!-- Sticky section nav -->
+<div class="biz-nav">
+  <div class="biz-nav-inner">
+    <div class="biz-nav-link active" onclick="scrollToSection('about')">About Us</div>
+    <div class="biz-nav-link" onclick="scrollToSection('services')">Services</div>
+    <div class="biz-nav-link" onclick="scrollToSection('videos')">Videos</div>
+    <div class="biz-nav-link" onclick="scrollToSection('team')">Our Team</div>
+    <div class="biz-nav-link" onclick="scrollToSection('location')">Location</div>
+    <div class="biz-nav-link" onclick="scrollToSection('contact')">Contact</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about" class="biz-section">
+  <div class="biz-section-title">
+    <h2>About Us</h2>
+    <div class="line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-img" id="aboutImg">🏢</div>
+    <div class="about-text">
+      <p id="aboutP1"></p>
+      <p id="aboutP2"></p>
+      <div class="about-stats" id="aboutStats"></div>
+    </div>
+  </div>
+</div>
+
+<div style="background:#f5f5f0; padding:0.5rem 0;"></div>
+
+<!-- SERVICES / PRODUCTS -->
+<div id="services" class="biz-section">
+  <div class="biz-section-title">
+    <h2 id="servicesTitle">Our Services</h2>
+    <div class="line"></div>
+  </div>
+  <div class="services-grid" id="servicesGrid"></div>
+</div>
+
+<!-- VIDEOS -->
+<div id="videos" class="video-section">
+  <div class="video-inner">
+    <h2>📹 Watch Us in Action</h2>
+    <p>See what we do and how we do it</p>
+    <div class="video-grid" id="videoGrid"></div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div id="team" class="biz-section">
+  <div class="biz-section-title">
+    <h2>Our Team</h2>
+    <div class="line"></div>
+  </div>
+  <div class="team-grid" id="teamGrid"></div>
+</div>
+
+<div style="background:#f5f5f0; padding:0.5rem 0;"></div>
+
+<!-- LOCATION -->
+<div id="location" class="biz-section">
+  <div class="biz-section-title">
+    <h2>Find Us</h2>
+    <div class="line"></div>
+  </div>
+  <div class="location-grid">
+    <div class="map-placeholder">
+      🗺️
+      <p id="mapLabel">Akuapem Ridge, Ghana</p>
+    </div>
+    <div class="location-details" id="locationDetails"></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="contact-section">
+  <div class="contact-inner">
+    <div>
+      <h2>Get In Touch</h2>
+      <p id="contactIntro"></p>
+      <div class="social-row" id="socialRow"></div>
+    </div>
+    <div class="contact-form">
+      <h3>Send a Message</h3>
+      <div class="form-group"><label>Your Name</label><input type="text" placeholder="Kofi Mensah"></div>
+      <div class="form-group"><label>Email or Phone</label><input type="text" placeholder="you@example.com or +233..."></div>
+      <div class="form-group"><label>Message</label><textarea rows="4" placeholder="How can we help you?"></textarea></div>
+      <button class="btn btn-gold" style="width:100%;" onclick="sendMsg(this)">Send Message</button>
+      <div id="msgSent" style="display:none; text-align:center; color:var(--green); font-weight:600; margin-top:0.8rem;">✅ Message sent!</div>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+const BUSINESSES = {
+  'akropong-builders': {
+    name: 'Akropong Builders Ltd', logo: '🏗️', cat: '🔨 Construction',
+    location: '📍 Akropong, Eastern Region', phone: '📞 +233 24 000 0001',
+    tagline: 'Building the Akuapem Ridge, one project at a time.',
+    aboutImg: '🏗️',
+    about1: 'Akropong Builders Ltd has been serving the Akuapem community since 2005. We specialize in residential and commercial construction, renovation, and infrastructure development across the ridge and beyond.',
+    about2: 'Our team of skilled engineers, masons, and craftsmen bring decades of combined experience to every project. We are proud to have built homes, schools, and community facilities that stand as landmarks on the Akuapem Ridge.',
+    stats: [{ val: '18+', lbl: 'Years Experience' }, { val: '200+', lbl: 'Projects Done' }, { val: '50+', lbl: 'Team Members' }],
+    servicesTitle: 'Our Services',
+    services: [
+      { icon: '🏠', name: 'Residential Construction', desc: 'Custom homes built to your design and budget, using quality materials.' },
+      { icon: '🏢', name: 'Commercial Buildings', desc: 'Offices, shops, and commercial spaces designed for functionality.' },
+      { icon: '🔧', name: 'Renovation & Repairs', desc: 'Full renovation services — roofing, tiling, painting, and more.' },
+      { icon: '🛣️', name: 'Road & Infrastructure', desc: 'Driveways, compound paving, drainage, and site preparation.' },
+      { icon: '📐', name: 'Architectural Design', desc: 'In-house design team to plan and visualize your project.' },
+      { icon: '🔍', name: 'Project Supervision', desc: 'Professional site supervision to ensure quality and timelines.' },
+    ],
+    videos: [
+      { title: 'Our Construction Process', desc: 'See how we build from foundation to finish', emoji: '🏗️', ytId: '' },
+      { title: 'Completed Projects Tour', desc: 'A walkthrough of our recent builds on the ridge', emoji: '🏠', ytId: '' },
+    ],
+    team: [
+      { name: 'Kwame Asante', role: 'CEO & Founder', desc: 'Civil engineer with 20 years on the ridge.', color: '#1a6b3c' },
+      { name: 'Abena Darko', role: 'Head Architect', desc: 'Designs beautiful, functional spaces.', color: '#d4a017' },
+      { name: 'Kofi Mensah', role: 'Site Manager', desc: 'Ensures every project runs on time.', color: '#1a1a2e' },
+      { name: 'Yaa Osei', role: 'Finance Manager', desc: 'Keeps projects on budget.', color: '#2e7d32' },
+    ],
+    address: 'Main Street, Akropong-Akuapem', hours: 'Mon – Sat: 7am – 6pm', email: 'info@akropongbuilders.com',
+    mapLabel: 'Akropong-Akuapem, Eastern Region',
+    contactIntro: 'Ready to start your project? Reach out to us today for a free consultation and quote.',
+    socials: [{ icon: '📘', label: 'Facebook' }, { icon: '📸', label: 'Instagram' }, { icon: '💬', label: 'WhatsApp' }],
+  },
+
+  'ridge-tutorial': {
+    name: 'Ridge Tutorial Centre', logo: '📚', cat: '🎓 Education',
+    location: '📍 Mampong, Akuapem', phone: '📞 +233 24 000 0002',
+    tagline: 'Empowering students to reach their full academic potential.',
+    aboutImg: '📚',
+    about1: 'Ridge Tutorial Centre was founded in 2010 with a simple mission: to give every student on the Akuapem Ridge the academic support they need to excel. We offer intensive BECE and WASSCE preparation classes.',
+    about2: 'Our experienced tutors use proven teaching methods, past questions, and mock exams to prepare students thoroughly. We are proud of our track record — over 90% of our students achieve their target grades.',
+    stats: [{ val: '14+', lbl: 'Years Teaching' }, { val: '1,200+', lbl: 'Students Passed' }, { val: '90%', lbl: 'Pass Rate' }],
+    servicesTitle: 'Our Programmes',
+    services: [
+      { icon: '📝', name: 'BECE Preparation', desc: 'Intensive JHS 3 coaching covering all core subjects.' },
+      { icon: '🎓', name: 'WASSCE Coaching', desc: 'SHS 3 exam prep with subject specialists.' },
+      { icon: '🔢', name: 'Mathematics Clinic', desc: 'Special focus sessions for maths improvement.' },
+      { icon: '🔬', name: 'Science Tutorials', desc: 'Physics, Chemistry, and Biology made simple.' },
+      { icon: '📖', name: 'English Language', desc: 'Grammar, comprehension, and essay writing.' },
+      { icon: '🏠', name: 'Home Tutoring', desc: 'One-on-one sessions at the student\'s home.' },
+    ],
+    videos: [
+      { title: 'Our Teaching Approach', desc: 'How we prepare students for exams', emoji: '📖', ytId: '' },
+      { title: 'Student Success Stories', desc: 'Hear from students who passed with flying colours', emoji: '🎓', ytId: '' },
+    ],
+    team: [
+      { name: 'Mr. Acheampong', role: 'Director & Maths Tutor', desc: 'BSc Mathematics, 15 years teaching.', color: '#1a6b3c' },
+      { name: 'Mrs. Frimpong', role: 'English Tutor', desc: 'BA English, passionate about literacy.', color: '#d4a017' },
+      { name: 'Mr. Boateng', role: 'Science Tutor', desc: 'BSc Chemistry, makes science fun.', color: '#1a1a2e' },
+    ],
+    address: 'Near Mampong Market, Mampong-Akuapem', hours: 'Mon – Fri: 3pm – 7pm | Sat: 8am – 2pm', email: 'ridgetutorial@gmail.com',
+    mapLabel: 'Mampong-Akuapem, Eastern Region',
+    contactIntro: 'Enrol your child today. Contact us to discuss the right programme for their needs.',
+    socials: [{ icon: '📘', label: 'Facebook' }, { icon: '💬', label: 'WhatsApp' }],
+  },
+
+  'aburi-express': {
+    name: 'Aburi Express Travels', logo: '🚌', cat: '🚌 Transport',
+    location: '📍 Aburi, Akuapem', phone: '📞 +233 24 000 0003',
+    tagline: 'Safe, reliable, and comfortable travel across the ridge.',
+    aboutImg: '🚌',
+    about1: 'Aburi Express Travels has been connecting the Akuapem Ridge to Accra and beyond since 2008. We operate daily scheduled routes and private hire services with a fleet of modern, well-maintained vehicles.',
+    about2: 'Safety is our top priority. All our drivers are licensed, trained, and experienced on the ridge roads. We offer comfortable, air-conditioned coaches for a smooth journey every time.',
+    stats: [{ val: '16+', lbl: 'Years Operating' }, { val: '12', lbl: 'Vehicles' }, { val: '500+', lbl: 'Daily Passengers' }],
+    servicesTitle: 'Our Services',
+    services: [
+      { icon: '🛣️', name: 'Daily Scheduled Routes', desc: 'Accra ↔ Aburi ↔ Akropong — multiple trips daily.' },
+      { icon: '🚐', name: 'Private Hire', desc: 'Book a vehicle for events, trips, or group travel.' },
+      { icon: '✈️', name: 'Airport Transfers', desc: 'Comfortable transfers to and from Kotoka Airport.' },
+      { icon: '🎉', name: 'Event Transport', desc: 'Weddings, funerals, and church events covered.' },
+      { icon: '📦', name: 'Parcel Delivery', desc: 'Send packages between Accra and ridge towns.' },
+      { icon: '🏫', name: 'School Runs', desc: 'Safe, reliable school transport for children.' },
+    ],
+    videos: [
+      { title: 'Our Fleet', desc: 'Take a look at our modern, comfortable vehicles', emoji: '🚌', ytId: '' },
+      { title: 'Route Guide', desc: 'All our routes and schedules explained', emoji: '🗺️', ytId: '' },
+    ],
+    team: [
+      { name: 'Nana Owusu', role: 'Managing Director', desc: 'Founded the company in 2008.', color: '#1a6b3c' },
+      { name: 'Esi Amponsah', role: 'Operations Manager', desc: 'Keeps the fleet running smoothly.', color: '#d4a017' },
+      { name: 'Kweku Darko', role: 'Head Driver', desc: '12 years safe driving on the ridge.', color: '#1a1a2e' },
+    ],
+    address: 'Aburi Junction, Aburi-Akuapem', hours: 'Daily: 5am – 8pm', email: 'aburiexpress@gmail.com',
+    mapLabel: 'Aburi Junction, Akuapem Ridge',
+    contactIntro: 'Book your seat or hire a vehicle today. We\'re always ready to take you there safely.',
+    socials: [{ icon: '📘', label: 'Facebook' }, { icon: '💬', label: 'WhatsApp' }, { icon: '📞', label: 'Call Us' }],
+  },
+
+  'akuapem-pharmacy': {
+    name: 'Akuapem Pharmacy', logo: '💊', cat: '🏥 Health',
+    location: '📍 Akropong, Akuapem', phone: '📞 +233 24 000 0004',
+    tagline: 'Your health is our priority — trusted care for the community.',
+    aboutImg: '💊',
+    about1: 'Akuapem Pharmacy has been serving the health needs of the Akuapem community since 2003. We are a fully licensed pharmacy staffed by qualified pharmacists and dispensary technicians.',
+    about2: 'We stock a wide range of prescription and over-the-counter medicines, health supplements, and personal care products. Our pharmacists are always available to offer professional health advice.',
+    stats: [{ val: '21+', lbl: 'Years of Service' }, { val: '5,000+', lbl: 'Patients Served' }, { val: '3', lbl: 'Qualified Pharmacists' }],
+    servicesTitle: 'Our Services',
+    services: [
+      { icon: '💊', name: 'Prescription Dispensing', desc: 'Accurate dispensing of all prescribed medications.' },
+      { icon: '🩺', name: 'Health Consultations', desc: 'Free advice from our qualified pharmacists.' },
+      { icon: '🧪', name: 'Malaria Testing', desc: 'Rapid diagnostic tests available on-site.' },
+      { icon: '💉', name: 'Blood Pressure Check', desc: 'Free BP monitoring for community members.' },
+      { icon: '🌿', name: 'Herbal Products', desc: 'Certified herbal and natural health products.' },
+      { icon: '🚚', name: 'Home Delivery', desc: 'Medication delivery within Akropong and nearby towns.' },
+    ],
+    videos: [
+      { title: 'Meet Our Pharmacists', desc: 'Get to know the team behind your health', emoji: '👨‍⚕️', ytId: '' },
+      { title: 'Health Tips for the Community', desc: 'Simple tips to stay healthy on the ridge', emoji: '💪', ytId: '' },
+    ],
+    team: [
+      { name: 'Dr. Ama Boateng', role: 'Chief Pharmacist', desc: 'PharmD, 18 years in community health.', color: '#1a6b3c' },
+      { name: 'Mr. Kofi Asante', role: 'Pharmacist', desc: 'Specializes in chronic disease management.', color: '#d4a017' },
+      { name: 'Miss Abena Osei', role: 'Dispensary Tech', desc: 'Friendly face at the counter daily.', color: '#1a1a2e' },
+    ],
+    address: 'Near Akropong Polyclinic, Akropong', hours: 'Mon – Sat: 7am – 9pm | Sun: 9am – 5pm', email: 'akuapempharmacy@gmail.com',
+    mapLabel: 'Near Akropong Polyclinic, Akropong',
+    contactIntro: 'Have a health question or need to refill a prescription? Reach out to us anytime.',
+    socials: [{ icon: '📘', label: 'Facebook' }, { icon: '💬', label: 'WhatsApp' }],
+  },
+};
+
+// Fallback demo
+BUSINESSES['demo'] = BUSINESSES['akropong-builders'];
+
+// ===== RENDER =====
+document.addEventListener('DOMContentLoaded', () => {
+  const id = new URLSearchParams(location.search).get('id') || 'akropong-builders';
+
+  // Check localStorage for a registered business matching this id
+  const all = JSON.parse(localStorage.getItem('akm_businesses') || '[]');
+  const registered = all.find(b => b.id === id || encodeURIComponent(b.id) === id || encodeURIComponent(b.name) === id);
+
+  if (registered) {
+    render(bizFromSession(registered));
+  } else {
+    const b = BUSINESSES[id] || BUSINESSES['akropong-builders'];
+    render(b);
+  }
+});
+
+// Convert dashboard session data to the render format
+function bizFromSession(s) {
+  const stats = [s.stat1, s.stat2, s.stat3].filter(st => st && st.val);
+  const services = (s.servicesList && s.servicesList.length)
+    ? s.servicesList
+    : (s.services || '').split('\n').filter(x => x.trim()).map(x => ({ icon: '⚙️', name: x.trim(), desc: '' }));
+  const videos = (s.videos || []).map(v => ({ title: v.title, desc: v.desc || '', emoji: '🎬', ytId: v.ytId || '' }));
+  const team = (s.team || []).map(m => ({ name: m.name, role: m.role, desc: m.bio || '', color: m.color || '#1a6b3c' }));
+  const socials = [];
+  if (s.facebook) socials.push({ icon: '📘', label: 'Facebook', url: s.facebook });
+  if (s.instagram) socials.push({ icon: '📸', label: 'Instagram', url: s.instagram });
+  if (s.twitter) socials.push({ icon: '🐦', label: 'Twitter', url: s.twitter });
+  if (s.whatsapp) socials.push({ icon: '💬', label: 'WhatsApp', url: 'https://wa.me/' + s.whatsapp.replace(/\D/g,'') });
+  return {
+    name: s.name, logo: '🏢', cat: '🏭 ' + (s.industry || 'Business'),
+    location: '📍 ' + (s.town || 'Akuapem'), phone: '📞 ' + (s.phone || ''),
+    tagline: s.tagline || '',
+    aboutImg: '🏢',
+    about1: s.about1 || '', about2: s.about2 || '',
+    stats: stats.length ? stats.map(st => ({ val: st.val, lbl: st.lbl })) : [{ val: s.year ? (new Date().getFullYear() - parseInt(s.year)) + '+' : '—', lbl: 'Years in Business' }],
+    servicesTitle: 'Our Services',
+    services: services.length ? services : [{ icon: '⚙️', name: 'Services Coming Soon', desc: 'Check back soon for our full list of services.' }],
+    videos: videos.length ? videos : [{ title: 'Video Coming Soon', desc: 'We will be adding videos shortly.', emoji: '🎬', ytId: '' }],
+    team: team.length ? team : [{ name: s.owner || 'Business Owner', role: s.ownerRole || 'Owner', desc: '', color: '#1a6b3c' }],
+    address: s.address || '', hours: s.hours || 'Contact us for hours',
+    email: s.email || '', mapLabel: (s.town || 'Akuapem') + ', Ghana',
+    contactIntro: 'Get in touch with us today. We\'d love to hear from you.',
+    socials: socials,
+    gallery: s.gallery || [],
+  };
+}
+
+function render(b) {
+  document.title = b.name + ' — Akuapeman.com';
+  document.getElementById('breadcrumbName').textContent = b.name;
+
+  // Hero
+  document.getElementById('bizLogo').textContent = b.logo;
+  document.getElementById('bizName').textContent = b.name;
+  document.getElementById('bizTagline').textContent = b.tagline;
+  document.getElementById('bizCat').textContent = b.cat;
+  document.getElementById('bizLocation').textContent = b.location;
+  document.getElementById('bizPhone').textContent = b.phone;
+
+  // About
+  document.getElementById('aboutImg').textContent = b.aboutImg;
+  document.getElementById('aboutP1').textContent = b.about1;
+  document.getElementById('aboutP2').textContent = b.about2;
+  document.getElementById('aboutStats').innerHTML = b.stats.map(s =>
+    `<div class="about-stat"><div class="val">${s.val}</div><div class="lbl">${s.lbl}</div></div>`
+  ).join('');
+
+  // Services
+  document.getElementById('servicesTitle').textContent = b.servicesTitle;
+  document.getElementById('servicesGrid').innerHTML = b.services.map(s =>
+    `<div class="service-card"><div class="s-icon">${s.icon}</div><h3>${s.name}</h3><p>${s.desc}</p></div>`
+  ).join('');
+
+  // Videos
+  document.getElementById('videoGrid').innerHTML = b.videos.map((v, i) => `
+    <div class="video-card">
+      <div class="video-thumb" id="vthumb-${i}" onclick="playVideo(${i}, '${v.ytId}')">
+        <div class="v-emoji">${v.emoji}</div>
+        <div class="play-circle">▶</div>
+      </div>
+      <div class="video-embed" id="vembed-${i}">
+        ${v.ytId
+          ? `<iframe src="https://www.youtube.com/embed/${v.ytId}?autoplay=1" allowfullscreen allow="autoplay"></iframe>`
+          : `<div style="height:200px; background:#1a1a2e; display:flex; align-items:center; justify-content:center; color:#aaa; font-size:0.9rem; text-align:center; padding:1rem;">Video coming soon.<br>Contact us to feature your video here.</div>`
+        }
+      </div>
+      <div class="video-info"><h4>${v.title}</h4><p>${v.desc}</p></div>
+    </div>
+  `).join('');
+
+  // Team
+  const colors = ['#1a6b3c','#d4a017','#1a1a2e','#2e7d32','#6a1a6b','#b8860b'];
+  document.getElementById('teamGrid').innerHTML = b.team.map((m, i) => {
+    const initials = m.name.split(' ').map(n => n[0]).join('').slice(0, 2);
+    return `
+      <div class="team-card">
+        <div class="team-avatar" style="background:${colors[i % colors.length]}">${initials}</div>
+        <h4>${m.name}</h4>
+        <div class="role">${m.role}</div>
+        <p>${m.desc}</p>
+      </div>`;
+  }).join('');
+
+  // Location
+  document.getElementById('mapLabel').textContent = b.mapLabel;
+  document.getElementById('locationDetails').innerHTML = `
+    <div class="loc-item"><div class="loc-icon">📍</div><div><h4>Address</h4><p>${b.address}</p></div></div>
+    <div class="loc-item"><div class="loc-icon">🕐</div><div><h4>Opening Hours</h4><p>${b.hours}</p></div></div>
+    <div class="loc-item"><div class="loc-icon">📞</div><div><h4>Phone</h4><p>${b.phone.replace('📞 ','')}</p></div></div>
+    <div class="loc-item"><div class="loc-icon">📧</div><div><h4>Email</h4><p>${b.email}</p></div></div>
+  `;
+
+  // Contact
+  document.getElementById('contactIntro').textContent = b.contactIntro;
+  document.getElementById('socialRow').innerHTML = b.socials.map(s =>
+    `<a href="${s.url || '#'}" target="_blank" class="social-btn">${s.icon} ${s.label}</a>`
+  ).join('');
+}
+
+function playVideo(i, ytId) {
+  document.getElementById('vthumb-' + i).style.display = 'none';
+  document.getElementById('vembed-' + i).style.display = 'block';
+}
+
+function sendMsg(btn) {
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('msgSent').style.display = 'block';
+    btn.style.display = 'none';
+  }, 1000);
+}
+
+// Sticky nav highlight on scroll
+const sections = ['about','services','videos','team','location','contact'];
+window.addEventListener('scroll', () => {
+  let current = 'about';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 120) current = id;
+  });
+  document.querySelectorAll('.biz-nav-link').forEach((link, i) => {
+    link.classList.toggle('active', sections[i] === current);
+  });
+});
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const offset = el.getBoundingClientRect().top + window.pageYOffset - 120;
+  window.scrollTo({ top: offset, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Dashboard — Akuapeman.com</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .dash-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 60px); }
+    .sidebar { background: var(--dark); color: white; }
+    .sidebar-user { padding: 1.4rem; border-bottom: 1px solid #333; }
+    .rest-avatar { width: 54px; height: 54px; border-radius: 12px; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 0.6rem; }
+    .sidebar-user h4 { font-size: 0.9rem; margin-bottom: 0.1rem; }
+    .sidebar-user p { font-size: 0.75rem; color: #aaa; }
+    .status-badge { display: inline-block; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 10px; margin-top: 0.4rem; font-weight: 600; }
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-active  { background: #d4edda; color: #155724; }
+    .sidebar-nav { list-style: none; padding: 0.8rem 0; }
+    .sidebar-nav li a { display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 1.4rem; color: #bbb; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; border-left: 3px solid transparent; }
+    .sidebar-nav li a:hover, .sidebar-nav li a.active { color: white; background: rgba(255,255,255,0.07); border-left-color: var(--gold); }
+    .sidebar-nav .ni { font-size: 1rem; width: 18px; text-align: center; }
+    .sidebar-nav .divider { border-top: 1px solid #333; margin: 0.5rem 0; }
+    .dash-main { background: #f5f5f0; padding: 2rem; overflow-y: auto; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .panel-title { font-size: 1.3rem; color: var(--dark); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.6rem; }
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: white; border-radius: 12px; padding: 1.2rem; box-shadow: var(--shadow); text-align: center; }
+    .stat-card .s-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
+    .stat-card .s-val { font-size: 1.5rem; font-weight: 800; color: var(--green); }
+    .stat-card .s-lbl { font-size: 0.75rem; color: var(--gray); margin-top: 0.2rem; }
+    .edit-card { background: white; border-radius: 14px; padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
+    .edit-card h3 { color: var(--green); font-size: 1rem; margin-bottom: 1.2rem; padding-bottom: 0.5rem; border-bottom: 2px solid #f0f0f0; }
+    .menu-item-row { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 0.6rem; align-items: center; padding: 0.7rem 0; border-bottom: 1px solid #f5f5f5; }
+    .menu-item-row span { font-size: 0.85rem; }
+    .menu-item-row .price { color: var(--green); font-weight: 700; }
+    .menu-item-row .delivery { color: var(--gray); font-size: 0.8rem; }
+    .del-btn { background: #ffeaea; color: #c0392b; border: none; border-radius: 7px; padding: 0.3rem 0.6rem; font-size: 0.78rem; cursor: pointer; }
+    .cat-section { margin-bottom: 1.5rem; }
+    .cat-header { display: flex; align-items: center; justify-content: space-between; background: #f0f8f4; border-radius: 8px; padding: 0.6rem 1rem; margin-bottom: 0.5rem; }
+    .cat-header h4 { font-size: 0.9rem; color: var(--green); margin: 0; }
+    .order-row { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid #f5f5f5; }
+    .order-badge { font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 10px; }
+    .badge-new { background: #fff3cd; color: #856404; }
+    .badge-done { background: #d4edda; color: #155724; }
+    .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--green); color: white; padding: 0.8rem 1.4rem; border-radius: 10px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,0.2); transform: translateY(80px); opacity: 0; transition: all 0.3s; z-index: 9999; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .tip-box { background: #fff8e1; border-left: 4px solid var(--gold); border-radius: 8px; padding: 1rem 1.2rem; font-size: 0.85rem; color: #856404; margin-bottom: 1.2rem; }
+    @media(max-width: 768px) {
+      .dash-wrap { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .sidebar.open { display: block; position: fixed; inset: 0; z-index: 500; overflow-y: auto; }
+      .dash-main { padding: 1rem; }
+      #menuBtn { display: block !important; }
+      .menu-item-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav style="background:var(--green); padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:var(--shadow); height:60px;">
+  <div style="display:flex; align-items:center; gap:0.6rem;">
+    <img src="https://flagcdn.com/gh.svg" alt="logo" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+    <span style="color:var(--gold); font-size:1.1rem; font-weight:700;">Restaurant Dashboard</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:1rem;">
+    <a href="connect.html#restaurants" style="color:white; font-size:0.82rem; opacity:0.85;">👁 View Listing</a>
+    <button onclick="logout()" style="background:rgba(255,255,255,0.15); border:none; color:white; padding:0.35rem 0.9rem; border-radius:20px; cursor:pointer; font-size:0.82rem;">Sign Out</button>
+    <button onclick="document.getElementById('sidebar').classList.toggle('open')" style="background:none; border:none; color:white; font-size:1.3rem; cursor:pointer; display:none;" id="menuBtn">☰</button>
+  </div>
+</nav>
+
+<div class="dash-wrap">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+      <div class="rest-avatar" id="sideIcon">🍽️</div>
+      <h4 id="sideName">Loading...</h4>
+      <p id="sideTown"></p>
+      <span class="status-badge status-pending" id="sideStatus">Pending Review</span>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="#" class="active" onclick="show('overview',this)"><span class="ni">📊</span> Overview</a></li>
+      <li><a href="#" onclick="show('info',this)"><span class="ni">🍽️</span> Restaurant Info</a></li>
+      <li><a href="#" onclick="show('menu',this)"><span class="ni">📋</span> Manage Menu</a></li>
+      <li><a href="#" onclick="show('orders',this)"><span class="ni">🛒</span> Orders</a></li>
+      <li class="divider"></li>
+      <li><a href="#" onclick="show('settings',this)"><span class="ni">⚙️</span> Settings</a></li>
+    </ul>
+  </aside>
+
+  <main class="dash-main">
+
+    <!-- OVERVIEW -->
+    <div class="panel active" id="panel-overview">
+      <div class="panel-title">📊 Overview</div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="s-icon">🛒</div><div class="s-val" id="ov-orders">0</div><div class="s-lbl">Total Orders</div></div>
+        <div class="stat-card"><div class="s-icon">📋</div><div class="s-val" id="ov-items">0</div><div class="s-lbl">Menu Items</div></div>
+        <div class="stat-card"><div class="s-icon">📂</div><div class="s-val" id="ov-cats">0</div><div class="s-lbl">Categories</div></div>
+        <div class="stat-card"><div class="s-icon">✅</div><div class="s-val" id="ov-status">—</div><div class="s-lbl">Status</div></div>
+      </div>
+      <div class="tip-box">💡 <strong>Tip:</strong> Keep your menu up to date with accurate prices and delivery fees so customers know exactly what to expect.</div>
+      <div class="edit-card">
+        <h3>📋 Registration Summary</h3>
+        <div id="ov-summary" style="font-size:0.88rem; line-height:2.2; color:#444;"></div>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="panel" id="panel-info">
+      <div class="panel-title">🍽️ Restaurant Information</div>
+      <div class="edit-card">
+        <h3>Basic Details</h3>
+        <div class="form-group"><label>Restaurant Name</label><input type="text" id="i-name" placeholder="Restaurant name"></div>
+        <div class="form-group"><label>Description</label><textarea id="i-desc" rows="3" placeholder="Tell customers about your restaurant..."></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Town / Location</label><input type="text" id="i-town" placeholder="e.g. Akropong"></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="i-phone" placeholder="+233 24 000 0000"></div>
+        </div>
+        <div class="form-group"><label>Opening Hours</label><input type="text" id="i-time" placeholder="e.g. Mon–Sat: 8am–9pm"></div>
+        <div class="form-group"><label>Restaurant Icon (emoji)</label><input type="text" id="i-icon" placeholder="🍽️" maxlength="2" style="width:70px;"></div>
+      </div>
+      <button class="btn btn-gold" onclick="saveInfo()">💾 Save Info</button>
+    </div>
+
+    <!-- MENU -->
+    <div class="panel" id="panel-menu">
+      <div class="panel-title">📋 Manage Menu</div>
+      <div class="edit-card">
+        <h3>Add New Item</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Category</label><input type="text" id="m-cat" placeholder="e.g. Main Dishes, Drinks"></div>
+          <div class="form-group"><label>Item Name *</label><input type="text" id="m-name" placeholder="e.g. Jollof Rice"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Price (GH₵) *</label><input type="number" id="m-price" placeholder="25" min="0" step="0.5"></div>
+          <div class="form-group"><label>Delivery Fee (GH₵) *</label><input type="number" id="m-delivery" placeholder="5" min="0" step="0.5"></div>
+        </div>
+        <div class="form-group"><label>Description (optional)</label><input type="text" id="m-desc" placeholder="Short description of the dish"></div>
+        <button class="btn btn-gold" onclick="addMenuItem()">+ Add Item</button>
+      </div>
+      <div class="edit-card">
+        <h3>Current Menu</h3>
+        <div id="menu-list"></div>
+        <p id="menu-empty" style="color:var(--gray); font-size:0.85rem; display:none;">No menu items yet. Add your first item above.</p>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="panel" id="panel-orders">
+      <div class="panel-title">🛒 Orders</div>
+      <div class="edit-card">
+        <h3>Recent Orders</h3>
+        <div id="orders-list"></div>
+        <p id="orders-empty" style="color:var(--gray); font-size:0.85rem;">No orders yet. Orders placed through your restaurant page will appear here.</p>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="panel" id="panel-settings">
+      <div class="panel-title">⚙️ Account Settings</div>
+      <div class="edit-card">
+        <h3>Owner Details</h3>
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" id="s-first" placeholder="Kofi"></div>
+          <div class="form-group"><label>Last Name</label><input type="text" id="s-last" placeholder="Mensah"></div>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" id="s-email" placeholder="you@example.com"></div>
+        <button class="btn btn-gold" onclick="saveOwner()">💾 Save Details</button>
+      </div>
+      <div class="edit-card">
+        <h3>Change Password</h3>
+        <div class="form-group"><label>Current Password</label><input type="password" id="s-oldpass"></div>
+        <div class="form-group"><label>New Password</label><input type="password" id="s-newpass" minlength="6"></div>
+        <div class="form-group"><label>Confirm New Password</label><input type="password" id="s-newpass2"></div>
+        <button class="btn btn-gold" onclick="changePassword()">🔒 Change Password</button>
+      </div>
+      <div class="edit-card" style="border:2px solid #ffeaea;">
+        <h3 style="color:#c0392b;">Sign Out</h3>
+        <p style="font-size:0.85rem; color:var(--gray); margin-bottom:1rem;">Your data is saved and you can log back in anytime.</p>
+        <button class="btn" style="background:#ffeaea; color:#c0392b; border:none;" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+<script>
+let rest = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const session = localStorage.getItem('akm_rest_session');
+  if (!session) { window.location.href = 'restaurant-register.html'; return; }
+  rest = JSON.parse(session);
+  if (!rest.menuCategories) rest.menuCategories = {};
+  if (!rest.orders) rest.orders = [];
+  renderAll();
+});
+
+function show(panelId, linkEl) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + panelId).classList.add('active');
+  document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderAll() {
+  document.getElementById('sideName').textContent = rest.name || 'My Restaurant';
+  document.getElementById('sideTown').textContent = rest.town || '';
+  document.getElementById('sideIcon').textContent = rest.icon || '🍽️';
+  const statusEl = document.getElementById('sideStatus');
+  statusEl.textContent = rest.status === 'active' ? 'Active' : 'Pending Review';
+  statusEl.className = 'status-badge ' + (rest.status === 'active' ? 'status-active' : 'status-pending');
+
+  // Overview stats
+  const allItems = Object.values(rest.menuCategories || {}).flat();
+  const cats = Object.keys(rest.menuCategories || {}).length;
+  document.getElementById('ov-items').textContent = allItems.length;
+  document.getElementById('ov-cats').textContent = cats;
+  document.getElementById('ov-orders').textContent = (rest.orders || []).length;
+  document.getElementById('ov-status').textContent = rest.status === 'active' ? 'Live' : 'Pending';
+  document.getElementById('ov-summary').innerHTML = `
+    <strong>Restaurant:</strong> ${rest.name || '—'}<br>
+    <strong>Town:</strong> ${rest.town || '—'}<br>
+    <strong>Phone:</strong> ${rest.phone || '—'}<br>
+    <strong>Owner:</strong> ${rest.owner || '—'}<br>
+    <strong>Registered:</strong> ${rest.date ? new Date(rest.date).toLocaleDateString() : '—'}<br>
+    <strong>Reference:</strong> ${rest.id || '—'}<br>
+    <strong>Status:</strong> ${rest.status === 'active' ? '✅ Active' : '⏳ Pending Review'}
+  `;
+
+  // Info panel
+  document.getElementById('i-name').value = rest.name || '';
+  document.getElementById('i-desc').value = rest.desc || '';
+  document.getElementById('i-town').value = rest.town || '';
+  document.getElementById('i-phone').value = rest.phone || '';
+  document.getElementById('i-time').value = rest.time || '';
+  document.getElementById('i-icon').value = rest.icon || '🍽️';
+
+  // Menu
+  renderMenu();
+
+  // Orders
+  renderOrders();
+
+  // Settings
+  const parts = (rest.owner || '').split(' ');
+  document.getElementById('s-first').value = parts[0] || '';
+  document.getElementById('s-last').value = parts.slice(1).join(' ') || '';
+  document.getElementById('s-email').value = rest.email || '';
+}
+
+function persist() {
+  localStorage.setItem('akm_rest_session', JSON.stringify(rest));
+  const all = JSON.parse(localStorage.getItem('akm_restaurants') || '[]');
+  const idx = all.findIndex(r => r.id === rest.id);
+  if (idx >= 0) all[idx] = rest; else all.push(rest);
+  localStorage.setItem('akm_restaurants', JSON.stringify(all));
+}
+
+function toast(msg, isErr) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isErr ? '#c0392b' : 'var(--green)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== INFO =====
+function saveInfo() {
+  rest.name = document.getElementById('i-name').value.trim();
+  rest.desc = document.getElementById('i-desc').value.trim();
+  rest.town = document.getElementById('i-town').value.trim();
+  rest.phone = document.getElementById('i-phone').value.trim();
+  rest.time = document.getElementById('i-time').value.trim();
+  rest.icon = document.getElementById('i-icon').value.trim() || '🍽️';
+  persist();
+  document.getElementById('sideName').textContent = rest.name;
+  document.getElementById('sideTown').textContent = rest.town;
+  document.getElementById('sideIcon').textContent = rest.icon;
+  toast('✅ Info saved!');
+}
+
+// ===== MENU =====
+function renderMenu() {
+  const cats = rest.menuCategories || {};
+  const container = document.getElementById('menu-list');
+  const empty = document.getElementById('menu-empty');
+  const keys = Object.keys(cats);
+  if (!keys.length) { container.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  container.innerHTML = keys.map(cat => {
+    const items = cats[cat];
+    return `<div class="cat-section">
+      <div class="cat-header">
+        <h4>${cat} (${items.length} items)</h4>
+        <button class="del-btn" onclick="removeCategory('${cat}')">Remove Category</button>
+      </div>
+      ${items.map((item, i) => `
+        <div class="menu-item-row">
+          <span>${item.emoji || '🍽️'} ${item.name}${item.desc ? '<br><small style="color:var(--gray)">' + item.desc + '</small>' : ''}</span>
+          <span class="price">GH₵ ${parseFloat(item.price).toFixed(2)}</span>
+          <span class="delivery">+GH₵ ${parseFloat(item.delivery || 0).toFixed(2)} delivery</span>
+          <button class="del-btn" onclick="removeItem('${cat}', ${i})">✕</button>
+        </div>`).join('')}
+    </div>`;
+  }).join('');
+
+  // Update overview counts
+  const allItems = Object.values(cats).flat();
+  document.getElementById('ov-items').textContent = allItems.length;
+  document.getElementById('ov-cats').textContent = keys.length;
+}
+
+function addMenuItem() {
+  const cat = document.getElementById('m-cat').value.trim() || 'General';
+  const name = document.getElementById('m-name').value.trim();
+  const price = document.getElementById('m-price').value;
+  const delivery = document.getElementById('m-delivery').value;
+  const desc = document.getElementById('m-desc').value.trim();
+  if (!name || !price) { toast('Item name and price are required', true); return; }
+  if (!rest.menuCategories) rest.menuCategories = {};
+  if (!rest.menuCategories[cat]) rest.menuCategories[cat] = [];
+  rest.menuCategories[cat].push({ name, price: parseFloat(price), delivery: parseFloat(delivery || 0), desc, emoji: '🍽️' });
+  document.getElementById('m-name').value = '';
+  document.getElementById('m-price').value = '';
+  document.getElementById('m-delivery').value = '';
+  document.getElementById('m-desc').value = '';
+  persist();
+  renderMenu();
+  toast('✅ Item added!');
+}
+
+function removeItem(cat, i) {
+  rest.menuCategories[cat].splice(i, 1);
+  if (!rest.menuCategories[cat].length) delete rest.menuCategories[cat];
+  persist();
+  renderMenu();
+  toast('Item removed');
+}
+
+function removeCategory(cat) {
+  if (!confirm('Remove the entire "' + cat + '" category and all its items?')) return;
+  delete rest.menuCategories[cat];
+  persist();
+  renderMenu();
+  toast('Category removed');
+}
+
+// ===== ORDERS =====
+function renderOrders() {
+  const orders = rest.orders || [];
+  const container = document.getElementById('orders-list');
+  const empty = document.getElementById('orders-empty');
+  if (!orders.length) { container.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  container.innerHTML = orders.slice().reverse().map((o, i) => `
+    <div class="order-row">
+      <div style="flex:1;">
+        <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.3rem;">
+          <strong style="font-size:0.9rem;">#${o.ref || ('ORD-' + i)}</strong>
+          <span class="order-badge ${o.done ? 'badge-done' : 'badge-new'}">${o.done ? 'Completed' : 'New'}</span>
+        </div>
+        <div style="font-size:0.85rem; color:#444;">${o.items ? o.items.map(it => it.name + ' x' + it.qty).join(', ') : 'Order details'}</div>
+        <div style="font-size:0.8rem; color:var(--gray); margin-top:0.2rem;">${o.customer || ''} · GH₵ ${o.total || '—'} · ${o.date ? new Date(o.date).toLocaleDateString() : ''}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ===== SETTINGS =====
+function saveOwner() {
+  const first = document.getElementById('s-first').value.trim();
+  const last = document.getElementById('s-last').value.trim();
+  const email = document.getElementById('s-email').value.trim();
+  if (!first || !email) { toast('Name and email are required', true); return; }
+  rest.owner = first + ' ' + last;
+  rest.email = email;
+  persist();
+  toast('✅ Details saved!');
+}
+
+function changePassword() {
+  const oldPass = document.getElementById('s-oldpass').value;
+  const newPass = document.getElementById('s-newpass').value;
+  const newPass2 = document.getElementById('s-newpass2').value;
+  if (oldPass !== rest.ownerPass) { toast('Current password is incorrect', true); return; }
+  if (newPass.length < 6) { toast('New password must be at least 6 characters', true); return; }
+  if (newPass !== newPass2) { toast('Passwords do not match', true); return; }
+  rest.ownerPass = newPass;
+  persist();
+  document.getElementById('s-oldpass').value = '';
+  document.getElementById('s-newpass').value = '';
+  document.getElementById('s-newpass2').value = '';
+  toast('✅ Password changed!');
+}
+
+function logout() {
+  localStorage.removeItem('akm_rest_session');
+  window.location.href = 'restaurant-register.html';
+}
+</script>
+</body>
+</html>

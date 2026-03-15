@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist Dashboard — Akuapeman.com</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .dash-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 60px); }
+    .sidebar { background: #0d0d1a; color: white; }
+    .sidebar-user { padding: 1.4rem; border-bottom: 1px solid #222; }
+    .art-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--green), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 0.6rem; }
+    .sidebar-user h4 { font-size: 0.9rem; margin-bottom: 0.1rem; }
+    .sidebar-user p { font-size: 0.75rem; color: #888; }
+    .sidebar-nav { list-style: none; padding: 0.8rem 0; }
+    .sidebar-nav li a { display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 1.4rem; color: #bbb; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; border-left: 3px solid transparent; }
+    .sidebar-nav li a:hover, .sidebar-nav li a.active { color: white; background: rgba(255,255,255,0.07); border-left-color: var(--gold); }
+    .sidebar-nav .ni { font-size: 1rem; width: 18px; text-align: center; }
+    .sidebar-nav .divider { border-top: 1px solid #222; margin: 0.5rem 0; }
+    .dash-main { background: #f5f5f0; padding: 2rem; overflow-y: auto; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .panel-title { font-size: 1.3rem; color: var(--dark); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.6rem; }
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: white; border-radius: 12px; padding: 1.2rem; box-shadow: var(--shadow); text-align: center; }
+    .stat-card .s-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
+    .stat-card .s-val { font-size: 1.5rem; font-weight: 800; color: var(--green); }
+    .stat-card .s-lbl { font-size: 0.75rem; color: var(--gray); margin-top: 0.2rem; }
+    .edit-card { background: white; border-radius: 14px; padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
+    .edit-card h3 { color: var(--green); font-size: 1rem; margin-bottom: 1.2rem; padding-bottom: 0.5rem; border-bottom: 2px solid #f0f0f0; }
+    .song-row { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid #f5f5f5; }
+    .song-row:last-child { border: none; }
+    .song-art { width: 46px; height: 46px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .song-info { flex: 1; min-width: 0; }
+    .song-info h4 { font-size: 0.9rem; margin-bottom: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .song-info p { font-size: 0.78rem; color: var(--gray); }
+    .song-actions { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
+    .toggle-dl { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--gray); cursor: pointer; }
+    .toggle-dl input { accent-color: var(--green); width: 16px; height: 16px; cursor: pointer; }
+    .del-btn { background: #ffeaea; color: #c0392b; border: none; border-radius: 7px; padding: 0.3rem 0.6rem; font-size: 0.78rem; cursor: pointer; }
+    .upload-zone { border: 2px dashed #ddd; border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.2s; background: #fafafa; }
+    .upload-zone:hover { border-color: var(--green); background: #f0f8f4; }
+    .upload-zone input { display: none; }
+    .upload-zone .uz-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .upload-zone p { font-size: 0.85rem; color: var(--gray); }
+    .genre-badge { display: inline-block; background: #f0f8f4; color: var(--green); border-radius: 20px; padding: 0.2rem 0.7rem; font-size: 0.78rem; font-weight: 600; margin-right: 0.3rem; }
+    .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--green); color: white; padding: 0.8rem 1.4rem; border-radius: 10px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,0.2); transform: translateY(80px); opacity: 0; transition: all 0.3s; z-index: 9999; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    @media(max-width: 768px) {
+      .dash-wrap { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .sidebar.open { display: block; position: fixed; inset: 0; z-index: 500; overflow-y: auto; }
+      .dash-main { padding: 1rem; }
+      #menuBtn { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+<nav style="background:#0d0d1a; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 10px rgba(0,0,0,0.4); height:60px;">
+  <div style="display:flex; align-items:center; gap:0.6rem;">
+    <span style="font-size:1.3rem;">🎵</span>
+    <span style="color:var(--gold); font-size:1.1rem; font-weight:700;">Artist Dashboard</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:1rem;">
+    <a href="music.html" style="color:white; font-size:0.82rem; opacity:0.75;">👁 View Music Page</a>
+    <button onclick="logout()" style="background:rgba(255,255,255,0.1); border:none; color:white; padding:0.35rem 0.9rem; border-radius:20px; cursor:pointer; font-size:0.82rem;">Sign Out</button>
+    <button onclick="document.getElementById('sidebar').classList.toggle('open')" style="background:none; border:none; color:white; font-size:1.3rem; cursor:pointer; display:none;" id="menuBtn">☰</button>
+  </div>
+</nav>
+
+<div class="dash-wrap">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+      <div class="art-avatar" id="sideEmoji">🎵</div>
+      <h4 id="sideName">Loading...</h4>
+      <p id="sideGenre"></p>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="#" class="active" onclick="show('overview',this)"><span class="ni">📊</span> Overview</a></li>
+      <li><a href="#" onclick="show('upload',this)"><span class="ni">⬆️</span> Upload Music</a></li>
+      <li><a href="#" onclick="show('tracks',this)"><span class="ni">🎵</span> My Tracks</a></li>
+      <li><a href="#" onclick="show('profile',this)"><span class="ni">🎤</span> Artist Profile</a></li>
+      <li class="divider"></li>
+      <li><a href="#" onclick="show('settings',this)"><span class="ni">⚙️</span> Settings</a></li>
+    </ul>
+  </aside>
+
+  <main class="dash-main">
+
+    <!-- OVERVIEW -->
+    <div class="panel active" id="panel-overview">
+      <div class="panel-title">📊 Overview</div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="s-icon">🎵</div><div class="s-val" id="ov-tracks">0</div><div class="s-lbl">Tracks Uploaded</div></div>
+        <div class="stat-card"><div class="s-icon">▶️</div><div class="s-val" id="ov-plays">0</div><div class="s-lbl">Total Plays</div></div>
+        <div class="stat-card"><div class="s-icon">⬇️</div><div class="s-val" id="ov-downloads">0</div><div class="s-lbl">Downloads</div></div>
+        <div class="stat-card"><div class="s-icon">🆓</div><div class="s-val">Free</div><div class="s-lbl">Your Plan</div></div>
+      </div>
+      <div style="background:#fff8e1; border-left:4px solid var(--gold); border-radius:8px; padding:1rem 1.2rem; font-size:0.85rem; color:#856404; margin-bottom:1.5rem;">
+        💡 <strong>Tip:</strong> Upload your best tracks first. You can control whether fans can download each song individually.
+      </div>
+      <div class="edit-card">
+        <h3>📋 Your Artist Profile</h3>
+        <div id="ov-summary" style="font-size:0.88rem; line-height:2.2; color:#444;"></div>
+      </div>
+    </div>
+
+    <!-- UPLOAD -->
+    <div class="panel" id="panel-upload">
+      <div class="panel-title">⬆️ Upload Music</div>
+      <div class="edit-card">
+        <h3>Track Details</h3>
+        <div class="form-group"><label>Song Title *</label><input type="text" id="u-title" placeholder="e.g. Odwira Anthem"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Genre *</label>
+            <select id="u-genre">
+              <option value="">Select genre</option>
+              <option>Highlife</option><option>Afrobeats</option><option>Gospel</option>
+              <option>Traditional / Cultural</option><option>Hiplife</option><option>R&B / Soul</option>
+              <option>Hip Hop</option><option>Reggae</option><option>Worship</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Duration (optional)</label><input type="text" id="u-duration" placeholder="e.g. 3:42"></div>
+        </div>
+        <div class="form-group"><label>Producer (optional)</label><input type="text" id="u-producer" placeholder="e.g. Beatz by Kwame"></div>
+        <div class="form-group"><label>Featured Artist (optional)</label><input type="text" id="u-feat" placeholder="e.g. ft. Abena Serwaa"></div>
+        <div class="form-group"><label>Song Description (optional)</label>
+          <textarea id="u-desc" rows="2" placeholder="What is this song about? Any story behind it?"></textarea>
+        </div>
+        <div class="form-group">
+          <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer;">
+            <input type="checkbox" id="u-allowDl" style="width:18px; height:18px; accent-color:var(--green);">
+            <span>Allow fans to download this song</span>
+          </label>
+          <small style="color:var(--gray); font-size:0.8rem; margin-top:0.3rem; display:block;">If unchecked, fans can only stream — not download.</small>
+        </div>
+      </div>
+      <div class="edit-card">
+        <h3>Upload Audio File</h3>
+        <div class="upload-zone" onclick="document.getElementById('audioFile').click()">
+          <input type="file" id="audioFile" accept="audio/*" onchange="handleAudioUpload(this)">
+          <div class="uz-icon">🎵</div>
+          <p>Click to upload your audio file</p>
+          <p style="font-size:0.78rem; margin-top:0.3rem;">MP3, WAV, AAC — max 20MB</p>
+          <div id="audioFileName" style="color:var(--green); font-weight:600; font-size:0.85rem; margin-top:0.5rem; display:none;"></div>
+        </div>
+      </div>
+      <div class="edit-card">
+        <h3>Cover Art (optional)</h3>
+        <div class="upload-zone" onclick="document.getElementById('coverFile').click()">
+          <input type="file" id="coverFile" accept="image/*" onchange="handleCoverUpload(this)">
+          <div class="uz-icon" id="coverPreviewIcon">🖼️</div>
+          <p>Click to upload cover art</p>
+          <p style="font-size:0.78rem; margin-top:0.3rem;">JPG, PNG — recommended 500×500px</p>
+          <div id="coverFileName" style="color:var(--green); font-weight:600; font-size:0.85rem; margin-top:0.5rem; display:none;"></div>
+        </div>
+      </div>
+      <button class="btn btn-gold" style="width:100%; font-size:1rem; padding:0.9rem;" onclick="uploadTrack()">🚀 Publish Track</button>
+    </div>
+
+    <!-- MY TRACKS -->
+    <div class="panel" id="panel-tracks">
+      <div class="panel-title">🎵 My Tracks</div>
+      <div class="edit-card">
+        <h3>Uploaded Songs</h3>
+        <div id="tracks-list"></div>
+        <p id="tracks-empty" style="color:var(--gray); font-size:0.85rem; display:none;">No tracks uploaded yet. Go to Upload Music to add your first song.</p>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="panel" id="panel-profile">
+      <div class="panel-title">🎤 Artist Profile</div>
+      <div class="edit-card">
+        <h3>Basic Info</h3>
+        <div class="form-group"><label>Artist / Stage Name</label><input type="text" id="p-name" placeholder="Stage name"></div>
+        <div class="form-group"><label>Bio</label><textarea id="p-bio" rows="3" placeholder="Tell fans about yourself..." maxlength="400"></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Town</label><input type="text" id="p-town" placeholder="e.g. Akropong"></div>
+          <div class="form-group"><label>Phone</label><input type="tel" id="p-phone" placeholder="+233 24 000 0000"></div>
+        </div>
+        <div class="form-group"><label>Artist Emoji</label><input type="text" id="p-emoji" maxlength="2" style="width:70px;"></div>
+      </div>
+      <div class="edit-card">
+        <h3>Music Details</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Primary Genre</label>
+            <select id="p-genre">
+              <option>Highlife</option><option>Afrobeats</option><option>Gospel</option>
+              <option>Traditional / Cultural</option><option>Hiplife</option><option>R&B / Soul</option>
+              <option>Hip Hop</option><option>Reggae</option><option>Worship</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Producer</label><input type="text" id="p-producer" placeholder="Producer name"></div>
+        </div>
+        <div class="form-group"><label>Record Label</label><input type="text" id="p-label" placeholder="Label or Independent"></div>
+      </div>
+      <div class="edit-card">
+        <h3>Social Links (optional)</h3>
+        <div class="form-group"><label>Facebook</label><input type="url" id="p-facebook" placeholder="https://facebook.com/..."></div>
+        <div class="form-group"><label>Instagram</label><input type="url" id="p-instagram" placeholder="https://instagram.com/..."></div>
+        <div class="form-group"><label>YouTube</label><input type="url" id="p-youtube" placeholder="https://youtube.com/..."></div>
+      </div>
+      <button class="btn btn-gold" onclick="saveProfile()">💾 Save Profile</button>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="panel" id="panel-settings">
+      <div class="panel-title">⚙️ Settings</div>
+      <div class="edit-card">
+        <h3>Account Details</h3>
+        <div class="form-group"><label>Email</label><input type="email" id="s-email" placeholder="you@example.com"></div>
+        <button class="btn btn-gold" onclick="saveEmail()">💾 Save Email</button>
+      </div>
+      <div class="edit-card">
+        <h3>Change Password</h3>
+        <div class="form-group"><label>Current Password</label><input type="password" id="s-oldpass"></div>
+        <div class="form-group"><label>New Password</label><input type="password" id="s-newpass" minlength="6"></div>
+        <div class="form-group"><label>Confirm New Password</label><input type="password" id="s-newpass2"></div>
+        <button class="btn btn-gold" onclick="changePassword()">🔒 Change Password</button>
+      </div>
+      <div class="edit-card" style="border:2px solid #ffeaea;">
+        <h3 style="color:#c0392b;">Sign Out</h3>
+        <button class="btn" style="background:#ffeaea; color:#c0392b; border:none;" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+<script>
+let artist = null;
+let pendingAudio = null;
+let pendingCover = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const session = localStorage.getItem('akm_music_session');
+  if (!session) { window.location.href = 'music-register.html'; return; }
+  artist = JSON.parse(session);
+  if (!artist.songs) artist.songs = [];
+  renderAll();
+});
+
+function show(panelId, linkEl) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + panelId).classList.add('active');
+  document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderAll() {
+  document.getElementById('sideName').textContent = artist.name || 'My Artist';
+  document.getElementById('sideGenre').textContent = artist.genre || '';
+  document.getElementById('sideEmoji').textContent = artist.emoji || '🎵';
+
+  const totalPlays = (artist.songs || []).reduce((a, s) => a + (s.plays || 0), 0);
+  const totalDl = (artist.songs || []).reduce((a, s) => a + (s.downloads || 0), 0);
+  document.getElementById('ov-tracks').textContent = (artist.songs || []).length;
+  document.getElementById('ov-plays').textContent = totalPlays;
+  document.getElementById('ov-downloads').textContent = totalDl;
+  document.getElementById('ov-summary').innerHTML = `
+    <strong>Artist Name:</strong> ${artist.name || '—'}<br>
+    <strong>Genre:</strong> ${artist.genre || '—'}${artist.genre2 ? ' / ' + artist.genre2 : ''}<br>
+    <strong>Town:</strong> ${artist.town || '—'}<br>
+    <strong>Producer:</strong> ${artist.producer || '—'}<br>
+    <strong>Label:</strong> ${artist.label || 'Independent'}<br>
+    <strong>Joined:</strong> ${artist.date ? new Date(artist.date).toLocaleDateString() : '—'}
+  `;
+
+  // Profile panel
+  document.getElementById('p-name').value = artist.name || '';
+  document.getElementById('p-bio').value = artist.bio || '';
+  document.getElementById('p-town').value = artist.town || '';
+  document.getElementById('p-phone').value = artist.phone || '';
+  document.getElementById('p-emoji').value = artist.emoji || '🎵';
+  document.getElementById('p-producer').value = artist.producer || '';
+  document.getElementById('p-label').value = artist.label || '';
+  document.getElementById('p-facebook').value = artist.facebook || '';
+  document.getElementById('p-instagram').value = artist.instagram || '';
+  document.getElementById('p-youtube').value = artist.youtube || '';
+  const genreSel = document.getElementById('p-genre');
+  for (let o of genreSel.options) { if (o.value === artist.genre) o.selected = true; }
+
+  // Settings
+  document.getElementById('s-email').value = artist.email || '';
+
+  renderTracks();
+}
+
+function persist() {
+  localStorage.setItem('akm_music_session', JSON.stringify(artist));
+  const all = JSON.parse(localStorage.getItem('akm_artists') || '[]');
+  const idx = all.findIndex(a => a.id === artist.id);
+  if (idx >= 0) all[idx] = artist; else all.push(artist);
+  localStorage.setItem('akm_artists', JSON.stringify(all));
+
+  // Also push songs to global music list
+  const globalSongs = JSON.parse(localStorage.getItem('akm_music_songs') || '[]');
+  artist.songs.forEach(s => {
+    const gi = globalSongs.findIndex(x => x.id === s.id);
+    const entry = { id: s.id, title: s.title, artist: artist.name, genre: s.genre, duration: s.duration || '—', emoji: artist.emoji || '🎵', color: '#1a6b3c', plays: s.plays || 0, allowDownload: s.allowDownload, isNew: true, isTrending: false, audioUrl: s.audioUrl || null };
+    if (gi >= 0) globalSongs[gi] = entry; else globalSongs.push(entry);
+  });
+  localStorage.setItem('akm_music_songs', JSON.stringify(globalSongs));
+}
+
+function toast(msg, isErr) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isErr ? '#c0392b' : 'var(--green)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== UPLOAD =====
+function handleAudioUpload(input) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 20 * 1024 * 1024) { toast('File too large. Max 20MB.', true); input.value = ''; return; }
+  const reader = new FileReader();
+  reader.onload = e => { pendingAudio = e.target.result; };
+  reader.readAsDataURL(file);
+  document.getElementById('audioFileName').textContent = '✅ ' + file.name;
+  document.getElementById('audioFileName').style.display = 'block';
+}
+
+function handleCoverUpload(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    pendingCover = e.target.result;
+    document.getElementById('coverPreviewIcon').innerHTML = `<img src="${e.target.result}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;">`;
+  };
+  reader.readAsDataURL(input.files[0]);
+  document.getElementById('coverFileName').textContent = '✅ ' + input.files[0].name;
+  document.getElementById('coverFileName').style.display = 'block';
+}
+
+function uploadTrack() {
+  const title = document.getElementById('u-title').value.trim();
+  const genre = document.getElementById('u-genre').value;
+  if (!title) { toast('Enter a song title', true); return; }
+  if (!genre) { toast('Select a genre', true); return; }
+  const song = {
+    id: 'SONG-' + Date.now(),
+    title, genre,
+    duration: document.getElementById('u-duration').value.trim() || '—',
+    producer: document.getElementById('u-producer').value.trim(),
+    feat: document.getElementById('u-feat').value.trim(),
+    desc: document.getElementById('u-desc').value.trim(),
+    allowDownload: document.getElementById('u-allowDl').checked,
+    audioUrl: pendingAudio || null,
+    coverUrl: pendingCover || null,
+    plays: 0, downloads: 0, date: Date.now()
+  };
+  if (!artist.songs) artist.songs = [];
+  artist.songs.push(song);
+  persist();
+  // Reset form
+  document.getElementById('u-title').value = '';
+  document.getElementById('u-genre').value = '';
+  document.getElementById('u-duration').value = '';
+  document.getElementById('u-producer').value = '';
+  document.getElementById('u-feat').value = '';
+  document.getElementById('u-desc').value = '';
+  document.getElementById('u-allowDl').checked = false;
+  document.getElementById('audioFileName').style.display = 'none';
+  document.getElementById('coverFileName').style.display = 'none';
+  document.getElementById('coverPreviewIcon').innerHTML = '🖼️';
+  document.getElementById('audioFile').value = '';
+  document.getElementById('coverFile').value = '';
+  pendingAudio = null; pendingCover = null;
+  document.getElementById('ov-tracks').textContent = artist.songs.length;
+  renderTracks();
+  toast('✅ Track published!');
+  show('tracks', null);
+}
+
+// ===== TRACKS =====
+function renderTracks() {
+  const songs = artist.songs || [];
+  const container = document.getElementById('tracks-list');
+  const empty = document.getElementById('tracks-empty');
+  if (!songs.length) { container.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  container.innerHTML = songs.slice().reverse().map((s, ri) => {
+    const i = songs.length - 1 - ri;
+    return `<div class="song-row">
+      <div class="song-art" style="background:linear-gradient(135deg,#1a6b3c33,#1a6b3c66)">
+        ${s.coverUrl ? `<img src="${s.coverUrl}" style="width:100%;height:100%;border-radius:8px;object-fit:cover;">` : (artist.emoji || '🎵')}
+      </div>
+      <div class="song-info">
+        <h4>${s.title}${s.feat ? ' <span style="font-weight:400;color:var(--gray);">ft. ' + s.feat + '</span>' : ''}</h4>
+        <p>${s.genre} · ${s.duration}${s.producer ? ' · Prod. ' + s.producer : ''} · ${s.plays} plays</p>
+      </div>
+      <div class="song-actions">
+        <label class="toggle-dl" title="Allow download">
+          <input type="checkbox" ${s.allowDownload ? 'checked' : ''} onchange="toggleDownload(${i}, this.checked)">
+          <span>Download</span>
+        </label>
+        <button class="del-btn" onclick="deleteTrack(${i})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDownload(i, val) {
+  artist.songs[i].allowDownload = val;
+  persist();
+  toast(val ? '✅ Downloads enabled' : 'Downloads disabled');
+}
+
+function deleteTrack(i) {
+  if (!confirm('Delete "' + artist.songs[i].title + '"?')) return;
+  artist.songs.splice(i, 1);
+  persist();
+  renderTracks();
+  document.getElementById('ov-tracks').textContent = artist.songs.length;
+  toast('Track deleted');
+}
+
+// ===== PROFILE =====
+function saveProfile() {
+  artist.name = document.getElementById('p-name').value.trim();
+  artist.bio = document.getElementById('p-bio').value.trim();
+  artist.town = document.getElementById('p-town').value.trim();
+  artist.phone = document.getElementById('p-phone').value.trim();
+  artist.emoji = document.getElementById('p-emoji').value.trim() || '🎵';
+  artist.genre = document.getElementById('p-genre').value;
+  artist.producer = document.getElementById('p-producer').value.trim();
+  artist.label = document.getElementById('p-label').value.trim();
+  artist.facebook = document.getElementById('p-facebook').value.trim();
+  artist.instagram = document.getElementById('p-instagram').value.trim();
+  artist.youtube = document.getElementById('p-youtube').value.trim();
+  persist();
+  document.getElementById('sideName').textContent = artist.name;
+  document.getElementById('sideGenre').textContent = artist.genre;
+  document.getElementById('sideEmoji').textContent = artist.emoji;
+  toast('✅ Profile saved!');
+}
+
+// ===== SETTINGS =====
+function saveEmail() {
+  const email = document.getElementById('s-email').value.trim();
+  if (!email) { toast('Enter an email', true); return; }
+  artist.email = email;
+  persist();
+  toast('✅ Email saved!');
+}
+
+function changePassword() {
+  const oldPass = document.getElementById('s-oldpass').value;
+  const newPass = document.getElementById('s-newpass').value;
+  const newPass2 = document.getElementById('s-newpass2').value;
+  if (oldPass !== artist.pass) { toast('Current password is incorrect', true); return; }
+  if (newPass.length < 6) { toast('New password must be at least 6 characters', true); return; }
+  if (newPass !== newPass2) { toast('Passwords do not match', true); return; }
+  artist.pass = newPass;
+  persist();
+  document.getElementById('s-oldpass').value = '';
+  document.getElementById('s-newpass').value = '';
+  document.getElementById('s-newpass2').value = '';
+  toast('✅ Password changed!');
+}
+
+function logout() {
+  localStorage.removeItem('akm_music_session');
+  window.location.href = 'music-register.html';
+}
+</script>
+</body>
+</html>

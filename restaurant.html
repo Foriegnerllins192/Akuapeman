@@ -159,11 +159,8 @@
         <div class="cart-empty">Your cart is empty.<br>Add items from the menu.</div>
       </div>
       <div class="cart-footer">
-        <div class="cart-total">
-          <span>Total</span>
-          <span id="cartTotal">GH₵ 0.00</span>
-        </div>
-        <button class="btn btn-gold" style="width:100%;" id="checkoutBtn" disabled onclick="openCheckout()">Proceed to Checkout</button>
+        <div id="cartTotal"></div>
+        <button class="btn btn-gold" style="width:100%; margin-top:0.8rem;" id="checkoutBtn" disabled onclick="openCheckout()">Proceed to Checkout</button>
       </div>
     </div>
 
@@ -190,9 +187,17 @@
       <div id="stepContent1">
         <h3 style="color:var(--green); margin-bottom:1rem;">Order Summary</h3>
         <div id="summaryItems"></div>
-        <div class="order-summary-total">
-          <span>Total</span>
-          <span id="summaryTotal" style="color:var(--green);"></span>
+        <div style="border-top:1px solid #eee; margin-top:0.5rem; padding-top:0.8rem;">
+          <div class="order-summary-item" style="color:var(--gray);">
+            <span>Subtotal</span><span id="summarySubtotal"></span>
+          </div>
+          <div class="order-summary-item" style="color:var(--gold);">
+            <span>🚚 Delivery fees</span><span id="summaryDelivery"></span>
+          </div>
+          <div class="order-summary-total">
+            <span>Grand Total</span>
+            <span id="summaryTotal" style="color:var(--green);"></span>
+          </div>
         </div>
         <button class="btn btn-gold" style="width:100%; margin-top:1.5rem;" onclick="goStep(2)">Continue →</button>
       </div>
@@ -281,7 +286,15 @@
         </div>
 
         <div style="background:#f0f8f4; border-radius:10px; padding:0.8rem 1rem; margin:1rem 0; font-size:0.88rem;">
-          <strong>Amount to pay:</strong> <span id="payAmount" style="color:var(--green); font-weight:700;"></span>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem; color:var(--gray);">
+            <span>Subtotal</span><span id="paySubtotal"></span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem; color:var(--gold);">
+            <span>🚚 Delivery fees</span><span id="payDelivery"></span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-weight:700; border-top:1px solid #ddd; padding-top:0.4rem; margin-top:0.3rem;">
+            <span>Amount to pay</span><span id="payAmount" style="color:var(--green);"></span>
+          </div>
         </div>
 
         <div style="display:flex; gap:0.8rem; margin-top:1rem;">
@@ -320,25 +333,25 @@ const restaurants = {
     location: '📍 Akropong', time: '⏱ 30-45 min', desc: 'Authentic Akuapem home cooking — fufu, soups, and more.',
     menu: {
       'Soups & Stews': [
-        { name: 'Light Soup (Chicken)', desc: 'Spiced chicken in a light tomato broth', price: 35, icon: '🍗' },
-        { name: 'Palm Nut Soup', desc: 'Rich palm nut soup with assorted meat', price: 40, icon: '🥣' },
-        { name: 'Groundnut Soup', desc: 'Creamy peanut soup with goat meat', price: 38, icon: '🥜' },
+        { name: 'Light Soup (Chicken)', desc: 'Spiced chicken in a light tomato broth', price: 35, delivery: 5, icon: '🍗' },
+        { name: 'Palm Nut Soup', desc: 'Rich palm nut soup with assorted meat', price: 40, delivery: 5, icon: '🥣' },
+        { name: 'Groundnut Soup', desc: 'Creamy peanut soup with goat meat', price: 38, delivery: 5, icon: '🥜' },
       ],
       'Main Dishes': [
-        { name: 'Fufu & Soup', desc: 'Pounded cassava & plantain with your choice of soup', price: 45, icon: '🍲' },
-        { name: 'Banku & Tilapia', desc: 'Fermented corn dough with grilled tilapia & pepper', price: 55, icon: '🐟' },
-        { name: 'Omo Tuo', desc: 'Rice balls served with soup', price: 30, icon: '🍚' },
-        { name: 'Ampesi & Kontomire', desc: 'Boiled yam/plantain with cocoyam leaf stew', price: 28, icon: '🌿' },
+        { name: 'Fufu & Soup', desc: 'Pounded cassava & plantain with your choice of soup', price: 45, delivery: 8, icon: '🍲' },
+        { name: 'Banku & Tilapia', desc: 'Fermented corn dough with grilled tilapia & pepper', price: 55, delivery: 10, icon: '🐟' },
+        { name: 'Omo Tuo', desc: 'Rice balls served with soup', price: 30, delivery: 6, icon: '🍚' },
+        { name: 'Ampesi & Kontomire', desc: 'Boiled yam/plantain with cocoyam leaf stew', price: 28, delivery: 6, icon: '🌿' },
       ],
       'Drinks': [
-        { name: 'Sobolo (Hibiscus)', desc: 'Chilled hibiscus flower drink', price: 8, icon: '🍹' },
-        { name: 'Asaana (Corn Drink)', desc: 'Traditional fermented corn drink', price: 7, icon: '🌽' },
-        { name: 'Bottled Water', desc: '500ml chilled water', price: 4, icon: '💧' },
-        { name: 'Malt Drink', desc: 'Malta Guinness or Club Malt', price: 10, icon: '🥤' },
+        { name: 'Sobolo (Hibiscus)', desc: 'Chilled hibiscus flower drink', price: 8, delivery: 2, icon: '🍹' },
+        { name: 'Asaana (Corn Drink)', desc: 'Traditional fermented corn drink', price: 7, delivery: 2, icon: '🌽' },
+        { name: 'Bottled Water', desc: '500ml chilled water', price: 4, delivery: 1, icon: '💧' },
+        { name: 'Malt Drink', desc: 'Malta Guinness or Club Malt', price: 10, delivery: 2, icon: '🥤' },
       ],
       'Extras': [
-        { name: 'Extra Meat', desc: 'Additional portion of meat', price: 15, icon: '🥩' },
-        { name: 'Fried Plantain', desc: 'Sweet fried ripe plantain', price: 12, icon: '🍌' },
+        { name: 'Extra Meat', desc: 'Additional portion of meat', price: 15, delivery: 3, icon: '🥩' },
+        { name: 'Fried Plantain', desc: 'Sweet fried ripe plantain', price: 12, delivery: 3, icon: '🍌' },
       ]
     }
   },
@@ -347,24 +360,24 @@ const restaurants = {
     location: '📍 Aburi', time: '⏱ 20-35 min', desc: 'Fresh garden-to-table meals with a scenic ridge view.',
     menu: {
       'Rice Dishes': [
-        { name: 'Jollof Rice & Chicken', desc: 'Party-style jollof with grilled chicken', price: 50, icon: '🍛' },
-        { name: 'Waakye', desc: 'Rice & beans with spaghetti, egg, and stew', price: 35, icon: '🍱' },
-        { name: 'Fried Rice', desc: 'Vegetable fried rice with choice of protein', price: 45, icon: '🍚' },
+        { name: 'Jollof Rice & Chicken', desc: 'Party-style jollof with grilled chicken', price: 50, delivery: 8, icon: '🍛' },
+        { name: 'Waakye', desc: 'Rice & beans with spaghetti, egg, and stew', price: 35, delivery: 6, icon: '🍱' },
+        { name: 'Fried Rice', desc: 'Vegetable fried rice with choice of protein', price: 45, delivery: 7, icon: '🍚' },
       ],
       'Grills': [
-        { name: 'Grilled Tilapia', desc: 'Whole tilapia grilled with spices & pepper sauce', price: 65, icon: '🐟' },
-        { name: 'Grilled Chicken', desc: 'Half chicken marinated and charcoal grilled', price: 60, icon: '🍗' },
-        { name: 'Kelewele', desc: 'Spiced fried plantain cubes', price: 18, icon: '🌶️' },
+        { name: 'Grilled Tilapia', desc: 'Whole tilapia grilled with spices & pepper sauce', price: 65, delivery: 12, icon: '🐟' },
+        { name: 'Grilled Chicken', desc: 'Half chicken marinated and charcoal grilled', price: 60, delivery: 10, icon: '🍗' },
+        { name: 'Kelewele', desc: 'Spiced fried plantain cubes', price: 18, delivery: 4, icon: '🌶️' },
       ],
       'Snacks & Sides': [
-        { name: 'Spring Rolls (4 pcs)', desc: 'Crispy vegetable spring rolls', price: 22, icon: '🥟' },
-        { name: 'Salad Bowl', desc: 'Fresh garden salad with dressing', price: 20, icon: '🥗' },
-        { name: 'Coleslaw', desc: 'Creamy homemade coleslaw', price: 12, icon: '🥬' },
+        { name: 'Spring Rolls (4 pcs)', desc: 'Crispy vegetable spring rolls', price: 22, delivery: 4, icon: '🥟' },
+        { name: 'Salad Bowl', desc: 'Fresh garden salad with dressing', price: 20, delivery: 3, icon: '🥗' },
+        { name: 'Coleslaw', desc: 'Creamy homemade coleslaw', price: 12, delivery: 2, icon: '🥬' },
       ],
       'Drinks': [
-        { name: 'Fresh Juice', desc: 'Orange, pineapple, or watermelon', price: 15, icon: '🍊' },
-        { name: 'Smoothie', desc: 'Mixed fruit smoothie', price: 20, icon: '🥤' },
-        { name: 'Soft Drink', desc: 'Coke, Fanta, Sprite', price: 8, icon: '🥤' },
+        { name: 'Fresh Juice', desc: 'Orange, pineapple, or watermelon', price: 15, delivery: 2, icon: '🍊' },
+        { name: 'Smoothie', desc: 'Mixed fruit smoothie', price: 20, delivery: 3, icon: '🥤' },
+        { name: 'Soft Drink', desc: 'Coke, Fanta, Sprite', price: 8, delivery: 2, icon: '🥤' },
       ]
     }
   },
@@ -373,24 +386,24 @@ const restaurants = {
     location: '📍 Mampong', time: '⏱ 25-40 min', desc: 'Classic Ghanaian chop bar experience on the ridge.',
     menu: {
       'Chop Bar Specials': [
-        { name: 'Ampesi & Kontomire', desc: 'Boiled yam with cocoyam leaf stew & smoked fish', price: 30, icon: '🌿' },
-        { name: 'Omo Tuo & Groundnut Soup', desc: 'Rice balls with rich peanut soup', price: 35, icon: '🍚' },
-        { name: 'Fufu & Palm Nut Soup', desc: 'Pounded fufu with palm nut soup & goat', price: 45, icon: '🍲' },
+        { name: 'Ampesi & Kontomire', desc: 'Boiled yam with cocoyam leaf stew & smoked fish', price: 30, delivery: 5, icon: '🌿' },
+        { name: 'Omo Tuo & Groundnut Soup', desc: 'Rice balls with rich peanut soup', price: 35, delivery: 6, icon: '🍚' },
+        { name: 'Fufu & Palm Nut Soup', desc: 'Pounded fufu with palm nut soup & goat', price: 45, delivery: 8, icon: '🍲' },
       ],
       'Stews & Sauces': [
-        { name: 'Tomato Stew', desc: 'Rich tomato-based stew with chicken', price: 32, icon: '🍅' },
-        { name: 'Garden Egg Stew', desc: 'Smoked fish & garden egg stew', price: 28, icon: '🍆' },
-        { name: 'Kontomire Stew', desc: 'Cocoyam leaf stew with smoked fish', price: 25, icon: '🥬' },
+        { name: 'Tomato Stew', desc: 'Rich tomato-based stew with chicken', price: 32, delivery: 5, icon: '🍅' },
+        { name: 'Garden Egg Stew', desc: 'Smoked fish & garden egg stew', price: 28, delivery: 5, icon: '🍆' },
+        { name: 'Kontomire Stew', desc: 'Cocoyam leaf stew with smoked fish', price: 25, delivery: 4, icon: '🥬' },
       ],
       'Proteins': [
-        { name: 'Goat Meat (2 pcs)', desc: 'Seasoned boiled goat meat', price: 25, icon: '🥩' },
-        { name: 'Smoked Fish', desc: 'Whole smoked tilapia', price: 20, icon: '🐟' },
-        { name: 'Boiled Egg', desc: 'Hard boiled egg', price: 5, icon: '🥚' },
+        { name: 'Goat Meat (2 pcs)', desc: 'Seasoned boiled goat meat', price: 25, delivery: 4, icon: '🥩' },
+        { name: 'Smoked Fish', desc: 'Whole smoked tilapia', price: 20, delivery: 3, icon: '🐟' },
+        { name: 'Boiled Egg', desc: 'Hard boiled egg', price: 5, delivery: 1, icon: '🥚' },
       ],
       'Drinks': [
-        { name: 'Sobolo', desc: 'Chilled hibiscus drink', price: 7, icon: '🍹' },
-        { name: 'Bottled Water', desc: '500ml', price: 4, icon: '💧' },
-        { name: 'Soft Drink', desc: 'Coke, Fanta, Sprite', price: 8, icon: '🥤' },
+        { name: 'Sobolo', desc: 'Chilled hibiscus drink', price: 7, delivery: 2, icon: '🍹' },
+        { name: 'Bottled Water', desc: '500ml', price: 4, delivery: 1, icon: '💧' },
+        { name: 'Soft Drink', desc: 'Coke, Fanta, Sprite', price: 8, delivery: 2, icon: '🥤' },
       ]
     }
   }
@@ -436,9 +449,13 @@ function renderRestaurant(r) {
           <div class="menu-item-info">
             <h4>${item.name}</h4>
             <p>${item.desc}</p>
+            <p style="color:var(--gold); font-size:0.78rem; margin-top:0.2rem;">🚚 Delivery fee: GH₵ ${item.delivery}</p>
           </div>
-          <div class="menu-item-price">GH₵ ${item.price}</div>
-          <button class="add-btn" onclick="addToCart('${cat}__${j}', '${item.name.replace(/'/g,"\\'")}', ${item.price})" title="Add to cart">+</button>
+          <div style="text-align:right; flex-shrink:0;">
+            <div class="menu-item-price">GH₵ ${item.price}</div>
+            <div style="font-size:0.75rem; color:var(--gray);">+ GH₵ ${item.delivery} delivery</div>
+          </div>
+          <button class="add-btn" onclick="addToCart('${cat}__${j}', '${item.name.replace(/'/g,"\\'")}', ${item.price}, ${item.delivery})" title="Add to cart">+</button>
         </div>
       `).join('')}
     </div>
@@ -452,11 +469,11 @@ function scrollToSection(id, btn) {
 }
 
 // ===== CART =====
-function addToCart(key, name, price) {
+function addToCart(key, name, price, delivery) {
   if (cart[key]) {
     cart[key].qty++;
   } else {
-    cart[key] = { name, price, qty: 1 };
+    cart[key] = { name, price, delivery, qty: 1 };
   }
   renderCart();
 }
@@ -468,17 +485,21 @@ function changeQty(key, delta) {
   renderCart();
 }
 
+function getCartTotals() {
+  const items = Object.values(cart);
+  const subtotal      = items.reduce((s, v) => s + v.qty * v.price, 0);
+  const deliveryTotal = items.reduce((s, v) => s + v.delivery, 0); // one delivery fee per unique item line
+  return { subtotal, deliveryTotal, grand: subtotal + deliveryTotal };
+}
+
 function renderCart() {
-  const items = Object.entries(cart);
-  const countEl = document.getElementById('cartCount');
-  const itemsEl = document.getElementById('cartItems');
-  const totalEl = document.getElementById('cartTotal');
+  const items       = Object.entries(cart);
+  const countEl     = document.getElementById('cartCount');
+  const itemsEl     = document.getElementById('cartItems');
   const checkoutBtn = document.getElementById('checkoutBtn');
+  const { subtotal, deliveryTotal, grand } = getCartTotals();
 
-  const totalQty = items.reduce((s, [, v]) => s + v.qty, 0);
-  const totalPrice = items.reduce((s, [, v]) => s + v.qty * v.price, 0);
-
-  countEl.textContent = totalQty;
+  countEl.textContent = items.reduce((s, [, v]) => s + v.qty, 0);
 
   if (items.length === 0) {
     itemsEl.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Add items from the menu.</div>';
@@ -486,7 +507,10 @@ function renderCart() {
   } else {
     itemsEl.innerHTML = items.map(([key, v]) => `
       <div class="cart-item">
-        <div class="cart-item-name">${v.name}</div>
+        <div class="cart-item-name">
+          ${v.name}
+          <div style="font-size:0.72rem; color:var(--gold);">🚚 GH₵ ${v.delivery} delivery</div>
+        </div>
         <div class="cart-item-qty">
           <button class="qty-btn" onclick="changeQty('${key}', -1)">−</button>
           <span style="font-size:0.88rem; font-weight:600; min-width:16px; text-align:center;">${v.qty}</span>
@@ -498,7 +522,18 @@ function renderCart() {
     checkoutBtn.disabled = false;
   }
 
-  totalEl.textContent = `GH₵ ${totalPrice.toFixed(2)}`;
+  // Rebuild the cart footer totals
+  document.getElementById('cartTotal').innerHTML = `
+    <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--gray); margin-bottom:0.4rem;">
+      <span>Subtotal</span><span>GH₵ ${subtotal.toFixed(2)}</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--gray); margin-bottom:0.6rem;">
+      <span>🚚 Delivery fees</span><span style="color:var(--gold);">GH₵ ${deliveryTotal.toFixed(2)}</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1rem; border-top:2px solid #eee; padding-top:0.6rem;">
+      <span>Grand Total</span><span style="color:var(--green);">GH₵ ${grand.toFixed(2)}</span>
+    </div>
+  `;
 }
 
 // ===== CHECKOUT =====
@@ -522,15 +557,25 @@ function goStep(n) {
 
   if (n === 1) {
     const items = Object.values(cart);
-    const total = items.reduce((s, v) => s + v.qty * v.price, 0);
+    const { subtotal, deliveryTotal, grand } = getCartTotals();
     document.getElementById('summaryItems').innerHTML = items.map(v =>
-      `<div class="order-summary-item"><span>${v.qty}× ${v.name}</span><span>GH₵ ${(v.qty*v.price).toFixed(2)}</span></div>`
+      `<div class="order-summary-item">
+        <span>${v.qty}× ${v.name}</span>
+        <span>GH₵ ${(v.qty * v.price).toFixed(2)}</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:0.78rem; color:var(--gold); padding:0.1rem 0 0.4rem;">
+        <span>&nbsp;&nbsp;🚚 delivery</span><span>GH₵ ${v.delivery.toFixed(2)}</span>
+      </div>`
     ).join('');
-    document.getElementById('summaryTotal').textContent = `GH₵ ${total.toFixed(2)}`;
+    document.getElementById('summarySubtotal').textContent = `GH₵ ${subtotal.toFixed(2)}`;
+    document.getElementById('summaryDelivery').textContent = `GH₵ ${deliveryTotal.toFixed(2)}`;
+    document.getElementById('summaryTotal').textContent    = `GH₵ ${grand.toFixed(2)}`;
   }
   if (n === 3) {
-    const total = Object.values(cart).reduce((s, v) => s + v.qty * v.price, 0);
-    document.getElementById('payAmount').textContent = `GH₵ ${total.toFixed(2)}`;
+    const { subtotal, deliveryTotal, grand } = getCartTotals();
+    document.getElementById('paySubtotal').textContent = `GH₵ ${subtotal.toFixed(2)}`;
+    document.getElementById('payDelivery').textContent = `GH₵ ${deliveryTotal.toFixed(2)}`;
+    document.getElementById('payAmount').textContent   = `GH₵ ${grand.toFixed(2)}`;
   }
 }
 
@@ -544,13 +589,13 @@ function selectPayment(el, type) {
 
 function placeOrder() {
   if (!selectedPayment) { alert('Please select a payment method.'); return; }
-  const total = Object.values(cart).reduce((s, v) => s + v.qty * v.price, 0);
+  const { grand } = getCartTotals();
   const orderNum = 'AKM-' + Math.floor(10000 + Math.random() * 90000);
 
-  document.getElementById('orderNum').textContent = orderNum;
+  document.getElementById('orderNum').textContent  = orderNum;
   document.getElementById('orderRest').textContent = currentRestaurant.name;
-  document.getElementById('orderPaid').textContent = `GH₵ ${total.toFixed(2)}`;
-  document.getElementById('estTime').textContent = currentRestaurant.time.replace('⏱ ', '');
+  document.getElementById('orderPaid').textContent = `GH₵ ${grand.toFixed(2)}`;
+  document.getElementById('estTime').textContent   = currentRestaurant.time.replace('⏱ ', '');
 
   [1,2,3].forEach(i => {
     document.getElementById('stepContent' + i).style.display = 'none';

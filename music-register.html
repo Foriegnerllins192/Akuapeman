@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist Registration — Akuapeman.com</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .reg-wrap { max-width: 680px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+    .step-bar { display: flex; margin-bottom: 2.5rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+    .step-item { flex: 1; padding: 0.9rem 0.4rem; text-align: center; background: white; font-size: 0.75rem; font-weight: 600; color: var(--gray); border-bottom: 4px solid #eee; transition: all 0.2s; }
+    .step-item span { display: block; font-size: 1.1rem; margin-bottom: 0.2rem; }
+    .step-item.active { color: var(--green); border-bottom-color: var(--green); background: #f0f8f4; }
+    .step-item.done { color: var(--gold); border-bottom-color: var(--gold); }
+    .reg-card { background: white; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow); }
+    .reg-card h2 { color: var(--green); font-size: 1.3rem; margin-bottom: 0.3rem; }
+    .reg-card .sub { color: var(--gray); font-size: 0.88rem; margin-bottom: 1.8rem; line-height: 1.6; }
+    .nav-btns { display: flex; gap: 0.8rem; margin-top: 1.8rem; }
+    .nav-btns .btn { flex: 1; text-align: center; }
+    .free-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: #d4edda; color: #155724; font-size: 0.82rem; font-weight: 700; padding: 0.3rem 0.9rem; border-radius: 20px; margin-bottom: 1.2rem; }
+    .success-wrap { text-align: center; padding: 2.5rem 1rem; }
+    .success-wrap .big { font-size: 5rem; margin-bottom: 1rem; }
+    .err { color: #c0392b; font-size: 0.83rem; margin-top: 0.3rem; display: none; }
+    @media(max-width:600px) { .step-bar { flex-wrap: wrap; } .step-item { flex: 1 1 33%; } }
+  </style>
+</head>
+<body>
+<div class="page-banner">
+  <h1>🎤 Artist Registration</h1>
+  <p>Join Akuapeman Music — free for all artists</p>
+  <div class="breadcrumb"><a href="index.html">Home</a> / <a href="connect.html">Connect</a> / <a href="music.html">Music</a> / Register</div>
+</div>
+
+<div class="reg-wrap">
+  <div class="step-bar">
+    <div class="step-item active" id="sb1"><span>🎤</span>Artist Info</div>
+    <div class="step-item" id="sb2"><span>🎵</span>Music Details</div>
+    <div class="step-item" id="sb3"><span>👤</span>Account</div>
+    <div class="step-item" id="sb4"><span>✅</span>Done</div>
+  </div>
+
+  <!-- STEP 1: Artist Info -->
+  <div class="reg-card" id="step1">
+    <div class="free-badge">🆓 100% Free — No charges ever</div>
+    <h2>Tell Us About Yourself</h2>
+    <p class="sub">Fill in your artist details. This will appear on your public profile.</p>
+    <div class="form-group"><label>Artist / Stage Name *</label><input type="text" id="aName" placeholder="e.g. Kofi Mensah or DJ Akropong"></div>
+    <div class="form-group"><label>Real Name *</label><input type="text" id="aRealName" placeholder="Your full legal name"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Town / Location *</label>
+        <select id="aTown">
+          <option value="">Select town</option>
+          <option>Akropong</option><option>Aburi</option><option>Mampong</option>
+          <option>Larteh</option><option>Dawu</option><option>Tutu</option>
+          <option>Adukrom</option><option>Mamfe</option><option>Berekuso</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Phone Number *</label><input type="tel" id="aPhone" placeholder="+233 24 000 0000"></div>
+    </div>
+    <div class="form-group"><label>Artist Bio *</label>
+      <textarea id="aBio" rows="3" placeholder="Tell fans about yourself — your style, influences, and journey..." maxlength="400"></textarea>
+    </div>
+    <div class="form-group"><label>Artist Emoji / Symbol</label>
+      <input type="text" id="aEmoji" placeholder="🎵" maxlength="2" style="width:70px;">
+      <small style="color:var(--gray); font-size:0.8rem; margin-left:0.5rem;">Pick an emoji that represents you</small>
+    </div>
+    <div class="nav-btns">
+      <a href="music.html" class="btn btn-outline" style="color:var(--gray); border-color:#ddd;">Cancel</a>
+      <button class="btn btn-gold" onclick="next(1)">Next: Music Details →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Music Details -->
+  <div class="reg-card" id="step2" style="display:none;">
+    <h2>Your Music</h2>
+    <p class="sub">Tell us about the type of music you make. You can add full details and upload tracks from your dashboard after registering.</p>
+    <div class="form-group"><label>Primary Genre *</label>
+      <select id="aGenre">
+        <option value="">Select genre</option>
+        <option>Highlife</option><option>Afrobeats</option><option>Gospel</option>
+        <option>Traditional / Cultural</option><option>Hiplife</option><option>R&B / Soul</option>
+        <option>Hip Hop</option><option>Reggae</option><option>Worship</option><option>Other</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Secondary Genre (optional)</label>
+      <select id="aGenre2">
+        <option value="">None</option>
+        <option>Highlife</option><option>Afrobeats</option><option>Gospel</option>
+        <option>Traditional / Cultural</option><option>Hiplife</option><option>R&B / Soul</option>
+        <option>Hip Hop</option><option>Reggae</option><option>Worship</option><option>Other</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Producer Name (optional)</label>
+      <input type="text" id="aProducer" placeholder="e.g. Beatz by Kwame"></div>
+    <div class="form-group"><label>Record Label (optional)</label>
+      <input type="text" id="aLabel" placeholder="e.g. Ridge Records or Independent"></div>
+    <div class="form-group"><label>Years Active</label>
+      <input type="number" id="aYears" placeholder="e.g. 2018" min="1990" max="2026"></div>
+    <div class="form-group"><label>Social Media Links (optional)</label>
+      <input type="url" id="aFacebook" placeholder="Facebook page URL" style="margin-bottom:0.5rem;">
+      <input type="url" id="aInstagram" placeholder="Instagram URL" style="margin-bottom:0.5rem;">
+      <input type="url" id="aYoutube" placeholder="YouTube channel URL">
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-outline" style="color:var(--green); border-color:var(--green);" onclick="prev(2)">← Back</button>
+      <button class="btn btn-gold" onclick="next(2)">Next: Create Account →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Account -->
+  <div class="reg-card" id="step3" style="display:none;">
+    <h2>Create Your Account</h2>
+    <p class="sub">This gives you access to your artist dashboard where you can upload music, manage tracks, and view your stats.</p>
+    <div class="form-group"><label>Login Email *</label><input type="email" id="aEmail" placeholder="you@example.com"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Password *</label><input type="password" id="aPass" placeholder="Min. 6 characters" minlength="6"></div>
+      <div class="form-group"><label>Confirm Password *</label><input type="password" id="aPass2" placeholder="Repeat password"></div>
+    </div>
+    <div class="err" id="passErr">Passwords do not match.</div>
+    <div style="background:#f0f8f4; border-radius:10px; padding:1rem; font-size:0.83rem; color:#155724; margin-top:0.5rem;">
+      🆓 Registration is completely free. You will never be charged to upload or promote your music on Akuapeman.com.
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-outline" style="color:var(--green); border-color:var(--green);" onclick="prev(3)">← Back</button>
+      <button class="btn btn-gold" onclick="submitRegistration()">Create Account 🎉</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="reg-card" id="step4" style="display:none;">
+    <div class="success-wrap">
+      <div class="big">🎉</div>
+      <h2>Welcome to Akuapeman Music!</h2>
+      <p style="color:var(--gray); line-height:1.8; max-width:420px; margin:0 auto 2rem;">Your artist account has been created. Head to your dashboard to upload your first track and start reaching the Akuapem community.</p>
+      <div style="background:#f0f8f4; border-radius:12px; padding:1.2rem; max-width:380px; margin:0 auto 2rem; text-align:left; font-size:0.9rem;">
+        <div style="display:flex; justify-content:space-between; padding:0.3rem 0; border-bottom:1px solid #e0ede6;"><span>Artist Name</span><strong id="confName"></strong></div>
+        <div style="display:flex; justify-content:space-between; padding:0.3rem 0; border-bottom:1px solid #e0ede6;"><span>Genre</span><strong id="confGenre"></strong></div>
+        <div style="display:flex; justify-content:space-between; padding:0.3rem 0;"><span>Status</span><strong style="color:var(--green);">✅ Active</strong></div>
+      </div>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="music-dashboard.html" class="btn btn-gold">Go to My Dashboard →</a>
+        <a href="music.html" class="btn btn-outline" style="color:var(--green); border-color:var(--green);">Browse Music</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+function showStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById('step' + i).style.display = i === n ? 'block' : 'none';
+    const sb = document.getElementById('sb' + i);
+    if (sb) sb.className = 'step-item' + (i === n ? ' active' : i < n ? ' done' : '');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function next(n) { if (!validate(n)) return; showStep(n + 1); }
+function prev(n) { showStep(n - 1); }
+
+function validate(n) {
+  if (n === 1) {
+    if (!v('aName')) return err('Enter your artist name.');
+    if (!v('aRealName')) return err('Enter your real name.');
+    if (!v('aTown')) return err('Select your town.');
+    if (!v('aPhone')) return err('Enter your phone number.');
+    if (!v('aBio')) return err('Write a short bio.');
+  }
+  if (n === 2) {
+    if (!v('aGenre')) return err('Select your primary genre.');
+  }
+  if (n === 3) {
+    if (!v('aEmail')) return err('Enter your email.');
+    if (!v('aPass')) return err('Enter a password.');
+    if (document.getElementById('aPass').value !== document.getElementById('aPass2').value) {
+      document.getElementById('passErr').style.display = 'block'; return false;
+    }
+    document.getElementById('passErr').style.display = 'none';
+  }
+  return true;
+}
+function v(id) { return document.getElementById(id)?.value?.trim(); }
+function err(msg) { alert(msg); return false; }
+
+function submitRegistration() {
+  if (!validate(3)) return;
+  const artist = {
+    id: 'ART-' + Math.floor(10000 + Math.random() * 90000),
+    name: v('aName'), realName: v('aRealName'),
+    town: v('aTown'), phone: v('aPhone'), bio: v('aBio'),
+    emoji: v('aEmoji') || '🎵',
+    genre: v('aGenre'), genre2: v('aGenre2'),
+    producer: v('aProducer'), label: v('aLabel'), years: v('aYears'),
+    facebook: v('aFacebook'), instagram: v('aInstagram'), youtube: v('aYoutube'),
+    email: v('aEmail'), pass: document.getElementById('aPass').value,
+    songs: [], date: Date.now(), status: 'active'
+  };
+  localStorage.setItem('akm_music_session', JSON.stringify(artist));
+  const all = JSON.parse(localStorage.getItem('akm_artists') || '[]');
+  all.push(artist); localStorage.setItem('akm_artists', JSON.stringify(all));
+
+  document.getElementById('confName').textContent = artist.name;
+  document.getElementById('confGenre').textContent = artist.genre;
+  showStep(4);
+}
+</script>
+</body>
+</html>

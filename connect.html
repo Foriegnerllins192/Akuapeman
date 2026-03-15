@@ -127,7 +127,7 @@
       </div>
     </div>
     <div style="text-align:center; margin-top:2rem;">
-      <p style="color:var(--gray);">Are you a restaurant owner? <a href="#" style="color:var(--green); font-weight:600;">List your restaurant →</a></p>
+      <p style="color:var(--gray);">Are you a restaurant owner? <a href="restaurant-register.html" style="color:var(--green); font-weight:600;">List your restaurant →</a></p>
     </div>
   </div>
 
@@ -147,52 +147,63 @@
   <!-- BUSINESS -->
   <div id="business" class="tab-content">
     <h2 style="color:var(--green); margin-bottom:0.5rem;">Business Directory</h2>
-    <p style="color:var(--gray); margin-bottom:2rem;">Advertise and discover businesses in the Akuapem community.</p>
+    <p style="color:var(--gray); margin-bottom:2rem;">Click on any business to view their full profile, services, team, and contact details.</p>
     <div class="biz-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; margin-bottom:2rem;">
-      <div class="biz-card"><span class="biz-tag">Construction</span><h3>Akropong Builders Ltd</h3><p style="color:var(--gray); font-size:0.88rem;">Quality construction and renovation services across the ridge.</p><p style="font-size:0.85rem; margin-top:0.5rem;">📞 +233 24 000 0001</p></div>
-      <div class="biz-card"><span class="biz-tag">Education</span><h3>Ridge Tutorial Centre</h3><p style="color:var(--gray); font-size:0.88rem;">BECE & WASSCE preparation classes for all students.</p><p style="font-size:0.85rem; margin-top:0.5rem;">📞 +233 24 000 0002</p></div>
-      <div class="biz-card"><span class="biz-tag">Transport</span><h3>Aburi Express Travels</h3><p style="color:var(--gray); font-size:0.88rem;">Reliable transport from Accra to all ridge towns daily.</p><p style="font-size:0.85rem; margin-top:0.5rem;">📞 +233 24 000 0003</p></div>
-      <div class="biz-card"><span class="biz-tag">Health</span><h3>Akuapem Pharmacy</h3><p style="color:var(--gray); font-size:0.88rem;">Your trusted community pharmacy with qualified pharmacists.</p><p style="font-size:0.85rem; margin-top:0.5rem;">📞 +233 24 000 0004</p></div>
+
+      <a href="business.html?id=akropong-builders" class="biz-card" style="display:block; cursor:pointer; text-decoration:none;">
+        <span class="biz-tag">Construction</span>
+        <h3>Akropong Builders Ltd</h3>
+        <p style="color:var(--gray); font-size:0.88rem;">Quality construction and renovation services across the ridge.</p>
+        <p style="font-size:0.85rem; margin-top:0.5rem;">📍 Akropong &nbsp;·&nbsp; 📞 +233 24 000 0001</p>
+        <span style="color:var(--green); font-size:0.82rem; font-weight:600; margin-top:0.8rem; display:block;">View Business Profile →</span>
+      </a>
+
+      <a href="business.html?id=ridge-tutorial" class="biz-card" style="display:block; cursor:pointer; text-decoration:none;">
+        <span class="biz-tag">Education</span>
+        <h3>Ridge Tutorial Centre</h3>
+        <p style="color:var(--gray); font-size:0.88rem;">BECE & WASSCE preparation classes for all students.</p>
+        <p style="font-size:0.85rem; margin-top:0.5rem;">📍 Mampong &nbsp;·&nbsp; 📞 +233 24 000 0002</p>
+        <span style="color:var(--green); font-size:0.82rem; font-weight:600; margin-top:0.8rem; display:block;">View Business Profile →</span>
+      </a>
+
+      <a href="business.html?id=aburi-express" class="biz-card" style="display:block; cursor:pointer; text-decoration:none;">
+        <span class="biz-tag">Transport</span>
+        <h3>Aburi Express Travels</h3>
+        <p style="color:var(--gray); font-size:0.88rem;">Reliable transport from Accra to all ridge towns daily.</p>
+        <p style="font-size:0.85rem; margin-top:0.5rem;">📍 Aburi &nbsp;·&nbsp; 📞 +233 24 000 0003</p>
+        <span style="color:var(--green); font-size:0.82rem; font-weight:600; margin-top:0.8rem; display:block;">View Business Profile →</span>
+      </a>
+
+      <a href="business.html?id=akuapem-pharmacy" class="biz-card" style="display:block; cursor:pointer; text-decoration:none;">
+        <span class="biz-tag">Health</span>
+        <h3>Akuapem Pharmacy</h3>
+        <p style="color:var(--gray); font-size:0.88rem;">Your trusted community pharmacy with qualified pharmacists.</p>
+        <p style="font-size:0.85rem; margin-top:0.5rem;">📍 Akropong &nbsp;·&nbsp; 📞 +233 24 000 0004</p>
+        <span style="color:var(--green); font-size:0.82rem; font-weight:600; margin-top:0.8rem; display:block;">View Business Profile →</span>
+      </a>
+
     </div>
     <div class="feature-card" style="max-width:500px; margin:0 auto;">
       <div class="icon">💼</div>
       <h3>Advertise Your Business</h3>
-      <p>Reach thousands of Akuapem community members. List your business today.</p>
-      <button class="btn btn-gold" style="margin-top:1rem;">Submit Your Business</button>
+      <p>Get your own business profile page on Akuapeman.com. Reach thousands of community members.</p>
+      <div style="display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap; margin-top:1rem;">
+        <a href="business-register.html" class="btn btn-gold">Register Your Business</a>
+        <a href="business.html?id=demo" class="btn btn-outline" style="color:var(--green); border-color:var(--green);">See a Demo Profile</a>
+      </div>
     </div>
   </div>
 
   <!-- MUSIC -->
   <div id="music" class="tab-content">
-    <h2 style="color:var(--green); margin-bottom:0.5rem;">Akuapem Music</h2>
-    <p style="color:var(--gray); margin-bottom:2rem;">Discover and promote local music talent from the Akuapem community.</p>
-    <div class="music-list" style="max-width:700px; width:100%;">
-      <div class="music-card">
-        <div class="music-thumb">🎵</div>
-        <div class="music-info"><h4>Odwira Anthem</h4><p>Kofi Mensah • Traditional</p></div>
-        <button class="play-btn">▶</button>
+    <div style="text-align:center; padding:3rem 1rem;">
+      <div style="font-size:4rem; margin-bottom:1rem;">🎵</div>
+      <h2 style="color:var(--green); margin-bottom:0.5rem;">Akuapem Music</h2>
+      <p style="color:var(--gray); margin-bottom:2rem; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7;">Discover new releases, trending tracks, and local artists from the Akuapem community. Artists can register free and upload their music.</p>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="music.html" class="btn btn-gold" style="font-size:1rem; padding:0.8rem 2rem;">🎶 Browse Music</a>
+        <a href="music-register.html" class="btn btn-outline" style="color:var(--green); border-color:var(--green); font-size:1rem; padding:0.8rem 2rem;">🎤 Register as Artist</a>
       </div>
-      <div class="music-card">
-        <div class="music-thumb">🎶</div>
-        <div class="music-info"><h4>Ridge Life</h4><p>Abena Beats • Afrobeats</p></div>
-        <button class="play-btn">▶</button>
-      </div>
-      <div class="music-card">
-        <div class="music-thumb">🎸</div>
-        <div class="music-info"><h4>Akropong Love</h4><p>Kwame Strings • Highlife</p></div>
-        <button class="play-btn">▶</button>
-      </div>
-      <div class="music-card">
-        <div class="music-thumb">🥁</div>
-        <div class="music-info"><h4>Fontomfrom Rhythm</h4><p>Akuapem Drummers • Traditional</p></div>
-        <button class="play-btn">▶</button>
-      </div>
-    </div>
-    <div class="feature-card" style="max-width:500px; margin:2rem auto 0;">
-      <div class="icon">🎤</div>
-      <h3>Upload Your Music</h3>
-      <p>Are you an artist from Akuapem? Upload and promote your music to the community.</p>
-      <button class="btn btn-gold" style="margin-top:1rem;">Upload Music</button>
     </div>
   </div>
 </div>
