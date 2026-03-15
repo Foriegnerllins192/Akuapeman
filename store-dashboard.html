@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Store Dashboard — Akuapeman</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Dashboard shell */
+    .dash-wrap { display:grid; grid-template-columns:240px 1fr; min-height:calc(100vh - 64px); }
+    .dash-sidebar { background:var(--dark); color:white; padding:1.5rem 0; }
+    .dash-user { padding:1rem 1.5rem 1.5rem; border-bottom:1px solid #333; }
+    .dash-user .avatar { width:52px; height:52px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:700; color:var(--dark); margin-bottom:0.6rem; }
+    .dash-user h4 { font-size:0.95rem; }
+    .dash-user p { font-size:0.78rem; color:#aaa; }
+    .dash-nav { list-style:none; padding:1rem 0; }
+    .dash-nav li a { display:flex; align-items:center; gap:0.7rem; padding:0.75rem 1.5rem; color:#ccc; font-size:0.88rem; font-weight:500; transition:all 0.2s; }
+    .dash-nav li a:hover, .dash-nav li a.active { background:rgba(255,255,255,0.08); color:white; border-left:3px solid var(--gold); }
+    .dash-nav li a .nav-icon { font-size:1.1rem; width:20px; text-align:center; }
+    .dash-main { background:#f5f5f0; padding:2rem; overflow-y:auto; }
+
+    /* Panels */
+    .dash-panel { display:none; }
+    .dash-panel.active { display:block; }
+    .dash-panel h2 { font-size:1.3rem; color:var(--dark); margin-bottom:1.5rem; }
+
+    /* Stats */
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; margin-bottom:2rem; }
+    .stat-card { background:white; border-radius:12px; padding:1.2rem; box-shadow:var(--shadow); text-align:center; }
+    .stat-card .stat-icon { font-size:1.8rem; margin-bottom:0.4rem; }
+    .stat-card .stat-val { font-size:1.6rem; font-weight:800; color:var(--green); }
+    .stat-card .stat-label { font-size:0.78rem; color:var(--gray); margin-top:0.2rem; }
+
+    /* Post form */
+    .post-form { background:white; border-radius:14px; padding:1.8rem; box-shadow:var(--shadow); max-width:620px; }
+    .emoji-picker { display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.5rem; }
+    .emoji-opt { font-size:1.6rem; cursor:pointer; padding:0.3rem; border-radius:6px; border:2px solid transparent; transition:all 0.15s; }
+    .emoji-opt:hover, .emoji-opt.selected { border-color:var(--green); background:#f0f8f4; }
+    .selected-emoji-preview { font-size:3rem; text-align:center; padding:1rem; background:#f0f8f4; border-radius:10px; margin-bottom:0.5rem; }
+
+    /* Listings table */
+    .listings-list { display:flex; flex-direction:column; gap:0.8rem; }
+    .listing-row { background:white; border-radius:12px; padding:1rem 1.2rem; box-shadow:var(--shadow); display:flex; align-items:center; gap:1rem; }
+    .listing-row .l-icon { font-size:2rem; flex-shrink:0; width:44px; text-align:center; }
+    .listing-row .l-info { flex:1; }
+    .listing-row .l-info h4 { font-size:0.92rem; margin-bottom:0.2rem; }
+    .listing-row .l-info p { font-size:0.78rem; color:var(--gray); }
+    .listing-row .l-price { font-weight:700; color:var(--green); font-size:1rem; white-space:nowrap; }
+    .listing-row .l-actions { display:flex; gap:0.5rem; }
+    .l-btn { border:none; border-radius:7px; padding:0.35rem 0.7rem; font-size:0.78rem; font-weight:600; cursor:pointer; }
+    .l-btn-edit { background:#e8f5e9; color:var(--green); }
+    .l-btn-del { background:#ffeaea; color:#c0392b; }
+    .l-status { font-size:0.72rem; padding:0.2rem 0.5rem; border-radius:10px; font-weight:600; }
+    .l-status.active { background:#e8f5e9; color:var(--green); }
+    .l-status.sold { background:#fff3cd; color:#856404; }
+
+    /* Profile */
+    .profile-card { background:white; border-radius:14px; padding:1.8rem; box-shadow:var(--shadow); max-width:520px; }
+
+    /* Toast */
+    .toast { position:fixed; bottom:1.5rem; right:1.5rem; background:var(--green); color:white; padding:0.8rem 1.4rem; border-radius:10px; font-size:0.9rem; font-weight:600; box-shadow:0 4px 20px rgba(0,0,0,0.2); transform:translateY(80px); opacity:0; transition:all 0.3s; z-index:9999; }
+    .toast.show { transform:translateY(0); opacity:1; }
+
+    /* Edit modal */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center; padding:1rem; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:white; border-radius:16px; width:100%; max-width:480px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.25); }
+    .modal-header { background:var(--green); color:white; padding:1.1rem 1.4rem; display:flex; justify-content:space-between; align-items:center; }
+    .modal-close { background:none; border:none; color:white; font-size:1.4rem; cursor:pointer; }
+    .modal-body { padding:1.4rem; }
+
+    /* Responsive */
+    @media(max-width:768px) {
+      .dash-wrap { grid-template-columns:1fr; }
+      .dash-sidebar { display:none; }
+      .dash-sidebar.open { display:block; position:fixed; inset:0; z-index:500; overflow-y:auto; }
+      .mobile-menu-btn { display:flex; }
+      .dash-main { padding:1rem; }
+      .listing-row { flex-wrap:wrap; }
+      .l-actions { width:100%; justify-content:flex-end; }
+    }
+    @media(min-width:769px) { .mobile-menu-btn { display:none !important; } }
+  </style>
+</head>
+<body>
+
+<!-- Top nav bar (minimal, no full nav injection) -->
+<nav style="background:var(--green); padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:var(--shadow);">
+  <div class="logo" style="display:flex; align-items:center; gap:0.5rem; padding:0.7rem 0;">
+    <img src="https://flagcdn.com/gh.svg" alt="logo" style="width:38px; height:38px; border-radius:50%; object-fit:cover;">
+    <span style="color:var(--gold); font-size:1.2rem; font-weight:700;">Akuapeman Store</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:1rem;">
+    <a href="store.html" style="color:white; font-size:0.85rem; opacity:0.85;">View Store</a>
+    <button onclick="logout()" style="background:rgba(255,255,255,0.15); border:none; color:white; padding:0.4rem 1rem; border-radius:20px; cursor:pointer; font-size:0.85rem;">Sign Out</button>
+    <button class="mobile-menu-btn" onclick="toggleSidebar()" style="background:none; border:none; color:white; font-size:1.4rem; cursor:pointer; padding:0.3rem;">☰</button>
+  </div>
+</nav>
+
+<div class="dash-wrap">
+  <!-- Sidebar -->
+  <aside class="dash-sidebar" id="sidebar">
+    <div class="dash-user">
+      <div class="avatar" id="sideAvatar">?</div>
+      <h4 id="sideName">Loading...</h4>
+      <p id="sideTown"></p>
+    </div>
+    <ul class="dash-nav">
+      <li><a href="#" class="active" onclick="showPanel('overview',this)"><span class="nav-icon">📊</span> Overview</a></li>
+      <li><a href="#" onclick="showPanel('post',this)"><span class="nav-icon">➕</span> Post an Item</a></li>
+      <li><a href="#" onclick="showPanel('listings',this)"><span class="nav-icon">📦</span> My Listings</a></li>
+      <li><a href="#" onclick="showPanel('profile',this)"><span class="nav-icon">👤</span> My Profile</a></li>
+      <li style="margin-top:auto; padding-top:2rem;"><a href="store.html"><span class="nav-icon">🛒</span> Browse Store</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main content -->
+  <main class="dash-main">
+
+    <!-- OVERVIEW -->
+    <div class="dash-panel active" id="panel-overview">
+      <h2>👋 Welcome back, <span id="welcomeName"></span></h2>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-val" id="statListings">0</div><div class="stat-label">Active Listings</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" id="statSold">0</div><div class="stat-label">Items Sold</div></div>
+        <div class="stat-card"><div class="stat-icon">👁️</div><div class="stat-val" id="statViews">0</div><div class="stat-label">Total Views</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-val" id="statEarnings">0</div><div class="stat-label">GH₵ Earned</div></div>
+      </div>
+      <div style="background:white; border-radius:14px; padding:1.5rem; box-shadow:var(--shadow); margin-bottom:1.5rem;">
+        <h3 style="color:var(--green); margin-bottom:1rem; font-size:1rem;">Quick Actions</h3>
+        <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+          <button class="btn btn-gold" onclick="showPanel('post', document.querySelector('.dash-nav a:nth-child(2)'))">+ Post New Item</button>
+          <button class="btn btn-outline" style="color:var(--green); border-color:var(--green);" onclick="showPanel('listings', document.querySelector('.dash-nav a:nth-child(3)'))">View My Listings</button>
+          <a href="store.html" class="btn btn-outline" style="color:var(--gray); border-color:#ddd;">Browse Store</a>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--green),#0d3d22); border-radius:14px; padding:1.5rem; color:white;">
+        <h3 style="margin-bottom:0.5rem; font-size:1rem;">💡 Selling Tips</h3>
+        <ul style="font-size:0.85rem; opacity:0.9; line-height:2; padding-left:1.2rem;">
+          <li>Use a clear, descriptive title for your item</li>
+          <li>Set a fair price — check what similar items sell for</li>
+          <li>Add your WhatsApp number so buyers can reach you fast</li>
+          <li>Mark items as Sold once they're gone to keep your store clean</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- POST ITEM -->
+    <div class="dash-panel" id="panel-post">
+      <h2>➕ Post a New Item</h2>
+      <div class="post-form">
+        <form onsubmit="postItem(event)">
+          <div class="form-group">
+            <label>Item Name *</label>
+            <input type="text" id="itemTitle" placeholder="e.g. Fresh Cocoa Powder, Kente Cloth..." required maxlength="60">
+          </div>
+          <div class="form-group">
+            <label>Choose an Icon for your item</label>
+            <div class="emoji-picker" id="emojiPicker"></div>
+            <input type="hidden" id="itemIcon" value="📦">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Price (GH₵) *</label>
+              <input type="number" id="itemPrice" placeholder="0.00" min="1" step="0.01" required>
+            </div>
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="itemCat" required>
+                <option value="">Select category</option>
+                <option>Food</option><option>Crafts</option><option>Clothing</option>
+                <option>Beauty</option><option>Electronics</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea id="itemDesc" rows="3" placeholder="Describe your item — condition, quantity, how to contact you..." required maxlength="200"></textarea>
+            <small style="color:var(--gray); font-size:0.78rem;"><span id="descCount">0</span>/200 characters</small>
+          </div>
+          <div class="form-group">
+            <label>Your WhatsApp Number (for buyers to contact you)</label>
+            <input type="tel" id="itemPhone" placeholder="+233 24 000 0000">
+          </div>
+          <button type="submit" class="btn btn-gold" style="width:100%; font-size:1rem; padding:0.9rem;">Post Item to Store 🚀</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MY LISTINGS -->
+    <div class="dash-panel" id="panel-listings">
+      <h2>📦 My Listings</h2>
+      <div id="myListings" class="listings-list"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="dash-panel" id="panel-profile">
+      <h2>👤 My Profile</h2>
+      <div class="profile-card">
+        <form onsubmit="saveProfile(event)">
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input type="text" id="profFirst" required></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="profLast" required></div>
+          </div>
+          <div class="form-group"><label>Email</label><input type="email" id="profEmail" required></div>
+          <div class="form-group"><label>Phone / WhatsApp</label><input type="tel" id="profPhone"></div>
+          <div class="form-group">
+            <label>Town</label>
+            <select id="profTown">
+              <option>Akropong</option><option>Aburi</option><option>Mampong</option>
+              <option>Larteh</option><option>Dawu</option><option>Tutu</option>
+              <option>Adukrom</option><option>Mamfe</option><option>Nsawam</option>
+              <option>Berekuso</option><option>Pakro</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>New Password (leave blank to keep current)</label><input type="password" id="profPass" placeholder="New password" minlength="6"></div>
+          <button type="submit" class="btn btn-gold" style="width:100%;">Save Changes</button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Edit Item Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Edit Listing</h3>
+      <button class="modal-close" onclick="closeEdit()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editId">
+      <div class="form-group"><label>Item Name</label><input type="text" id="editTitle" required></div>
+      <div class="form-row">
+        <div class="form-group"><label>Price (GH₵)</label><input type="number" id="editPrice" min="1" step="0.01"></div>
+        <div class="form-group"><label>Status</label>
+          <select id="editStatus"><option value="active">Active</option><option value="sold">Sold</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label>Description</label><textarea id="editDesc" rows="3"></textarea></div>
+      <button class="btn btn-gold" style="width:100%;" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+
+<script>
+// ===== AUTH GUARD =====
+const session = JSON.parse(localStorage.getItem('akm_session') || 'null');
+if (!session) window.location.href = 'store-auth.html';
+
+// ===== EMOJIS =====
+const EMOJIS = ['📦','🍫','🧺','🌿','👗','👕','🍌','🪘','🥘','🍲','🛍️','💄','📱','🖥️','🪑','🌺','🥜','🫙','🍊','🧴','🪡','🎨','🧵','🌾','🥬','🐟','🥩','🍅','🧁','🎁'];
+
+function renderEmojis() {
+  const picker = document.getElementById('emojiPicker');
+  picker.innerHTML = EMOJIS.map(e =>
+    `<span class="emoji-opt${e==='📦'?' selected':''}" onclick="selectEmoji('${e}',this)">${e}</span>`
+  ).join('');
+}
+
+function selectEmoji(e, el) {
+  document.querySelectorAll('.emoji-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('itemIcon').value = e;
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  // Sidebar user info
+  const initials = session.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('sideAvatar').textContent = initials;
+  document.getElementById('sideName').textContent = session.name;
+  document.getElementById('sideTown').textContent = '📍 ' + session.town;
+  document.getElementById('welcomeName').textContent = session.name.split(' ')[0];
+
+  // Profile form
+  const parts = session.name.split(' ');
+  document.getElementById('profFirst').value = parts[0] || '';
+  document.getElementById('profLast').value = parts.slice(1).join(' ') || '';
+  document.getElementById('profEmail').value = session.email;
+  document.getElementById('profPhone').value = session.phone || '';
+  document.getElementById('profTown').value = session.town || 'Akropong';
+
+  renderEmojis();
+  updateStats();
+  renderListings();
+
+  // Char counter
+  document.getElementById('itemDesc').addEventListener('input', function() {
+    document.getElementById('descCount').textContent = this.value.length;
+  });
+});
+
+// ===== PANELS =====
+function showPanel(name, linkEl) {
+  document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.dash-nav a').forEach(a => a.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  if (name === 'listings') renderListings();
+  if (name === 'overview') updateStats();
+  // Close sidebar on mobile
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ===== PRODUCTS =====
+function getMyProducts() {
+  const all = JSON.parse(localStorage.getItem('akm_products') || '[]');
+  return all.filter(p => p.sellerId === session.id);
+}
+
+function getAllProducts() {
+  return JSON.parse(localStorage.getItem('akm_products') || '[]');
+}
+
+function saveAllProducts(arr) {
+  localStorage.setItem('akm_products', JSON.stringify(arr));
+}
+
+// ===== POST ITEM =====
+function postItem(e) {
+  e.preventDefault();
+  const product = {
+    id: Date.now(),
+    sellerId: session.id,
+    seller: session.name,
+    town: session.town,
+    phone: document.getElementById('itemPhone').value || session.phone,
+    title: document.getElementById('itemTitle').value.trim(),
+    icon:  document.getElementById('itemIcon').value,
+    price: parseFloat(document.getElementById('itemPrice').value),
+    cat:   document.getElementById('itemCat').value,
+    desc:  document.getElementById('itemDesc').value.trim(),
+    status: 'active',
+    date: Date.now(),
+    views: 0,
+    isNew: true
+  };
+  const all = getAllProducts();
+  all.push(product);
+  saveAllProducts(all);
+  showToast('✅ Item posted to the store!');
+  e.target.reset();
+  document.getElementById('descCount').textContent = '0';
+  document.getElementById('itemIcon').value = '📦';
+  renderEmojis();
+  showPanel('listings', document.querySelectorAll('.dash-nav a')[2]);
+}
+
+// ===== LISTINGS =====
+function renderListings() {
+  const mine = getMyProducts();
+  const el = document.getElementById('myListings');
+  if (!mine.length) {
+    el.innerHTML = '<div style="text-align:center; padding:3rem; color:var(--gray);"><div style="font-size:3rem; margin-bottom:1rem;">📭</div><p>You have no listings yet.</p><button class="btn btn-gold" style="margin-top:1rem;" onclick="showPanel(\'post\',null)">Post Your First Item</button></div>';
+    return;
+  }
+  el.innerHTML = mine.sort((a,b)=>b.date-a.date).map(p => `
+    <div class="listing-row">
+      <div class="l-icon">${p.icon}</div>
+      <div class="l-info">
+        <h4>${p.title}</h4>
+        <p>${p.cat} &nbsp;·&nbsp; Posted ${new Date(p.date).toLocaleDateString()} &nbsp;·&nbsp; <span class="l-status ${p.status}">${p.status==='sold'?'Sold':'Active'}</span></p>
+      </div>
+      <div class="l-price">GH₵ ${parseFloat(p.price).toFixed(2)}</div>
+      <div class="l-actions">
+        <button class="l-btn l-btn-edit" onclick="openEdit(${p.id})">Edit</button>
+        <button class="l-btn l-btn-del" onclick="deleteItem(${p.id})">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== STATS =====
+function updateStats() {
+  const mine = getMyProducts();
+  const active = mine.filter(p => p.status === 'active').length;
+  const sold   = mine.filter(p => p.status === 'sold').length;
+  const views  = mine.reduce((s,p) => s + (p.views||0), 0);
+  const earned = mine.filter(p=>p.status==='sold').reduce((s,p)=>s+p.price,0);
+  document.getElementById('statListings').textContent = active;
+  document.getElementById('statSold').textContent = sold;
+  document.getElementById('statViews').textContent = views;
+  document.getElementById('statEarnings').textContent = earned.toFixed(0);
+}
+
+// ===== EDIT =====
+function openEdit(id) {
+  const all = getAllProducts();
+  const p = all.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('editId').value = id;
+  document.getElementById('editTitle').value = p.title;
+  document.getElementById('editPrice').value = p.price;
+  document.getElementById('editDesc').value = p.desc;
+  document.getElementById('editStatus').value = p.status;
+  document.getElementById('editModal').classList.add('open');
+}
+
+function saveEdit() {
+  const id = parseInt(document.getElementById('editId').value);
+  const all = getAllProducts();
+  const idx = all.findIndex(x => x.id === id);
+  if (idx === -1) return;
+  all[idx].title  = document.getElementById('editTitle').value;
+  all[idx].price  = parseFloat(document.getElementById('editPrice').value);
+  all[idx].desc   = document.getElementById('editDesc').value;
+  all[idx].status = document.getElementById('editStatus').value;
+  saveAllProducts(all);
+  closeEdit();
+  renderListings();
+  updateStats();
+  showToast('✅ Listing updated!');
+}
+
+function closeEdit() { document.getElementById('editModal').classList.remove('open'); }
+
+// ===== DELETE =====
+function deleteItem(id) {
+  if (!confirm('Delete this listing? This cannot be undone.')) return;
+  const all = getAllProducts().filter(p => p.id !== id);
+  saveAllProducts(all);
+  renderListings();
+  updateStats();
+  showToast('🗑️ Listing deleted.');
+}
+
+// ===== PROFILE =====
+function saveProfile(e) {
+  e.preventDefault();
+  const users = JSON.parse(localStorage.getItem('akm_users') || '[]');
+  const idx = users.findIndex(u => u.id === session.id);
+  const newPass = document.getElementById('profPass').value;
+  const updated = {
+    ...session,
+    name:  document.getElementById('profFirst').value + ' ' + document.getElementById('profLast').value,
+    email: document.getElementById('profEmail').value,
+    phone: document.getElementById('profPhone').value,
+    town:  document.getElementById('profTown').value,
+    pass:  newPass || session.pass
+  };
+  if (idx !== -1) users[idx] = updated;
+  localStorage.setItem('akm_users', JSON.stringify(users));
+  localStorage.setItem('akm_session', JSON.stringify(updated));
+  Object.assign(session, updated);
+  document.getElementById('sideName').textContent = updated.name;
+  document.getElementById('sideTown').textContent = '📍 ' + updated.town;
+  document.getElementById('welcomeName').textContent = updated.name.split(' ')[0];
+  showToast('✅ Profile saved!');
+}
+
+// ===== UTILS =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function logout() {
+  localStorage.removeItem('akm_session');
+  window.location.href = 'store-auth.html';
+}
+
+document.getElementById('editModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeEdit(); });
+</script>
+</body>
+</html>

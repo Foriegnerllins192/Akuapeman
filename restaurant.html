@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Menu — Akuapeman.com</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ---- Layout ---- */
+    .menu-layout { display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start; }
+
+    /* ---- Restaurant Header ---- */
+    .restaurant-header {
+      background: linear-gradient(135deg, var(--green), #0d3d22);
+      color: white; padding: 2rem; border-radius: 16px; margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 1.5rem;
+    }
+    .restaurant-header .r-icon { font-size: 3.5rem; flex-shrink: 0; }
+    .restaurant-header h1 { font-size: 1.6rem; margin-bottom: 0.3rem; }
+    .restaurant-header p { opacity: 0.85; font-size: 0.9rem; }
+    .restaurant-header .meta { display: flex; gap: 1rem; margin-top: 0.6rem; flex-wrap: wrap; }
+    .restaurant-header .meta span { background: rgba(255,255,255,0.15); padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.8rem; }
+
+    /* ---- Category Tabs ---- */
+    .menu-cats { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .cat-btn { padding: 0.45rem 1.1rem; border-radius: 20px; border: 2px solid var(--green); background: white; color: var(--green); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+    .cat-btn.active, .cat-btn:hover { background: var(--green); color: white; }
+
+    /* ---- Menu Items ---- */
+    .menu-section { margin-bottom: 2rem; }
+    .menu-section h3 { font-size: 1.1rem; color: var(--green); margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 2px solid #eee; }
+    .menu-item {
+      background: white; border-radius: 12px; padding: 1rem 1.2rem;
+      display: flex; align-items: center; gap: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07); margin-bottom: 0.8rem;
+      transition: box-shadow 0.2s;
+    }
+    .menu-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+    .menu-item-icon { font-size: 2.2rem; flex-shrink: 0; width: 52px; text-align: center; }
+    .menu-item-info { flex: 1; }
+    .menu-item-info h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .menu-item-info p { font-size: 0.82rem; color: var(--gray); }
+    .menu-item-price { font-weight: 700; color: var(--green); font-size: 1rem; white-space: nowrap; }
+    .add-btn {
+      background: var(--green); color: white; border: none; border-radius: 8px;
+      width: 34px; height: 34px; font-size: 1.3rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.2s;
+    }
+    .add-btn:hover { background: var(--gold); color: var(--dark); }
+
+    /* ---- Cart ---- */
+    .cart-box {
+      background: white; border-radius: 16px; box-shadow: var(--shadow);
+      position: sticky; top: 80px; overflow: hidden;
+    }
+    .cart-header { background: var(--green); color: white; padding: 1rem 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+    .cart-header h3 { font-size: 1rem; }
+    .cart-badge { background: var(--gold); color: var(--dark); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; }
+    .cart-items { padding: 1rem; min-height: 120px; max-height: 320px; overflow-y: auto; }
+    .cart-empty { text-align: center; color: var(--gray); padding: 2rem 1rem; font-size: 0.9rem; }
+    .cart-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0; border-bottom: 1px solid #f0f0f0; }
+    .cart-item-name { flex: 1; font-size: 0.88rem; }
+    .cart-item-qty { display: flex; align-items: center; gap: 0.4rem; }
+    .qty-btn { background: #f0f4f0; border: none; border-radius: 6px; width: 26px; height: 26px; cursor: pointer; font-size: 1rem; font-weight: 700; color: var(--green); }
+    .qty-btn:hover { background: var(--green); color: white; }
+    .cart-item-price { font-weight: 700; font-size: 0.88rem; color: var(--green); white-space: nowrap; }
+    .cart-footer { padding: 1rem 1.2rem; border-top: 2px solid #f0f0f0; }
+    .cart-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1rem; margin-bottom: 1rem; }
+    .cart-total span:last-child { color: var(--green); font-size: 1.1rem; }
+
+    /* ---- Checkout Modal ---- */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55); z-index: 2000;
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white; border-radius: 16px; width: 100%; max-width: 520px;
+      max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .modal-header { background: var(--green); color: white; padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-radius: 16px 16px 0 0; }
+    .modal-header h2 { font-size: 1.1rem; }
+    .modal-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; line-height: 1; }
+    .modal-body { padding: 1.5rem; }
+    .modal-steps { display: flex; gap: 0; margin-bottom: 1.5rem; }
+    .step { flex: 1; text-align: center; padding: 0.5rem; font-size: 0.8rem; font-weight: 600; color: var(--gray); border-bottom: 3px solid #eee; }
+    .step.active { color: var(--green); border-bottom-color: var(--green); }
+    .step.done { color: var(--gold); border-bottom-color: var(--gold); }
+    .order-summary-item { display: flex; justify-content: space-between; padding: 0.4rem 0; font-size: 0.9rem; border-bottom: 1px solid #f5f5f5; }
+    .order-summary-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1rem; padding-top: 0.8rem; margin-top: 0.4rem; }
+    .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 1rem 0; }
+    .pay-method { border: 2px solid #ddd; border-radius: 10px; padding: 0.8rem; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .pay-method:hover, .pay-method.selected { border-color: var(--green); background: #f0f8f4; }
+    .pay-method .pay-icon { font-size: 1.8rem; margin-bottom: 0.3rem; }
+    .pay-method span { font-size: 0.82rem; font-weight: 600; display: block; }
+    .success-screen { text-align: center; padding: 2rem 1rem; }
+    .success-screen .check { font-size: 4rem; margin-bottom: 1rem; }
+    .success-screen h3 { color: var(--green); font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .success-screen p { color: var(--gray); line-height: 1.7; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 900px) {
+      .menu-layout { grid-template-columns: 1fr; }
+      .cart-box { position: static; }
+    }
+    @media (max-width: 600px) {
+      .restaurant-header { flex-direction: column; text-align: center; }
+      .restaurant-header .meta { justify-content: center; }
+      .menu-item { flex-wrap: wrap; }
+      .payment-methods { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 400px) {
+      .payment-methods { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-banner" style="padding:1.5rem 2rem;">
+  <div class="breadcrumb" style="opacity:1; font-size:0.9rem;">
+    <a href="index.html">Home</a> / <a href="connect.html">Connect</a> / <span id="bannerName">Restaurant</span>
+  </div>
+</div>
+
+<div class="section" style="padding-top:1.5rem;">
+
+  <!-- Restaurant Header -->
+  <div class="restaurant-header" id="restaurantHeader">
+    <div class="r-icon" id="rIcon">🍽️</div>
+    <div>
+      <h1 id="rName">Loading...</h1>
+      <p id="rDesc"></p>
+      <div class="meta">
+        <span id="rLocation"></span>
+        <span id="rTime"></span>
+        <span id="rRating"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu + Cart -->
+  <div class="menu-layout">
+
+    <!-- LEFT: Menu -->
+    <div>
+      <div class="menu-cats" id="menuCats"></div>
+      <div id="menuSections"></div>
+    </div>
+
+    <!-- RIGHT: Cart -->
+    <div class="cart-box">
+      <div class="cart-header">
+        <h3>🛒 Your Order</h3>
+        <div class="cart-badge" id="cartCount">0</div>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <div class="cart-empty">Your cart is empty.<br>Add items from the menu.</div>
+      </div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Total</span>
+          <span id="cartTotal">GH₵ 0.00</span>
+        </div>
+        <button class="btn btn-gold" style="width:100%;" id="checkoutBtn" disabled onclick="openCheckout()">Proceed to Checkout</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Checkout Modal -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Checkout</h2>
+      <button class="modal-close" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Steps indicator -->
+      <div class="modal-steps">
+        <div class="step active" id="step1">1. Review</div>
+        <div class="step" id="step2">2. Details</div>
+        <div class="step" id="step3">3. Payment</div>
+      </div>
+
+      <!-- Step 1: Order Review -->
+      <div id="stepContent1">
+        <h3 style="color:var(--green); margin-bottom:1rem;">Order Summary</h3>
+        <div id="summaryItems"></div>
+        <div class="order-summary-total">
+          <span>Total</span>
+          <span id="summaryTotal" style="color:var(--green);"></span>
+        </div>
+        <button class="btn btn-gold" style="width:100%; margin-top:1.5rem;" onclick="goStep(2)">Continue →</button>
+      </div>
+
+      <!-- Step 2: Delivery Details -->
+      <div id="stepContent2" style="display:none;">
+        <h3 style="color:var(--green); margin-bottom:1rem;">Delivery Details</h3>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="custName" placeholder="Kofi Mensah" required>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="custPhone" placeholder="+233 24 000 0000" required>
+        </div>
+        <div class="form-group">
+          <label>Delivery Address</label>
+          <input type="text" id="custAddress" placeholder="House No. / Street, Town" required>
+        </div>
+        <div class="form-group">
+          <label>Order Type</label>
+          <select id="orderType">
+            <option value="delivery">🚚 Delivery</option>
+            <option value="pickup">🏃 Pickup</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Special Instructions (optional)</label>
+          <textarea rows="2" id="custNote" placeholder="e.g. No pepper, extra sauce..."></textarea>
+        </div>
+        <div style="display:flex; gap:0.8rem; margin-top:1rem;">
+          <button class="btn btn-outline" style="flex:1; color:var(--green); border-color:var(--green);" onclick="goStep(1)">← Back</button>
+          <button class="btn btn-gold" style="flex:2;" onclick="goStep(3)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Payment -->
+      <div id="stepContent3" style="display:none;">
+        <h3 style="color:var(--green); margin-bottom:0.5rem;">Choose Payment Method</h3>
+        <p style="color:var(--gray); font-size:0.88rem; margin-bottom:1rem;">Select how you'd like to pay</p>
+        <div class="payment-methods">
+          <div class="pay-method" onclick="selectPayment(this,'momo')">
+            <div class="pay-icon">📱</div>
+            <span>Mobile Money</span>
+          </div>
+          <div class="pay-method" onclick="selectPayment(this,'card')">
+            <div class="pay-icon">💳</div>
+            <span>Debit/Credit Card</span>
+          </div>
+          <div class="pay-method" onclick="selectPayment(this,'cash')">
+            <div class="pay-icon">💵</div>
+            <span>Cash on Delivery</span>
+          </div>
+          <div class="pay-method" onclick="selectPayment(this,'bank')">
+            <div class="pay-icon">🏦</div>
+            <span>Bank Transfer</span>
+          </div>
+        </div>
+
+        <!-- Mobile Money fields -->
+        <div id="momoFields" style="display:none;">
+          <div class="form-group">
+            <label>Mobile Money Number</label>
+            <input type="tel" id="momoNumber" placeholder="+233 24 000 0000">
+          </div>
+          <div class="form-group">
+            <label>Network</label>
+            <select id="momoNetwork">
+              <option>MTN Mobile Money</option>
+              <option>Vodafone Cash</option>
+              <option>AirtelTigo Money</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Card fields -->
+        <div id="cardFields" style="display:none;">
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" placeholder="1234 5678 9012 3456" maxlength="19">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;">
+            <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5"></div>
+            <div class="form-group"><label>CVV</label><input type="text" placeholder="123" maxlength="3"></div>
+          </div>
+        </div>
+
+        <div style="background:#f0f8f4; border-radius:10px; padding:0.8rem 1rem; margin:1rem 0; font-size:0.88rem;">
+          <strong>Amount to pay:</strong> <span id="payAmount" style="color:var(--green); font-weight:700;"></span>
+        </div>
+
+        <div style="display:flex; gap:0.8rem; margin-top:1rem;">
+          <button class="btn btn-outline" style="flex:1; color:var(--green); border-color:var(--green);" onclick="goStep(2)">← Back</button>
+          <button class="btn btn-gold" style="flex:2;" onclick="placeOrder()">Place Order 🎉</button>
+        </div>
+      </div>
+
+      <!-- Success Screen -->
+      <div id="stepSuccess" style="display:none;">
+        <div class="success-screen">
+          <div class="check">✅</div>
+          <h3>Order Placed!</h3>
+          <p>Your order has been received. You'll get a confirmation shortly.<br><br>
+          <strong>Estimated time:</strong> <span id="estTime"></span></p>
+          <div style="background:#f0f8f4; border-radius:10px; padding:1rem; margin:1.5rem 0; text-align:left; font-size:0.88rem;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;"><span>Order #</span><strong id="orderNum"></strong></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;"><span>Restaurant</span><strong id="orderRest"></strong></div>
+            <div style="display:flex; justify-content:space-between;"><span>Total Paid</span><strong id="orderPaid" style="color:var(--green);"></strong></div>
+          </div>
+          <a href="connect.html" class="btn btn-gold" style="display:inline-block;">Back to Restaurants</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+
+<script>
+// ===== RESTAURANT DATA =====
+const restaurants = {
+  'akropong-kitchen': {
+    name: 'Akropong Kitchen', icon: '🍲', rating: '★★★★★ 4.9',
+    location: '📍 Akropong', time: '⏱ 30-45 min', desc: 'Authentic Akuapem home cooking — fufu, soups, and more.',
+    menu: {
+      'Soups & Stews': [
+        { name: 'Light Soup (Chicken)', desc: 'Spiced chicken in a light tomato broth', price: 35, icon: '🍗' },
+        { name: 'Palm Nut Soup', desc: 'Rich palm nut soup with assorted meat', price: 40, icon: '🥣' },
+        { name: 'Groundnut Soup', desc: 'Creamy peanut soup with goat meat', price: 38, icon: '🥜' },
+      ],
+      'Main Dishes': [
+        { name: 'Fufu & Soup', desc: 'Pounded cassava & plantain with your choice of soup', price: 45, icon: '🍲' },
+        { name: 'Banku & Tilapia', desc: 'Fermented corn dough with grilled tilapia & pepper', price: 55, icon: '🐟' },
+        { name: 'Omo Tuo', desc: 'Rice balls served with soup', price: 30, icon: '🍚' },
+        { name: 'Ampesi & Kontomire', desc: 'Boiled yam/plantain with cocoyam leaf stew', price: 28, icon: '🌿' },
+      ],
+      'Drinks': [
+        { name: 'Sobolo (Hibiscus)', desc: 'Chilled hibiscus flower drink', price: 8, icon: '🍹' },
+        { name: 'Asaana (Corn Drink)', desc: 'Traditional fermented corn drink', price: 7, icon: '🌽' },
+        { name: 'Bottled Water', desc: '500ml chilled water', price: 4, icon: '💧' },
+        { name: 'Malt Drink', desc: 'Malta Guinness or Club Malt', price: 10, icon: '🥤' },
+      ],
+      'Extras': [
+        { name: 'Extra Meat', desc: 'Additional portion of meat', price: 15, icon: '🥩' },
+        { name: 'Fried Plantain', desc: 'Sweet fried ripe plantain', price: 12, icon: '🍌' },
+      ]
+    }
+  },
+  'aburi-garden': {
+    name: 'Aburi Garden Café', icon: '🥘', rating: '★★★★☆ 4.5',
+    location: '📍 Aburi', time: '⏱ 20-35 min', desc: 'Fresh garden-to-table meals with a scenic ridge view.',
+    menu: {
+      'Rice Dishes': [
+        { name: 'Jollof Rice & Chicken', desc: 'Party-style jollof with grilled chicken', price: 50, icon: '🍛' },
+        { name: 'Waakye', desc: 'Rice & beans with spaghetti, egg, and stew', price: 35, icon: '🍱' },
+        { name: 'Fried Rice', desc: 'Vegetable fried rice with choice of protein', price: 45, icon: '🍚' },
+      ],
+      'Grills': [
+        { name: 'Grilled Tilapia', desc: 'Whole tilapia grilled with spices & pepper sauce', price: 65, icon: '🐟' },
+        { name: 'Grilled Chicken', desc: 'Half chicken marinated and charcoal grilled', price: 60, icon: '🍗' },
+        { name: 'Kelewele', desc: 'Spiced fried plantain cubes', price: 18, icon: '🌶️' },
+      ],
+      'Snacks & Sides': [
+        { name: 'Spring Rolls (4 pcs)', desc: 'Crispy vegetable spring rolls', price: 22, icon: '🥟' },
+        { name: 'Salad Bowl', desc: 'Fresh garden salad with dressing', price: 20, icon: '🥗' },
+        { name: 'Coleslaw', desc: 'Creamy homemade coleslaw', price: 12, icon: '🥬' },
+      ],
+      'Drinks': [
+        { name: 'Fresh Juice', desc: 'Orange, pineapple, or watermelon', price: 15, icon: '🍊' },
+        { name: 'Smoothie', desc: 'Mixed fruit smoothie', price: 20, icon: '🥤' },
+        { name: 'Soft Drink', desc: 'Coke, Fanta, Sprite', price: 8, icon: '🥤' },
+      ]
+    }
+  },
+  'ridge-top': {
+    name: 'Ridge Top Chop Bar', icon: '🍛', rating: '★★★★★ 4.8',
+    location: '📍 Mampong', time: '⏱ 25-40 min', desc: 'Classic Ghanaian chop bar experience on the ridge.',
+    menu: {
+      'Chop Bar Specials': [
+        { name: 'Ampesi & Kontomire', desc: 'Boiled yam with cocoyam leaf stew & smoked fish', price: 30, icon: '🌿' },
+        { name: 'Omo Tuo & Groundnut Soup', desc: 'Rice balls with rich peanut soup', price: 35, icon: '🍚' },
+        { name: 'Fufu & Palm Nut Soup', desc: 'Pounded fufu with palm nut soup & goat', price: 45, icon: '🍲' },
+      ],
+      'Stews & Sauces': [
+        { name: 'Tomato Stew', desc: 'Rich tomato-based stew with chicken', price: 32, icon: '🍅' },
+        { name: 'Garden Egg Stew', desc: 'Smoked fish & garden egg stew', price: 28, icon: '🍆' },
+        { name: 'Kontomire Stew', desc: 'Cocoyam leaf stew with smoked fish', price: 25, icon: '🥬' },
+      ],
+      'Proteins': [
+        { name: 'Goat Meat (2 pcs)', desc: 'Seasoned boiled goat meat', price: 25, icon: '🥩' },
+        { name: 'Smoked Fish', desc: 'Whole smoked tilapia', price: 20, icon: '🐟' },
+        { name: 'Boiled Egg', desc: 'Hard boiled egg', price: 5, icon: '🥚' },
+      ],
+      'Drinks': [
+        { name: 'Sobolo', desc: 'Chilled hibiscus drink', price: 7, icon: '🍹' },
+        { name: 'Bottled Water', desc: '500ml', price: 4, icon: '💧' },
+        { name: 'Soft Drink', desc: 'Coke, Fanta, Sprite', price: 8, icon: '🥤' },
+      ]
+    }
+  }
+};
+
+// ===== STATE =====
+let cart = {};
+let currentRestaurant = null;
+let selectedPayment = null;
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  const id = new URLSearchParams(location.search).get('id') || 'akropong-kitchen';
+  currentRestaurant = restaurants[id] || restaurants['akropong-kitchen'];
+  renderRestaurant(currentRestaurant);
+});
+
+function renderRestaurant(r) {
+  document.title = r.name + ' — Akuapeman.com';
+  document.getElementById('bannerName').textContent = r.name;
+  document.getElementById('rIcon').textContent = r.icon;
+  document.getElementById('rName').textContent = r.name;
+  document.getElementById('rDesc').textContent = r.desc;
+  document.getElementById('rLocation').textContent = r.location;
+  document.getElementById('rTime').textContent = r.time;
+  document.getElementById('rRating').textContent = r.rating;
+
+  // Category buttons
+  const cats = Object.keys(r.menu);
+  const catsEl = document.getElementById('menuCats');
+  catsEl.innerHTML = cats.map((c, i) =>
+    `<button class="cat-btn${i===0?' active':''}" onclick="scrollToSection('sec-${i}', this)">${c}</button>`
+  ).join('');
+
+  // Menu sections
+  const sectionsEl = document.getElementById('menuSections');
+  sectionsEl.innerHTML = cats.map((cat, i) => `
+    <div class="menu-section" id="sec-${i}">
+      <h3>${cat}</h3>
+      ${r.menu[cat].map((item, j) => `
+        <div class="menu-item">
+          <div class="menu-item-icon">${item.icon}</div>
+          <div class="menu-item-info">
+            <h4>${item.name}</h4>
+            <p>${item.desc}</p>
+          </div>
+          <div class="menu-item-price">GH₵ ${item.price}</div>
+          <button class="add-btn" onclick="addToCart('${cat}__${j}', '${item.name.replace(/'/g,"\\'")}', ${item.price})" title="Add to cart">+</button>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function scrollToSection(id, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ===== CART =====
+function addToCart(key, name, price) {
+  if (cart[key]) {
+    cart[key].qty++;
+  } else {
+    cart[key] = { name, price, qty: 1 };
+  }
+  renderCart();
+}
+
+function changeQty(key, delta) {
+  if (!cart[key]) return;
+  cart[key].qty += delta;
+  if (cart[key].qty <= 0) delete cart[key];
+  renderCart();
+}
+
+function renderCart() {
+  const items = Object.entries(cart);
+  const countEl = document.getElementById('cartCount');
+  const itemsEl = document.getElementById('cartItems');
+  const totalEl = document.getElementById('cartTotal');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  const totalQty = items.reduce((s, [, v]) => s + v.qty, 0);
+  const totalPrice = items.reduce((s, [, v]) => s + v.qty * v.price, 0);
+
+  countEl.textContent = totalQty;
+
+  if (items.length === 0) {
+    itemsEl.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Add items from the menu.</div>';
+    checkoutBtn.disabled = true;
+  } else {
+    itemsEl.innerHTML = items.map(([key, v]) => `
+      <div class="cart-item">
+        <div class="cart-item-name">${v.name}</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty('${key}', -1)">−</button>
+          <span style="font-size:0.88rem; font-weight:600; min-width:16px; text-align:center;">${v.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${key}', 1)">+</button>
+        </div>
+        <div class="cart-item-price">GH₵ ${(v.qty * v.price).toFixed(2)}</div>
+      </div>
+    `).join('');
+    checkoutBtn.disabled = false;
+  }
+
+  totalEl.textContent = `GH₵ ${totalPrice.toFixed(2)}`;
+}
+
+// ===== CHECKOUT =====
+function openCheckout() {
+  if (Object.keys(cart).length === 0) return;
+  goStep(1);
+  document.getElementById('checkoutModal').classList.add('open');
+}
+
+function closeCheckout() {
+  document.getElementById('checkoutModal').classList.remove('open');
+}
+
+function goStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('stepContent' + i).style.display = i === n ? 'block' : 'none';
+    const stepEl = document.getElementById('step' + i);
+    stepEl.className = 'step' + (i === n ? ' active' : i < n ? ' done' : '');
+  });
+  document.getElementById('stepSuccess').style.display = 'none';
+
+  if (n === 1) {
+    const items = Object.values(cart);
+    const total = items.reduce((s, v) => s + v.qty * v.price, 0);
+    document.getElementById('summaryItems').innerHTML = items.map(v =>
+      `<div class="order-summary-item"><span>${v.qty}× ${v.name}</span><span>GH₵ ${(v.qty*v.price).toFixed(2)}</span></div>`
+    ).join('');
+    document.getElementById('summaryTotal').textContent = `GH₵ ${total.toFixed(2)}`;
+  }
+  if (n === 3) {
+    const total = Object.values(cart).reduce((s, v) => s + v.qty * v.price, 0);
+    document.getElementById('payAmount').textContent = `GH₵ ${total.toFixed(2)}`;
+  }
+}
+
+function selectPayment(el, type) {
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPayment = type;
+  document.getElementById('momoFields').style.display = type === 'momo' ? 'block' : 'none';
+  document.getElementById('cardFields').style.display = type === 'card' ? 'block' : 'none';
+}
+
+function placeOrder() {
+  if (!selectedPayment) { alert('Please select a payment method.'); return; }
+  const total = Object.values(cart).reduce((s, v) => s + v.qty * v.price, 0);
+  const orderNum = 'AKM-' + Math.floor(10000 + Math.random() * 90000);
+
+  document.getElementById('orderNum').textContent = orderNum;
+  document.getElementById('orderRest').textContent = currentRestaurant.name;
+  document.getElementById('orderPaid').textContent = `GH₵ ${total.toFixed(2)}`;
+  document.getElementById('estTime').textContent = currentRestaurant.time.replace('⏱ ', '');
+
+  [1,2,3].forEach(i => {
+    document.getElementById('stepContent' + i).style.display = 'none';
+    document.getElementById('step' + i).className = 'step done';
+  });
+  document.getElementById('stepSuccess').style.display = 'block';
+  document.getElementById('modalTitle').textContent = 'Order Confirmed!';
+
+  // Clear cart
+  cart = {};
+  renderCart();
+}
+
+// Close modal on overlay click
+document.getElementById('checkoutModal').addEventListener('click', function(e) {
+  if (e.target === this) closeCheckout();
+});
+</script>
+</body>
+</html>
