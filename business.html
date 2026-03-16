@@ -48,6 +48,26 @@
     .service-card h3 { font-size:1rem; margin-bottom:0.4rem; color:var(--dark); }
     .service-card p { font-size:0.85rem; color:var(--gray); line-height:1.6; }
 
+    /* Gallery */
+    .gallery-section { padding: 4rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.8rem; }
+    .gallery-item { border-radius: 12px; overflow: hidden; aspect-ratio: 1; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; cursor: pointer; transition: transform 0.2s; position: relative; }
+    .gallery-item:hover { transform: scale(1.03); }
+    .gallery-item .g-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.55); color: white; font-size: 0.75rem; padding: 0.4rem 0.6rem; text-align: center; opacity: 0; transition: opacity 0.2s; }
+    .gallery-item:hover .g-label { opacity: 1; }
+    .gallery-item.featured { grid-column: span 2; grid-row: span 2; font-size: 6rem; }
+
+    /* Lightbox */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 3000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox-inner { position: relative; max-width: 500px; width: 90%; text-align: center; }
+    .lightbox-img { width: 100%; height: 340px; background: #1a1a2e; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 8rem; }
+    .lightbox-caption { color: white; margin-top: 0.8rem; font-size: 0.95rem; opacity: 0.85; }
+    .lightbox-close { position: absolute; top: -14px; right: -14px; background: var(--gold); color: var(--dark); border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 1rem; cursor: pointer; font-weight: 700; }
+    .lightbox-nav { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; }
+    .lightbox-nav button { background: rgba(255,255,255,0.15); color: white; border: none; border-radius: 8px; padding: 0.5rem 1.2rem; cursor: pointer; font-size: 1rem; transition: background 0.2s; }
+    .lightbox-nav button:hover { background: var(--gold); color: var(--dark); }
+
     /* Video */
     .video-section { background:var(--dark); padding:4rem 2rem; }
     .video-inner { max-width:1100px; margin:0 auto; }
@@ -142,6 +162,7 @@
   <div class="biz-nav-inner">
     <div class="biz-nav-link active" onclick="scrollToSection('about')">About Us</div>
     <div class="biz-nav-link" onclick="scrollToSection('services')">Services</div>
+    <div class="biz-nav-link" onclick="scrollToSection('gallery')">Gallery</div>
     <div class="biz-nav-link" onclick="scrollToSection('videos')">Videos</div>
     <div class="biz-nav-link" onclick="scrollToSection('team')">Our Team</div>
     <div class="biz-nav-link" onclick="scrollToSection('location')">Location</div>
@@ -174,6 +195,28 @@
     <div class="line"></div>
   </div>
   <div class="services-grid" id="servicesGrid"></div>
+</div>
+
+<!-- GALLERY -->
+<div id="gallery" class="gallery-section">
+  <div class="biz-section-title">
+    <h2>📸 Photos & Gallery</h2>
+    <div class="line"></div>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-img" id="lbImg"></div>
+    <div class="lightbox-caption" id="lbCaption"></div>
+    <div class="lightbox-nav">
+      <button onclick="lbMove(-1)">‹ Prev</button>
+      <button onclick="lbMove(1)">Next ›</button>
+    </div>
+  </div>
 </div>
 
 <!-- VIDEOS -->
@@ -440,6 +483,26 @@ function render(b) {
     `<div class="service-card"><div class="s-icon">${s.icon}</div><h3>${s.name}</h3><p>${s.desc}</p></div>`
   ).join('');
 
+  // Gallery
+  const galleryItems = b.gallery && b.gallery.length ? b.gallery : [
+    { emoji: b.logo || '🏢', label: 'Our Business' },
+    { emoji: b.aboutImg || '🏢', label: 'About Us' },
+    { emoji: b.services[0] ? b.services[0].icon : '⚙️', label: b.services[0] ? b.services[0].name : 'Services' },
+    { emoji: b.services[1] ? b.services[1].icon : '⚙️', label: b.services[1] ? b.services[1].name : 'Our Work' },
+    { emoji: b.services[2] ? b.services[2].icon : '⚙️', label: b.services[2] ? b.services[2].name : 'Products' },
+    { emoji: b.services[3] ? b.services[3].icon : '⚙️', label: b.services[3] ? b.services[3].name : 'More' },
+    { emoji: '📍', label: b.mapLabel || 'Our Location' },
+    { emoji: '👥', label: 'Our Team' },
+  ];
+  window._galleryItems = galleryItems;
+  window._lbIdx = 0;
+  document.getElementById('galleryGrid').innerHTML = galleryItems.map((g, i) => `
+    <div class="gallery-item${i===0?' featured':''}" onclick="openLightbox(${i})"
+         style="background:linear-gradient(135deg,${['#e8f5e9','#fff8e1','#e3f2fd','#fce4ec','#f3e5f5','#e0f2f1','#fff3e0','#e8eaf6'][i%8]},${['#c8e6c9','#ffecb3','#bbdefb','#f8bbd0','#e1bee7','#b2dfdb','#ffe0b2','#c5cae9'][i%8]})">
+      ${g.emoji}
+      <div class="g-label">${g.label}</div>
+    </div>`).join('');
+
   // Videos
   document.getElementById('videoGrid').innerHTML = b.videos.map((v, i) => `
     <div class="video-card">
@@ -486,6 +549,26 @@ function render(b) {
   ).join('');
 }
 
+function openLightbox(i) {
+  window._lbIdx = i;
+  const items = window._galleryItems || [];
+  const g = items[i];
+  if (!g) return;
+  document.getElementById('lbImg').textContent = g.emoji;
+  document.getElementById('lbCaption').textContent = g.label;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+function lbMove(dir) {
+  const items = window._galleryItems || [];
+  window._lbIdx = (window._lbIdx + dir + items.length) % items.length;
+  openLightbox(window._lbIdx);
+}
+
+document.getElementById('lightbox').addEventListener('click', e => { if(e.target===e.currentTarget) closeLightbox(); });
+
 function playVideo(i, ytId) {
   document.getElementById('vthumb-' + i).style.display = 'none';
   document.getElementById('vembed-' + i).style.display = 'block';
@@ -501,7 +584,7 @@ function sendMsg(btn) {
 }
 
 // Sticky nav highlight on scroll
-const sections = ['about','services','videos','team','location','contact'];
+const sections = ['about','services','gallery','videos','team','location','contact'];
 window.addEventListener('scroll', () => {
   let current = 'about';
   sections.forEach(id => {

@@ -13,7 +13,7 @@
     .cat-pill { padding:0.4rem 1rem; border-radius:20px; border:2px solid #ddd; background:white; font-size:0.83rem; font-weight:600; cursor:pointer; transition:all 0.2s; color:var(--gray); }
     .cat-pill.active, .cat-pill:hover { border-color:var(--green); color:var(--green); background:#f0f8f4; }
     .products-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:1.2rem; }
-    .p-card { background:white; border-radius:12px; overflow:hidden; box-shadow:var(--shadow); transition:transform 0.2s; }
+    .p-card { background:white; border-radius:12px; overflow:hidden; box-shadow:var(--shadow); transition:transform 0.2s; cursor:pointer; }
     .p-card:hover { transform:translateY(-4px); }
     .p-card-img { height:160px; display:flex; align-items:center; justify-content:center; font-size:3.5rem; background:linear-gradient(135deg,#f0f8f4,#e0f0e8); position:relative; }
     .p-card-badge { position:absolute; top:8px; left:8px; background:var(--gold); color:var(--dark); font-size:0.7rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:10px; }
@@ -27,8 +27,8 @@
     .empty-state { text-align:center; padding:4rem 1rem; color:var(--gray); }
     .empty-state div { font-size:3rem; margin-bottom:1rem; }
 
-    /* Contact modal */
-    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center; padding:1rem; }
+    /* Modals */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:2000; align-items:center; justify-content:center; padding:1rem; overflow-y:auto; }
     .modal-overlay.open { display:flex; }
     .modal { background:white; border-radius:16px; width:100%; max-width:460px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.25); }
     .modal-header { background:var(--green); color:white; padding:1.1rem 1.4rem; display:flex; justify-content:space-between; align-items:center; }
@@ -36,10 +36,26 @@
     .modal-close { background:none; border:none; color:white; font-size:1.4rem; cursor:pointer; }
     .modal-body { padding:1.4rem; }
 
+    /* Product detail modal */
+    .pd-modal { max-width:680px; }
+    .pd-modal .modal-body { max-height:80vh; overflow-y:auto; }
+    .pd-gallery { background:#f5f5f5; border-radius:10px; overflow:hidden; margin-bottom:1rem; }
+    .pd-main-img { height:260px; display:flex; align-items:center; justify-content:center; font-size:7rem; transition:all 0.2s; }
+    .pd-thumbs { display:flex; gap:0.5rem; padding:0.6rem; overflow-x:auto; }
+    .pd-thumb { width:60px; height:60px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; cursor:pointer; border:2px solid transparent; background:#eee; flex-shrink:0; transition:border-color 0.2s; }
+    .pd-thumb.active { border-color:var(--green); background:#e8f5e9; }
+    .pd-details-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin:1rem 0; }
+    .pd-detail-item { background:#f9f9f9; border-radius:8px; padding:0.6rem 0.8rem; }
+    .pd-detail-item .pd-label { font-size:0.7rem; color:var(--gray); font-weight:700; text-transform:uppercase; margin-bottom:0.2rem; }
+    .pd-detail-item .pd-val { font-size:0.88rem; color:var(--dark); font-weight:600; }
+    .pd-condition-new { color:var(--green); }
+    .pd-condition-used { color:#e67e22; }
+
     @media(max-width:600px) {
       .store-toolbar { flex-direction:column; align-items:stretch; }
       .store-toolbar input, .store-toolbar select { width:100%; }
       .products-grid { grid-template-columns:repeat(2,1fr); gap:0.8rem; }
+      .pd-details-grid { grid-template-columns:1fr; }
     }
     @media(max-width:380px) { .products-grid { grid-template-columns:1fr; } }
   </style>
@@ -53,12 +69,9 @@
 
 <div class="section" style="padding-top:1.5rem;">
   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
-    <div>
-      <span id="productCount" style="color:var(--gray); font-size:0.9rem;"></span>
-    </div>
+    <div><span id="productCount" style="color:var(--gray); font-size:0.9rem;"></span></div>
     <a href="store-auth.html" class="btn btn-gold" style="font-size:0.88rem; padding:0.6rem 1.4rem;">+ Sell Something</a>
   </div>
-
   <div class="store-toolbar">
     <input type="text" id="searchInput" placeholder="🔍  Search products..." oninput="filterProducts()">
     <select id="sortSelect" onchange="filterProducts()">
@@ -67,9 +80,32 @@
       <option value="price-desc">Price: High to Low</option>
     </select>
   </div>
-
   <div class="cat-filters" id="catFilters"></div>
   <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<!-- Product Detail Modal -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal pd-modal">
+    <div class="modal-header">
+      <h3 id="pdTitle">Product Details</h3>
+      <button class="modal-close" onclick="closeProduct()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="pd-gallery">
+        <div class="pd-main-img" id="pdMainImg">🛍️</div>
+        <div class="pd-thumbs" id="pdThumbs"></div>
+      </div>
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.8rem; flex-wrap:wrap; gap:0.5rem;">
+        <span id="pdPrice" style="font-size:1.5rem; font-weight:800; color:var(--green);"></span>
+        <span id="pdConditionBadge" style="font-size:0.8rem; font-weight:700; padding:0.3rem 0.8rem; border-radius:20px;"></span>
+      </div>
+      <p id="pdDesc" style="font-size:0.9rem; color:#555; line-height:1.7; margin-bottom:1rem;"></p>
+      <div class="pd-details-grid" id="pdDetailsGrid"></div>
+      <div style="background:#f0f8f4; border-radius:10px; padding:0.9rem 1rem; margin-bottom:1.2rem; font-size:0.88rem;" id="pdSellerBox"></div>
+      <button class="btn btn-gold" style="width:100%; font-size:1rem;" id="pdBuyBtn">Contact Seller</button>
+    </div>
+  </div>
 </div>
 
 <!-- Contact Seller Modal -->
@@ -94,20 +130,36 @@
 
 <script src="js/app.js"></script>
 <script>
-// Seed data — in production this comes from a backend/localStorage
 const SEED = [
-  { id:1, title:'Akuapem Cocoa Powder', price:45, cat:'Food', icon:'🍫', seller:'Ama Boateng', town:'Akropong', desc:'Pure organic cocoa powder from Akuapem farms.', date:Date.now()-1000 },
-  { id:2, title:'Handwoven Kente Basket', price:120, cat:'Crafts', icon:'🧺', seller:'Kweku Asante', town:'Aburi', desc:'Beautiful hand-woven basket, perfect for storage or decor.', date:Date.now()-2000 },
-  { id:3, title:'Herbal Shea Butter', price:35, cat:'Beauty', icon:'🌿', seller:'Abena Mensah', town:'Mampong', desc:'100% natural shea butter with herbal infusion.', date:Date.now()-3000 },
-  { id:4, title:'Kente Cloth (6 yards)', price:380, cat:'Clothing', icon:'👗', seller:'Kofi Darko', town:'Akropong', desc:'Authentic hand-woven kente cloth, 6 yards.', date:Date.now()-4000 },
-  { id:5, title:'Fresh Plantain (bunch)', price:18, cat:'Food', icon:'🍌', seller:'Yaa Osei', town:'Larteh', desc:'Fresh ripe plantain, harvested this week.', date:Date.now()-5000 },
-  { id:6, title:'Fontomfrom Drum', price:250, cat:'Crafts', icon:'🪘', seller:'Nana Acheampong', town:'Akropong', desc:'Handcrafted traditional drum, great for ceremonies.', date:Date.now()-6000 },
-  { id:7, title:'Adinkra Print Shirt', price:95, cat:'Clothing', icon:'👕', seller:'Esi Frimpong', town:'Aburi', desc:'Cotton shirt with hand-stamped Adinkra symbols.', date:Date.now()-7000 },
-  { id:8, title:'Palm Oil (2 litres)', price:55, cat:'Food', icon:'🫙', seller:'Kwame Owusu', town:'Dawu', desc:'Pure red palm oil, freshly processed.', date:Date.now()-8000 },
+  { id:1, title:'Akuapem Cocoa Powder', price:45, cat:'Food', icon:'🍫', seller:'Ama Boateng', town:'Akropong',
+    desc:'Pure organic cocoa powder from Akuapem farms. Cold-pressed and unprocessed, retaining full flavour and nutrients. Great for baking, hot drinks, and smoothies.',
+    images:['🍫','🌱','📦'], brand:'Akuapem Organics', condition:'Brand New', size:'500g', model:'Premium Grade', origin:'Ghana', date:Date.now()-1000 },
+  { id:2, title:'Handwoven Kente Basket', price:120, cat:'Crafts', icon:'🧺', seller:'Kweku Asante', town:'Aburi',
+    desc:'Beautiful hand-woven basket made from natural raffia. Perfect for storage, gifting, or home decor. Each piece is unique.',
+    images:['🧺','🎨','🏡'], brand:'Aburi Crafts', condition:'Brand New', size:'Medium (30cm)', model:'Classic Weave', origin:'Ghana', date:Date.now()-2000 },
+  { id:3, title:'Herbal Shea Butter', price:35, cat:'Beauty', icon:'🌿', seller:'Abena Mensah', town:'Mampong',
+    desc:'100% natural shea butter infused with local herbs. Deeply moisturising, great for skin and hair. No chemicals or preservatives.',
+    images:['🌿','🫙','✨'], brand:'Mampong Naturals', condition:'Brand New', size:'250ml', model:'Herbal Blend', origin:'Ghana', date:Date.now()-3000 },
+  { id:4, title:'Kente Cloth (6 yards)', price:380, cat:'Clothing', icon:'👗', seller:'Kofi Darko', town:'Akropong',
+    desc:'Authentic hand-woven kente cloth, 6 yards. Vibrant colours, traditional patterns. Suitable for special occasions and ceremonies.',
+    images:['👗','🎨','🧵'], brand:'Akropong Weavers', condition:'Brand New', size:'6 yards', model:'Royal Pattern', origin:'Ghana', date:Date.now()-4000 },
+  { id:5, title:'Fresh Plantain (bunch)', price:18, cat:'Food', icon:'🍌', seller:'Yaa Osei', town:'Larteh',
+    desc:'Fresh ripe plantain, harvested this week from local farms. Sweet and ready to cook.',
+    images:['🍌','🌾','🛒'], brand:'Larteh Farms', condition:'Brand New', size:'1 bunch (~10 fingers)', model:'Ripe', origin:'Ghana', date:Date.now()-5000 },
+  { id:6, title:'Fontomfrom Drum', price:250, cat:'Crafts', icon:'🪘', seller:'Nana Acheampong', town:'Akropong',
+    desc:'Handcrafted traditional fontomfrom drum. Made from hardwood and animal skin. Great for ceremonies, performances, and collectors.',
+    images:['🪘','🌳','🎶'], brand:'Akropong Drums', condition:'Brand New', size:'Medium', model:'Traditional', origin:'Ghana', date:Date.now()-6000 },
+  { id:7, title:'Adinkra Print Shirt', price:95, cat:'Clothing', icon:'👕', seller:'Esi Frimpong', town:'Aburi',
+    desc:'Cotton shirt with hand-stamped Adinkra symbols. Comfortable, breathable, and culturally meaningful. Available in multiple sizes.',
+    images:['👕','🖨️','🎽'], brand:'Aburi Prints', condition:'Brand New', size:'M / L / XL', model:'Adinkra Classic', origin:'Ghana', date:Date.now()-7000 },
+  { id:8, title:'Palm Oil (2 litres)', price:55, cat:'Food', icon:'🫙', seller:'Kwame Owusu', town:'Dawu',
+    desc:'Pure red palm oil, freshly processed from local palm fruits. Rich colour and flavour. No additives.',
+    images:['🫙','🌴','🍳'], brand:'Dawu Palm', condition:'Brand New', size:'2 litres', model:'Pure Red', origin:'Ghana', date:Date.now()-8000 },
 ];
 
 const CATS = ['All', 'Food', 'Crafts', 'Clothing', 'Beauty', 'Electronics', 'Other'];
 let activecat = 'All';
+let currentProduct = null;
 
 function loadProducts() {
   const stored = JSON.parse(localStorage.getItem('akm_products') || '[]');
@@ -126,23 +178,19 @@ function filterProducts() {
   let products = loadProducts();
   const q = document.getElementById('searchInput').value.toLowerCase();
   const sort = document.getElementById('sortSelect').value;
-
   if (activecat !== 'All') products = products.filter(p => p.cat === activecat);
   if (q) products = products.filter(p => p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.seller.toLowerCase().includes(q));
-
   if (sort === 'price-asc') products.sort((a,b) => a.price - b.price);
   else if (sort === 'price-desc') products.sort((a,b) => b.price - a.price);
   else products.sort((a,b) => b.date - a.date);
-
   document.getElementById('productCount').textContent = `${products.length} item${products.length!==1?'s':''} found`;
-
   const grid = document.getElementById('productsGrid');
   if (!products.length) {
     grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div>🔍</div><p>No products found. Try a different search.</p></div>';
     return;
   }
   grid.innerHTML = products.map(p => `
-    <div class="p-card">
+    <div class="p-card" onclick="openProduct(${p.id})">
       <div class="p-card-img">
         ${p.isNew ? '<span class="p-card-badge">NEW</span>' : ''}
         ${p.icon}
@@ -150,23 +198,71 @@ function filterProducts() {
       <div class="p-card-body">
         <h4>${p.title}</h4>
         <div class="p-card-seller">👤 ${p.seller} &nbsp;·&nbsp; 📍 ${p.town}</div>
-        <p style="font-size:0.82rem; color:var(--gray); line-height:1.5;">${p.desc}</p>
+        <p style="font-size:0.82rem; color:var(--gray); line-height:1.5;">${p.desc.substring(0,70)}...</p>
         <div class="p-card-footer">
           <span class="p-price">GH₵ ${p.price}</span>
-          <button class="buy-btn" onclick="openContact(${p.id}, '${p.title.replace(/'/g,"\\'")}', '${p.seller}', '${p.town}', ${p.price})">Buy Now</button>
+          <button class="buy-btn" onclick="event.stopPropagation(); openProduct(${p.id})">View Details</button>
         </div>
       </div>
     </div>
   `).join('');
 }
 
+// ===== PRODUCT DETAIL =====
+function openProduct(id) {
+  const p = loadProducts().find(x => x.id === id);
+  if (!p) return;
+  currentProduct = p;
+  const imgs = p.images || [p.icon];
+  document.getElementById('pdTitle').textContent = p.title;
+  document.getElementById('pdPrice').textContent = 'GH₵ ' + p.price;
+  document.getElementById('pdDesc').textContent = p.desc;
+  const isNew = (p.condition || '').toLowerCase().includes('new');
+  const badge = document.getElementById('pdConditionBadge');
+  badge.textContent = p.condition || 'Brand New';
+  badge.style.background = isNew ? '#e8f5e9' : '#fff3e0';
+  badge.style.color = isNew ? 'var(--green)' : '#e67e22';
+  // Gallery
+  document.getElementById('pdMainImg').textContent = imgs[0];
+  document.getElementById('pdThumbs').innerHTML = imgs.map((img, i) =>
+    `<div class="pd-thumb${i===0?' active':''}" onclick="switchImg('${img}', this)">${img}</div>`
+  ).join('');
+  // Details grid
+  const details = [
+    { label: 'Brand', val: p.brand || '—' },
+    { label: 'Condition', val: p.condition || 'Brand New' },
+    { label: 'Size / Weight', val: p.size || '—' },
+    { label: 'Model', val: p.model || '—' },
+    { label: 'Country of Origin', val: p.origin || 'Ghana' },
+    { label: 'Category', val: p.cat || '—' },
+  ];
+  document.getElementById('pdDetailsGrid').innerHTML = details.map(d =>
+    `<div class="pd-detail-item"><div class="pd-label">${d.label}</div><div class="pd-val">${d.val}</div></div>`
+  ).join('');
+  document.getElementById('pdSellerBox').innerHTML =
+    `<strong>Seller:</strong> ${p.seller} &nbsp;·&nbsp; 📍 ${p.town}`;
+  document.getElementById('pdBuyBtn').onclick = () => {
+    closeProduct();
+    openContact(p.id, p.title, p.seller, p.town, p.price);
+  };
+  document.getElementById('productModal').classList.add('open');
+}
+
+function switchImg(emoji, el) {
+  document.getElementById('pdMainImg').textContent = emoji;
+  document.querySelectorAll('.pd-thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function closeProduct() { document.getElementById('productModal').classList.remove('open'); }
+
+// ===== CONTACT =====
 function openContact(id, title, seller, town, price) {
   document.getElementById('contactTitle').textContent = 'Buy: ' + title;
-  document.getElementById('sellerInfo').innerHTML = `
-    <strong>Item:</strong> ${title}<br>
-    <strong>Price:</strong> <span style="color:var(--green); font-weight:700;">GH₵ ${price}</span><br>
-    <strong>Seller:</strong> ${seller} &nbsp;·&nbsp; 📍 ${town}
-  `;
+  document.getElementById('sellerInfo').innerHTML =
+    `<strong>Item:</strong> ${title}<br>
+     <strong>Price:</strong> <span style="color:var(--green); font-weight:700;">GH₵ ${price}</span><br>
+     <strong>Seller:</strong> ${seller} &nbsp;·&nbsp; 📍 ${town}`;
   document.getElementById('buyerMsg').value = `Hi ${seller}, I'm interested in your "${title}" listed for GH₵ ${price}. Is it still available?`;
   document.getElementById('inquirySent').style.display = 'none';
   document.getElementById('contactModal').classList.add('open');
@@ -180,6 +276,7 @@ function sendInquiry() {
 }
 
 document.getElementById('contactModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeContact(); });
+document.getElementById('productModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeProduct(); });
 
 renderCats();
 filterProducts();
