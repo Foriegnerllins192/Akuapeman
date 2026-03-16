@@ -1,0 +1,489 @@
+<html lang="en"><head></head><body class="bg-stone-50 text-stone-900">```html
+
+
+
+    <meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Akuapem Community Hub</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="custom-typography">
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+        
+        body {
+          font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, .serif-font {
+          font-family: 'Playfair Display', serif;
+        }
+    </style>
+<style data-purpose="component-styles">
+        /* Custom Scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: #c2410c;
+          border-radius: 10px;
+        }
+        .glass-effect {
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .hero-gradient {
+          background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+        }
+    </style>
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm" data-purpose="navigation-bar">
+<nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<div class="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl">A</div>
+<span class="text-2xl font-bold tracking-tight text-stone-800">Akuapem<span class="text-orange-600">Hub</span></span>
+</div>
+<ul class="hidden md:flex space-x-8 font-medium text-stone-600">
+<li><a class="hover:text-orange-600 transition-colors" href="#">Home</a></li>
+<li><a class="hover:text-orange-600 transition-colors" href="#news">News</a></li>
+<li><a class="hover:text-orange-600 transition-colors" href="#marketplace">Marketplace</a></li>
+<li><a class="hover:text-orange-600 transition-colors" href="#connect">Connect</a></li>
+</ul>
+<button class="bg-orange-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-orange-700 transition-all shadow-md">Join Us</button>
+</nav>
+</header>
+<!-- END: MainHeader -->
+<main>
+<!-- BEGIN: HeroSection -->
+<section class="relative h-[80vh] overflow-hidden" data-purpose="hero-carousel">
+<div class="absolute inset-0">
+<img alt="Community Heritage" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR_GR7wBGo6R0ziH0EMjauARK1Re-UjFpaK9J2c5um4mV_gEyJPP4Zi5XJW5RGbDyqzZy97JZojYiqknDrAwqi-3vkeFRR1DeevwtbzWmIfMXKwCg-_dD7cqlXcfC6xK6VhMA5oziKXkI5Qm8XfTCjFfjENULmNuLcPQcbIidfUt0_BiH02rtHHXF1qkj3QomWs52bFPZvfC9WzN6tOlVq5FCae7Lij2o-aCAT2qyc8ONxVjFpoCK8bf8XAiwuOCzOuSasKlkzheTm"/>
+<div class="absolute inset-0 hero-gradient flex items-center">
+<div class="container mx-auto px-6">
+<div class="max-w-2xl text-white">
+<span class="uppercase tracking-widest text-orange-400 font-semibold mb-4 block">Welcome to our Home</span>
+<h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">Unity in Our Heritage, Strength in Our Future.</h1>
+<p class="text-lg md:text-xl mb-8 text-stone-200">Experience the vibrant spirit of the Akuapem people. A community built on love, faith, and progress.</p>
+<div class="flex space-x-4">
+<a class="bg-orange-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-orange-700 transition-all" href="#connect">Explore Community</a>
+<a class="bg-white/20 backdrop-blur text-white border border-white/30 px-8 py-3 rounded-lg font-bold hover:bg-white/30 transition-all" href="#news">Latest News</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-10 right-10 flex space-x-2">
+<button class="w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-white">←</button>
+<button class="w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-white">→</button>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: NewsSection -->
+<section class="py-20 bg-white" data-purpose="community-news" id="news">
+<div class="container mx-auto px-4">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="text-4xl font-bold text-stone-800">Community News</h2>
+<div class="h-1.5 w-24 bg-orange-600 mt-2"></div>
+</div>
+<a class="text-orange-600 font-semibold hover:underline" href="#">View All Posts →</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<article class="group cursor-pointer">
+<div class="overflow-hidden rounded-xl mb-4">
+<img alt="Festival" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2vLoNZ9utT80V26vEjgIZZWCgkaY_e8Kf_7-lA5yGP8HSwbjgT_9O1_huGbHxOLS57cQ79xIJxSWFC09Ns087b-Um9-SAu37sObOdWLB2Ds4TICKfdrdfILNW8xaKMH6a16k2wNewCGIiPj0wXaoehnju9ajntcZ44SD5IzW6BWUcdthPjAm2dJvQb2Y_7DqE1_Vrm-2MZ7TL-2ouZP34Za6zC4WrcccKX1FPvLlWrlZCkiGJ2C0OnWMz3qwr42zJQ3IoLN6LE7p7"/>
+</div>
+<span class="text-orange-600 font-bold text-sm uppercase">Events</span>
+<h3 class="text-xl font-bold mt-2 group-hover:text-orange-600 transition-colors">The Annual Odwira Festival: A Celebration of Peace</h3>
+<p class="text-stone-600 mt-2 line-clamp-2">The hills were alive with drumming and dancing as the community gathered for the annual purification...</p>
+</article>
+<article class="group cursor-pointer">
+<div class="overflow-hidden rounded-xl mb-4">
+<img alt="Project" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALrxCI4cgDVQqbXaYxvTjfXBKsapjAFSJEktj66sDJW1NzMf8-L5paENAc4uzkBXyD9dDvNplVef_hfkbWIlDpJiWvP0pUfmf8Ysrai6lfNGAB2CACFeJg4QmR4O_oJ38aSPiUmwi_2hIP74gIe1CURwWLYBiXzFOrWORPUtyzsaRvWnlFHDjlt8JnR6ebqnR3wSvBBwrSlrvLgyO5H5X5hoDLjzj6cz80miWrE3L-3TgLyeNkx4DFHiApT3GbeRpx3bAwEuGKQS4O"/>
+</div>
+<span class="text-orange-600 font-bold text-sm uppercase">Development</span>
+<h3 class="text-xl font-bold mt-2 group-hover:text-orange-600 transition-colors">New Community Market Space Nears Completion</h3>
+<p class="text-stone-600 mt-2 line-clamp-2">Traders and residents alike look forward to the opening of the modernized market stalls next month...</p>
+</article>
+<article class="group cursor-pointer">
+<div class="overflow-hidden rounded-xl mb-4">
+<img alt="Youth" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHVAaIq4-DHbhZgu9ZbYm9w76YM7xCU-iHj1XhjHZd2oWfFbkPR-S7E6rsVgg9qpPUyv1p7cdvSpjtdfZeGKEXHrabx4L_AmUKyZifTmgN9yVzh-YhBxh8-kAALU_hPEY4NNmiNZEQCgh0QOflWY_Uvr9Gl-nry51ixXyJjZ_wMcW8o6r-N5EUoGbQIypRcKLae59J2FVo4baYlnF6_zfoOlTouTE_s1MdFb41bzc-QuR4xkFgMXTIYpj6u4yGdsXqwi9vC_QJ1weS"/>
+</div>
+<span class="text-orange-600 font-bold text-sm uppercase">People</span>
+<h3 class="text-xl font-bold mt-2 group-hover:text-orange-600 transition-colors">Empowering the Next Generation of Local Artisans</h3>
+<p class="text-stone-600 mt-2 line-clamp-2">A new vocational program is providing local youth with the tools they need to master traditional crafts...</p>
+</article>
+</div>
+</div>
+</section>
+<!-- END: NewsSection -->
+<!-- BEGIN: ScriptureSection -->
+<section class="py-24 bg-stone-900 text-white relative overflow-hidden" data-purpose="daily-scripture">
+<div class="absolute top-0 right-0 w-64 h-64 bg-orange-600/10 rounded-full -mr-32 -mt-32"></div>
+<div class="container mx-auto px-4 relative z-10 text-center max-w-4xl">
+<div class="mb-8">
+<svg class="w-12 h-12 text-orange-500 mx-auto opacity-50" fill="currentColor" viewbox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V12C14.017 12.5523 13.5693 13 13.017 13H11.017C10.4647 13 10.017 12.5523 10.017 12V9C10.017 7.34315 11.3601 6 13.017 6H19.017C20.6738 6 22.017 7.34315 22.017 9V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM3.017 21L3.017 18C3.017 16.8954 3.91243 16 5.017 16H8.017C8.56928 16 9.017 15.5523 9.017 15V9C9.017 8.44772 8.56928 8 8.017 8H4.017C3.46472 8 3.017 8.44772 3.017 9V12C3.017 12.5523 2.56928 13 2.017 13H0.017C-0.535282 13 -1.017 12.5523 -1.017 12V9C-1.017 7.34315 0.326142 6 2.017 6H8.017C9.67386 6 11.017 7.34315 11.017 9V15C11.017 18.3137 8.33071 21 5.017 21H3.017Z"></path></svg>
+</div>
+<h2 class="text-2xl font-semibold mb-2 uppercase tracking-widest text-orange-400">Daily Word of God</h2>
+<blockquote class="text-3xl md:text-5xl font-serif italic mb-8 leading-snug">
+                  "For I know the plans I have for you," declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."
+                </blockquote>
+<p class="text-xl font-bold">— Jeremiah 29:11</p>
+<button class="mt-10 px-6 py-2 border border-white/30 rounded-full hover:bg-white hover:text-stone-900 transition-all text-sm uppercase font-bold tracking-widest">Share Word</button>
+</div>
+</section>
+<!-- END: ScriptureSection -->
+<!-- BEGIN: VideoSection -->
+<section class="py-20 bg-stone-100" data-purpose="daily-word-video">
+<div class="container mx-auto px-4">
+<div class="flex flex-col md:flex-row items-center gap-12">
+<div class="w-full md:w-1/2">
+<h2 class="text-4xl font-bold mb-6">Daily Word Video</h2>
+<p class="text-stone-600 text-lg mb-8">Join our morning reflection as we dive deeper into today's scripture. A 5-minute message to start your day with purpose and peace.</p>
+<div class="space-y-4">
+<div class="flex items-center space-x-4">
+<div class="w-10 h-10 rounded-full bg-orange-600 flex items-center justify-center text-white">✓</div>
+<p class="font-medium">Streamed live every morning at 6:00 AM</p>
+</div>
+<div class="flex items-center space-x-4">
+<div class="w-10 h-10 rounded-full bg-orange-600 flex items-center justify-center text-white">✓</div>
+<p class="font-medium">Archive of over 300+ spiritual messages</p>
+</div>
+</div>
+</div>
+<div class="w-full md:w-1/2">
+<div class="aspect-video bg-black rounded-3xl shadow-2xl overflow-hidden relative group">
+<img alt="Video Thumbnail" class="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASAYUS0U7KzkN2XnS4CaX8RvFTnOxyuP6pxVOwcVgC_SX9mNYas_C84xFudtP1hIPVW4vYHoLvz8uXgYL5EL5LHSLiK56X_lGX9lPuq62zNPvhiRcY5A6cDr_r_EjLPkzTGN-vqoRw23gmxmswqBff3mWLKYfzhQrWIcwFlzeNmBiW_vdG3FUFrNZUNLZX_rgdQ6Y3qrP_Hkl0GPE2dBjNUZP5EvDgaVrEUGpyog42lF6WWqR01PTTJiX6eMAqCq5JrWpXyEvITf87"/>
+<button class="absolute inset-0 m-auto w-20 h-20 bg-orange-600 text-white rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+<svg class="w-8 h-8 ml-1" fill="currentColor" viewbox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: VideoSection -->
+<!-- BEGIN: AnnouncementsSection -->
+<section class="py-20 bg-white" data-purpose="announcements">
+<div class="container mx-auto px-4">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-bold mb-4">Announcements</h2>
+<p class="text-stone-500 max-w-2xl mx-auto">Stay up to date with the latest community projects, meetings, and urgent updates.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="p-6 border border-stone-100 bg-stone-50 rounded-2xl hover:shadow-lg transition-shadow">
+<div class="text-orange-600 font-bold mb-2">OCT 24</div>
+<h4 class="text-lg font-bold mb-3">Town Hall Meeting</h4>
+<p class="text-sm text-stone-600 mb-4">Discussion on new sanitation policies and community health initiatives.</p>
+<a class="text-orange-600 text-xs font-bold uppercase tracking-wider" href="#">Read More</a>
+</div>
+<div class="p-6 border border-stone-100 bg-stone-50 rounded-2xl hover:shadow-lg transition-shadow">
+<div class="text-orange-600 font-bold mb-2">OCT 28</div>
+<h4 class="text-lg font-bold mb-3">Tree Planting Day</h4>
+<p class="text-sm text-stone-600 mb-4">Join us in greening our community. Meeting at the central plaza at 8AM.</p>
+<a class="text-orange-600 text-xs font-bold uppercase tracking-wider" href="#">Read More</a>
+</div>
+<div class="p-6 border border-stone-100 bg-stone-50 rounded-2xl hover:shadow-lg transition-shadow border-l-4 border-l-orange-600">
+<div class="text-orange-600 font-bold mb-2">URGENT</div>
+<h4 class="text-lg font-bold mb-3">Power Maintenance</h4>
+<p class="text-sm text-stone-600 mb-4">Scheduled maintenance on Saturday. Power will be out from 9AM to 4PM.</p>
+<a class="text-orange-600 text-xs font-bold uppercase tracking-wider" href="#">Read More</a>
+</div>
+<div class="p-6 border border-stone-100 bg-stone-50 rounded-2xl hover:shadow-lg transition-shadow">
+<div class="text-orange-600 font-bold mb-2">NOV 05</div>
+<h4 class="text-lg font-bold mb-3">Artisan Fair</h4>
+<p class="text-sm text-stone-600 mb-4">Local craftsmen showcasing their best works. Perfect for early holiday gifts.</p>
+<a class="text-orange-600 text-xs font-bold uppercase tracking-wider" href="#">Read More</a>
+</div>
+</div>
+</div>
+</section>
+<!-- END: AnnouncementsSection -->
+<!-- BEGIN: AdditionalVideoSection -->
+<section class="py-20 bg-stone-50" data-purpose="community-content-video">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-stone-800">Community Voices</h2>
+<p class="text-stone-500 mt-2">Documentaries and highlights from our local creators.</p>
+</div>
+<div class="max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-xl">
+<div class="aspect-video bg-stone-800 flex items-center justify-center relative">
+<img alt="Documentary" class="w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh-mqYvQ-FigkeOJd8RX9NRQpWcgF_hvNoRoz3fq8rDN8GWWt_DKlD7bIN8WrnG4qklG08o3M0HKgNKtcRLM_88h873E2Am9Fs_SHZvqiKESwy_i2jebooiG2wj5tm4G92aRXnah7JLkCU1hWFKP-8DYVBsUqxbtHN4w5Xap9a7NXSfMR71YUSqQFF0474cYm_N7m3LR-C6wKtvwWR8so_682AHDhsLDFQ-zBtyz471329hbkcraAHnFLUpNrsdNUyfciRwF4u1VPM"/>
+<button class="absolute w-16 h-16 bg-white rounded-full flex items-center justify-center text-orange-600 shadow-xl">
+<svg class="w-6 h-6 ml-1" fill="currentColor" viewbox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- END: AdditionalVideoSection -->
+<!-- BEGIN: AkuapemAdesua -->
+<section class="py-20 bg-white" data-purpose="akuapem-adesua">
+<div class="container mx-auto px-4">
+<div class="max-w-4xl mx-auto">
+<div class="mb-12">
+<h2 class="text-4xl font-bold text-stone-800 mb-4">Akuapem Adesua</h2>
+<div class="h-1.5 w-32 bg-orange-600 mb-6"></div>
+<p class="text-stone-600 text-lg">Exploring the rich tapestry of Akuapem history, language, and cultural traditions. Join us in learning about our roots.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+<div class="bg-stone-50 rounded-2xl overflow-hidden border border-stone-100 p-6">
+<h3 class="text-xl font-bold mb-3 text-orange-600">The Origins of Akropong</h3>
+<p class="text-stone-600 text-sm mb-4">A deep dive into the 18th-century migration and the establishment of the capital of the Akuapem kingdom.</p>
+<a class="font-bold text-xs uppercase tracking-widest text-stone-800 hover:text-orange-600 transition-colors" href="#">Read Lesson →</a>
+</div>
+<div class="bg-stone-50 rounded-2xl overflow-hidden border border-stone-100 p-6">
+<h3 class="text-xl font-bold mb-3 text-orange-600">Introduction to Twi Dialects</h3>
+<p class="text-stone-600 text-sm mb-4">Understanding the unique phonetic nuances of the Akuapem Twi dialect compared to other Akan groups.</p>
+<a class="font-bold text-xs uppercase tracking-widest text-stone-800 hover:text-orange-600 transition-colors" href="#">Watch Lecture →</a>
+</div>
+</div>
+<!-- Discussion Area -->
+<div class="border-t border-stone-100 pt-12" id="discussion">
+<h3 class="text-2xl font-bold mb-8">Join the Discussion</h3>
+<div class="space-y-6 mb-10">
+<!-- Comment 1 -->
+<div class="flex space-x-4">
+<div class="w-12 h-12 rounded-full bg-orange-100 flex-shrink-0 flex items-center justify-center font-bold text-orange-600">KA</div>
+<div>
+<div class="bg-stone-50 p-4 rounded-2xl rounded-tl-none border border-stone-100">
+<p class="font-bold text-sm mb-1">Kofi Asare</p>
+<p class="text-stone-600 text-sm">The lesson on Akropong origins was eye-opening. I never knew about the specific role of the Kyidom division in the migration.</p>
+</div>
+<p class="text-[10px] text-stone-400 mt-1 ml-2 uppercase font-bold">2 hours ago</p>
+</div>
+</div>
+<!-- Comment 2 -->
+<div class="flex space-x-4">
+<div class="w-12 h-12 rounded-full bg-stone-200 flex-shrink-0 flex items-center justify-center font-bold text-stone-600">AM</div>
+<div>
+<div class="bg-stone-50 p-4 rounded-2xl rounded-tl-none border border-stone-100">
+<p class="font-bold text-sm mb-1">Abena Mensah</p>
+<p class="text-stone-600 text-sm">Can we have a session on the traditional symbols used during the Odwira festival? It would be great for the younger generation.</p>
+</div>
+<p class="text-[10px] text-stone-400 mt-1 ml-2 uppercase font-bold">5 hours ago</p>
+</div>
+</div>
+</div>
+<!-- Comment Box -->
+<div class="bg-stone-50 p-6 rounded-3xl border border-stone-100">
+<label class="block text-sm font-bold text-stone-700 mb-2" for="comment">Leave your thoughts</label>
+<textarea class="w-full bg-white border-stone-200 rounded-xl p-4 text-sm focus:ring-orange-600 focus:border-orange-600 mb-4" id="comment" placeholder="Write something meaningful..." rows="3"></textarea>
+<div class="flex justify-end">
+<button class="bg-orange-600 text-white px-8 py-2 rounded-full font-bold text-sm hover:bg-orange-700 transition-all">Post Comment</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: AkuapemAdesua -->
+<!-- BEGIN: AkuapemConnect -->
+<section class="flex flex-col lg:flex-row h-[500px]" data-purpose="akuapem-connect" id="connect">
+<div class="w-full lg:w-1/2 bg-orange-600 flex items-center justify-center p-12 text-white">
+<div class="max-w-md text-center lg:text-left">
+<h2 class="text-5xl font-bold mb-6">Akuapem Connect</h2>
+<p class="text-xl mb-8 text-orange-100 font-light">Bridge the gap between friends, family, and neighbors. Join the conversation today and stay connected to your roots.</p>
+<button class="bg-white text-orange-600 px-10 py-4 rounded-full font-bold text-lg hover:bg-stone-100 transition-colors shadow-lg">Chat Now</button>
+</div>
+</div>
+<div class="hidden lg:block lg:w-1/2">
+<img alt="Community Interaction" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRvmuSHk05mqcHe_8rCIrej3ij18N21Nxl-yBUSp73ARVv7QvyoAGujmaG2NI4JT9xxjXPd960_LCl-7NvjXTwNRn2EQp5ysDSKK-2kaP7P8XCsQq-hT9XVvFLBuVUMwy4gAOzGNno0rTnsRML_ps_esAu1QzoUEWPRfpM8APd9JdiJyI9GeeznuKYI2HSbnbc19klcsSQVcF-Om9BxZ-lVVPDBYUalPl-kYEUH45JquzawpGrJHlJWzKDSTw7awX7DDdDCD4EvfI-"/>
+</div>
+</section>
+<!-- END: AkuapemConnect -->
+<!-- BEGIN: MusicChartSection -->
+<section class="py-20 bg-white" data-purpose="top-ten-music">
+<div class="container mx-auto px-4 max-w-4xl">
+<div class="flex items-center space-x-4 mb-12">
+<div class="bg-stone-900 text-white p-3 rounded-lg">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-4xl font-bold">Tie Ndwom <span class="text-stone-400 font-light">| Top 10</span></h2>
+</div>
+<div class="space-y-4">
+<div class="flex items-center bg-stone-50 p-4 rounded-xl border border-stone-100 hover:border-orange-200 transition-colors group">
+<span class="text-2xl font-bold text-orange-600 w-12">01</span>
+<img alt="Art" class="w-14 h-14 rounded-lg mr-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ9mTa_QLvNxL54FoIIZWwDst4t926lmnHjLF_60sxBoRXxtnXOryK_FflwVD-v6fdxLxL9mou7p__qYW18LHFhvDD2yLYGS7ZhdPV-KSebVu6qPzIZ0GYUSSGLDePbAazYsdDY8Hz8x5csYvuS9b4GO8lywAtMgIJUCQUC-vRHoFGUVf-CumyXryDvQGBQe9MglenD2T_MuQ3LO-vxycOFkIoh72VGuYTBuDdRpn5JwU_YfJ84tE5sFc7cI2AIxmD0yGldRn_YYN7"/>
+<div class="flex-grow">
+<h4 class="font-bold text-lg">Asaase Yaa</h4>
+<p class="text-stone-500 text-sm">Nana Kwame &amp; The Roots</p>
+</div>
+<div class="hidden md:block text-stone-400 text-sm mr-8">3:45</div>
+<button class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+</button>
+</div>
+<div class="flex items-center bg-stone-50 p-4 rounded-xl border border-stone-100 hover:border-orange-200 transition-colors group">
+<span class="text-2xl font-bold text-stone-400 w-12">02</span>
+<img alt="Art" class="w-14 h-14 rounded-lg mr-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAx2KB073EBd-lt9fOMsguI6EXKDydAbS4b-oBG89LkvW0fI0Tntedv9JOoq2MfeYSLU2uxu1iDn6y82EfREkQc15OchT0jk4stuoDErFpzU_BCRmB68BRXXFacdSWablddwp9HtJXdpIEIEt_2LuqOXrOGmbmhte4FGYkY3HTstPE248n_NYplohjpH_j3vwdUbJEuIhT8jbZF-z0DKOUTxipdTNKa_HVvWTHqKZ9LmbfOQ5FoofzKrWFsP667DzZ9KbGWlmJFSiV"/>
+<div class="flex-grow">
+<h4 class="font-bold text-lg">Highlife Journey</h4>
+<p class="text-stone-500 text-sm">Amakye Beats</p>
+</div>
+<div class="hidden md:block text-stone-400 text-sm mr-8">4:12</div>
+<button class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+</button>
+</div>
+<button class="w-full py-4 text-stone-400 font-semibold border-2 border-dashed border-stone-200 rounded-xl hover:text-orange-600 hover:border-orange-200 transition-all">Show More Rankings</button>
+</div>
+</div>
+</section>
+<!-- END: MusicChartSection -->
+<!-- BEGIN: MarketplaceSection -->
+<section class="py-24 bg-stone-900 text-white" data-purpose="marketplace" id="marketplace">
+<div class="container mx-auto px-4">
+<div class="flex flex-col md:flex-row justify-between items-center mb-16 space-y-6 md:space-y-0">
+<div class="text-center md:text-left">
+<h2 class="text-4xl font-bold">Marketplace</h2>
+<p class="text-stone-400 mt-2">Buy and sell within your community securely.</p>
+</div>
+<div class="flex space-x-4">
+<button class="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-xl font-bold transition-colors">Sell Now</button>
+<button class="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl font-bold border border-white/20 transition-colors">Browse All</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="bg-white/5 rounded-2xl p-4 border border-white/10 hover:border-orange-500/50 transition-colors">
+<div class="aspect-square bg-stone-800 rounded-xl mb-4 overflow-hidden">
+<img alt="Product" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-b8Td8SKyMXfKsJs3a048s0aE8pCdjj1BDm17aj7mZ-Pq04w4ly8qnPEKI97aH9aKXz2TCSaAK2L_ah_Gf5UWe5JRbREsEwyZDXzxBrO4NDUzJSUHSUkyXVzwUICWD1zXX-bErKQ9h5pRJnRNNyWYhJgpys8iBHQRT1gCAzuOJN8hdTMD91D9o67hoWuwtnqa-RrGImoex1D9eOjL0cx83IplDwXy96N7i01u9OBHTO4n6eBmsSINbfqQAAfvtuAbi_NhpmUD1y4b"/>
+</div>
+<h4 class="font-bold text-lg">Handcrafted Ceramic Bowl</h4>
+<p class="text-orange-500 font-bold mt-1">GH₵ 120.00</p>
+<button class="w-full mt-4 bg-white text-stone-900 py-2 rounded-lg font-bold hover:bg-orange-600 hover:text-white transition-all">Buy Now</button>
+</div>
+<div class="bg-white/5 rounded-2xl p-4 border border-white/10 hover:border-orange-500/50 transition-colors">
+<div class="aspect-square bg-stone-800 rounded-xl mb-4 overflow-hidden">
+<img alt="Product" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB51NembLMJHN0vHoc252E5DqTdixFQyAut3x0LgLO-JaUNdquTKrF3oy0Z7F6vpoHsDVi2qRIGO8PCevxeTYt8oiavisXzQEVtlu8jl7IEIHgVdSnHyYKUpB2U-b2P4GWgdDoiwFJRxRaiFu8e14k8hbzQt_w1mMEftDpZW0jTP4jv9MM6qQnR4uKFzJQSDDyBAZpBVgVzhw9aoLq2l3SjzHHzQDHbKKjpK_pMzBGXaw0aZWs23EfZen_rCTObITavfE2nlaF3pMwY"/>
+</div>
+<h4 class="font-bold text-lg">Authentic Kente Stole</h4>
+<p class="text-orange-500 font-bold mt-1">GH₵ 350.00</p>
+<button class="w-full mt-4 bg-white text-stone-900 py-2 rounded-lg font-bold hover:bg-orange-600 hover:text-white transition-all">Buy Now</button>
+</div>
+<div class="bg-white/5 rounded-2xl p-4 border border-white/10 hover:border-orange-500/50 transition-colors">
+<div class="aspect-square bg-stone-800 rounded-xl mb-4 overflow-hidden">
+<img alt="Product" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCarAlBCBsABgxK9NhEmCm6a9ie1ZGIvF2ZAebEUJg1aH99wOmAnmKaGz6woBCE6mdeAHmZvw2rjHkEEwWy9PB07i9a7G3oraaXGEDUYqTEWdD5S0G1FZK06lgbcLrMP9kp7OM3NzaswIgF5vAcNeF2dSZxtXRlsD_efRIvCq3a6KqwjEU6CywaoI40NsSwsGzv8_UEs3NQsl1MDBPPjTD0e_hy4fQmyeq9eOyxQlfsebyemlwLJyxm533RA9HXyi0xbuPly9a8JmGO"/>
+</div>
+<h4 class="font-bold text-lg">Pure Organic Palm Oil (5L)</h4>
+<p class="text-orange-500 font-bold mt-1">GH₵ 85.00</p>
+<button class="w-full mt-4 bg-white text-stone-900 py-2 rounded-lg font-bold hover:bg-orange-600 hover:text-white transition-all">Buy Now</button>
+</div>
+<div class="bg-white/5 rounded-2xl p-4 border border-white/10 hover:border-orange-500/50 transition-colors">
+<div class="aspect-square bg-stone-800 rounded-xl mb-4 overflow-hidden">
+<img alt="Product" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkPPK5me4nuvfeJxSqGszLX4Bkn5THDYSmUi8woFKxE9R7EawwwgbO2lCC5oXoHKQocgWqhlTBlCtyYO2To-tRPP9YqdZUc6xXDK1QhWd7jYaPzlAFajDwpjwI7LVUxUZ6f8q6KR7Ik2Bf_i84Csn7wiDKWVdYVf_AWtv5TgaAY3PpwMy1LZtF3a9LQW2DqrM0jDcE81GDPrRgp63VPizPVDq2kjc8ZvA2F8yk_5Z6Y3uEwMZxqH0JlZKaTI1uhn1V75kJltwUE18b"/>
+</div>
+<h4 class="font-bold text-lg">Custom Carved Akan Drum</h4>
+<p class="text-orange-500 font-bold mt-1">GH₵ 600.00</p>
+<button class="w-full mt-4 bg-white text-stone-900 py-2 rounded-lg font-bold hover:bg-orange-600 hover:text-white transition-all">Buy Now</button>
+</div>
+</div>
+</div>
+</section>
+<!-- END: MarketplaceSection -->
+<!-- BEGIN: FoodSection -->
+<section class="py-24 bg-orange-50" data-purpose="food-and-dining">
+<div class="container mx-auto px-4">
+<div class="flex items-center justify-between mb-12">
+<h2 class="text-4xl font-bold">Local Tastes</h2>
+<button class="text-orange-600 font-bold">Find Restaurants</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="flex bg-white rounded-3xl overflow-hidden shadow-xl">
+<div class="w-1/2">
+<img alt="Local Food" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5zelBKgA8w8vOugrEiHmcqQLbIBJzH0d5fGRhMb0QGqgbuMgau6_6027juqfyEbwHaa4TFp8KR96cs9Wrdp7fOXAfxZkA3RnEHZF6Fogq_-_VUe5CpXDHgTfCla912TaUrO33CVdLasuTqGtyZIag5I-7a1x8czlXC9GuPzTNvei2GMnTP0OLeaS1zbdZ_aPLmTMJjUzbWp2wYPpxgn-xR7uSLj-PNHwUU4PRmdVLK044Floyo6eTIJqBlzNDxgSyVoA_shoqFjMJ"/>
+</div>
+<div class="w-1/2 p-8 flex flex-col justify-center">
+<span class="text-orange-600 font-bold text-sm uppercase mb-2">Popular Now</span>
+<h3 class="text-2xl font-bold mb-4">Aunty Esi's Fufu</h3>
+<p class="text-stone-600 text-sm mb-6">Authentic pounded fufu with goat light soup, prepared with love.</p>
+<div class="flex items-center justify-between">
+<span class="font-bold text-xl">GH₵ 45.00</span>
+<button class="bg-stone-900 text-white p-2 rounded-full">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</div>
+<div class="flex bg-white rounded-3xl overflow-hidden shadow-xl">
+<div class="w-1/2">
+<img alt="Local Food" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmn1dRAgFTdeSsnWumi7jkYipMjrWunnftW5aLpcC2GXO9lTHH8GdFUS4fmyeDEc2VfeHToMUsRLzdCPSCVvrfIvloB_-MWEkQACxpwpB4jTdvlxg9Iy8Wv4H1IQ366oRsA-LNUrzLgZIKkRVZKk0cOMEt091eHTt6hwhKaH25qER79RpKQbwotRC9FYaYzv6J45hWf84NtX7zwpFDwCno1ovB8Qnil_sl2PXLjjl_UPv1POYzpiIcy-6OqKgMb9q-yR1s_Q_1IfjL"/>
+</div>
+<div class="w-1/2 p-8 flex flex-col justify-center">
+<span class="text-orange-600 font-bold text-sm uppercase mb-2">Street Food</span>
+<h3 class="text-2xl font-bold mb-4">Hillside Waakye</h3>
+<p class="text-stone-600 text-sm mb-6">The best waakye in the hills, served with shito and wele.</p>
+<div class="flex items-center justify-between">
+<span class="font-bold text-xl">GH₵ 30.00</span>
+<button class="bg-stone-900 text-white p-2 rounded-full">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: FoodSection -->
+<!-- BEGIN: BusinessSection -->
+<section class="py-24 bg-white" data-purpose="local-businesses">
+<div class="container mx-auto px-4">
+<h2 class="text-3xl font-bold text-center mb-16">Support Local Businesses</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
+<div class="text-center group cursor-pointer">
+<div class="w-24 h-24 mx-auto mb-4 bg-stone-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-50 transition-colors">
+<img alt="Logo" class="w-16 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWllwiQpSHwvczXfMJCMGZgNuyWoKDRgg0i1wBpz4h5h0dAq1tx8h73h6VNC7Twblturdm7V5CVf8_P8j3fPPbS3hQbnGl2BDXvpONPylzwE8gnFEhFykymHi-YHuVqJjS9A77hX8L3OuDI-EmiAq0MceeFH6N1oeCMG6xKDH-gEh050TZM014EUOvC9mkigHyFtH9igqrDIk4PT1ELZhC5b3b78L0HNUyry8pIc-8t8cfthlCZknPox7awjhpQa8tSG8yvpAu8Xzs"/>
+</div>
+<h5 class="font-bold text-sm">Bright Future School</h5>
+</div>
+<div class="text-center group cursor-pointer">
+<div class="w-24 h-24 mx-auto mb-4 bg-stone-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-50 transition-colors">
+<img alt="Logo" class="w-16 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACMMdj0tT4XxAKKwrCozEjk0heZ9_ZgDZB06mSLgez-LfQHzHEv5RZWueIy9MTLSYjnlaW0wqdNNODV-IcwK39tlGvTmvmM9dfs4ewarUVxmmZqQCqh6gsxLcuLq2n_kuBkRK0_3JoeXQUoVNh_TrY_alM76BM9hULO1qQTfhynRSc_vDzjKGmbU12gyEjbi6jfVDOvvKPG3Rcr6EEyrFIUMkreMFZzLQRmTl5M9Bol78JJqqjF63nnVdn4_AAj6wjxO_ZxSTzrIZu"/>
+</div>
+<h5 class="font-bold text-sm">Apex Pharmacy</h5>
+</div>
+<div class="text-center group cursor-pointer">
+<div class="w-24 h-24 mx-auto mb-4 bg-stone-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-50 transition-colors">
+<img alt="Logo" class="w-16 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdCYR-yOrOdKfYuyvFDXY_zDS5j-n2zy32D-OgVkHRM0IKns6j5Yj2cPqK7K3JEqSckMQH8CbObqMYbkbCOZwH76POPNnsUQ-ezyIPoEFgeeAYHsfxc_vWMCG-qE_FVB7WQ28pKcj875oqKXLDg5rNSRKoTi2pfvmyj7nBFG5jW52G3m7A7gvgOGZBwcCiqfoareJxl6KFKVpZXc1RfCN2X2zwhnx6CfajikeAnkI-q4HEPnG_W6AzBfop8ULosHsQRaRVlrh_KCXU"/>
+</div>
+<h5 class="font-bold text-sm">Eco Farms Ltd</h5>
+</div>
+<div class="text-center group cursor-pointer">
+<div class="w-24 h-24 mx-auto mb-4 bg-stone-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-50 transition-colors">
+<img alt="Logo" class="w-16 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6Z4jz2vCj_vJMuCjAljKdREG3dUtzWGBxe5Y2zzaFlNGDw9vifHUoxQni_YP8x8jm2QHth7ciCQHbuVh9J3MLSD3XTTciZmv2K527KGlvJeRGtT5MwGDXx_R50XQHUqsnVBC7VRu0uNOYJUAaQhr_lozObQ3NqlpoYqyryMvVDhaXxRofxg_tYwowDm7zZUfKICzSZrihhyl5YjidnUdENp5OGquw7Grko5Fu7j3rMFW3BoAEqnRUaQmmGunxNdQofUoTzOGhYF4Q"/>
+</div>
+<h5 class="font-bold text-sm">Hilltop Logistics</h5>
+</div>
+<div class="text-center group cursor-pointer">
+<div class="w-24 h-24 mx-auto mb-4 bg-stone-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-50 transition-colors">
+<img alt="Logo" class="w-16 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5kBK24_F8Cwh4u0xn3p5iZBNFq4WNdYe9a92IE00RkMkcwDbU2SNOVkMEJQL2r1hxchvHUpeb95cRkqSv0rOi-fSzPdMoO6-eIJFZpJeV_fq_3S18fr-VVj38xPwfpdlMi39lxZtPfjS8QipKe7XtZmOVapv6PvLFHgR1Lkb7_xQ3aTq-VyfKkY2FPB4rFzxBx9Dm5SOQ62u45rCsoYFAcyqmagOMf3Ev-X_wCA5X5-2xz_4hm6Bi3qPS0ZeXeUynnUm1Yd4BCsOS"/>
+</div>
+<h5 class="font-bold text-sm">Grace Textiles</h5>
+</div>
+<div class="text-center group cursor-pointer">
+<div class="w-24 h-24 mx-auto mb-4 bg-stone-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-50 transition-colors">
+<img alt="Logo" class="w-16 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe7LWi2OtQtZiIjkpUGvywEtJ72Q0fxEUc6xTzgqI8EZDWqg83yVC-ufj64CTO9CcPythcZ1rceH3cwlNRJPsfabgWp7kt-FkxAuwi8oFBFTzu5SzGDzMinoDC3DkRnDcyhA7W2KunWrBAniyv6cxOlZ9ETwC6Ea4xMckavJ7uxQYv_yp5wmUafHVsXwqS292atjnsfxmMYv5PvHcx_GYXFaB1DIun40KvKL02mMAJqh5S-KMBp3Dj_Uq2XXyW4p9nUmruhWbdlKDR"/>
+</div>
+<h5 class="font-bold text-sm">Unity Printing</h5>
+</div>
+</div>
+</div>
+</section>
+<!-- END: BusinessSection -->
+<!-- BEGIN: PersonalitiesSection -->
+<section class="py-24 bg-stone-50" data-purpose="personalities-of-the-week">
+<div class="container mx-auto px-4">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="text-4xl font-bold text-stone-800">Personalities of the Week</h2>
+<div class="h-1.5 w-24 bg-orange-600 mt-2"></div>
+</div>
+<p class="text-stone-500 font-medium hidden md:block">Celebrating those making a difference.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Profile Card 1 -->
+<div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-stone-100 hover:shadow-xl transition-all group">
+<div class="h-64 overflow-hidden relative">
+</div></div></div></div></section></main></body></html>
