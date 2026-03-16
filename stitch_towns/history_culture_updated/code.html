@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>History &amp; Culture | Heritage Town</title>
+<!-- Tailwind CSS with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ec5b13',
+            secondary: '#2d3436',
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          borderRadius: {
+            'custom': '8px',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="typography">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #fdfdfd;
+      color: #1a1a1a;
+    }
+    h1, h2, h3 {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+  </style>
+<style data-purpose="layout-utilities">
+    .timeline-dot::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      background-color: #ec5b13;
+      border-radius: 50%;
+      border: 3px solid white;
+    }
+    .timeline-line {
+      position: absolute;
+      left: 20px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background-color: #e5e7eb;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="antialiased">
+<!-- BEGIN: Navigation -->
+<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 py-3">
+<div class="flex items-center justify-between max-w-screen-xl mx-auto">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded-custom flex items-center justify-center">
+<span class="text-white font-bold">H</span>
+</div>
+<span class="font-bold text-lg tracking-tight">HeritageTown</span>
+</div>
+<button class="p-2 text-gray-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</nav>
+<!-- END: Navigation -->
+<main>
+<!-- BEGIN: Hero Section -->
+<section class="relative h-[400px] flex items-end overflow-hidden" data-purpose="hero">
+<img alt="Aerial view of historic town square" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzsXztsu7tbJhl5nXo_g-9g7a7hbJgufSOcvqBjWMX2h3SqYEF-uAjm7oXD97V0FqG9HKdqA5R6g2I3esG0ED_trgdO0UT1JAzCS06jEncTC14AoIyW3wiVx9TFA5NtgLzu_9bRnSBVV3RqYGckqpRAT4CwTw6M31DWWu89PZzkEj9qYtJW41RhnW6uRyyjGZvdJDRrN3rePLR0cBx0RT51zVylPiTZ2nNzQqO_p8myaYNRpavT6285VJwOlRdDqPcYyQQgOkZz0U"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+<div class="relative p-6 w-full text-white pb-10">
+<h1 class="text-4xl font-extrabold mb-2">Our Living History</h1>
+<p class="text-gray-200 text-lg">Exploring the roots, traditions, and stories of Heritage Town since 1824.</p>
+</div>
+</section>
+<!-- END: Hero Section -->
+<!-- BEGIN: Historical Timeline -->
+<section class="py-12 px-6" data-purpose="history-timeline">
+<div class="max-w-2xl mx-auto">
+<div class="mb-10">
+<h2 class="text-2xl font-bold text-gray-900 border-l-4 border-primary pl-4">The Journey Through Time</h2>
+<p class="mt-2 text-gray-600">Trace our town's evolution from a small settlement to a thriving community.</p>
+</div>
+<div class="relative space-y-10">
+<div class="timeline-line"></div>
+<!-- Timeline Entry 1 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-10 h-10 flex items-center justify-center">
+<div class="w-4 h-4 rounded-full bg-primary ring-4 ring-orange-100"></div>
+</div>
+<span class="text-sm font-bold text-primary">1824</span>
+<h3 class="text-lg font-bold mt-1">Foundation</h3>
+<p class="text-gray-600 mt-1">First settlers arrived by the river bank, establishing the central trading post that would become our town square.</p>
+</div>
+<!-- Timeline Entry 2 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-10 h-10 flex items-center justify-center">
+<div class="w-4 h-4 rounded-full bg-primary ring-4 ring-orange-100"></div>
+</div>
+<span class="text-sm font-bold text-primary">1892</span>
+<h3 class="text-lg font-bold mt-1">The Great Railway</h3>
+<p class="text-gray-600 mt-1">Connectivity blossomed as the East-West railway line connected our local industry to the national market.</p>
+</div>
+<!-- Timeline Entry 3 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-10 h-10 flex items-center justify-center">
+<div class="w-4 h-4 rounded-full bg-primary ring-4 ring-orange-100"></div>
+</div>
+<span class="text-sm font-bold text-primary">1955</span>
+<h3 class="text-lg font-bold mt-1">Cultural Renaissance</h3>
+<p class="text-gray-600 mt-1">Establishment of the Town Library and the first annual Heritage Festival, now a staple of our culture.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Historical Timeline -->
+<!-- BEGIN: Ancestral Leaders Slideshow -->
+<section class="bg-secondary py-8 overflow-hidden" data-purpose="ancestral-slideshow">
+<div class="px-6 mb-6">
+<h2 class="text-white text-sm font-bold uppercase tracking-widest flex items-center gap-2">
+<span class="w-8 h-px bg-primary"></span>
+Past Chiefs &amp; Queen Mothers
+</h2>
+</div>
+<div class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 px-6 pb-4">
+<!-- Leader 1 -->
+<div class="flex-none w-64 snap-center">
+<div class="relative rounded-custom overflow-hidden aspect-[3/4]">
+<img alt="Portrait of Chief Nana Kwesi II" class="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzPHW558HzXY8BuWcbScGBQwyFQM-8xfAzxn1t5786K_TQSWY1pOlwMMYb8JmuuqJ_z_mnOWOoAwzw9dlSpePsKxWd6x49Gg0gsDdHadV0tqC4-ukGv3CSe2Q2tkmYFhxoSW0sO4Pjz9XfWqDa3uXOQ5oF1o9kROiRd-bcRjKXITePSyPnql69LO7MAjldwHLmk6nyCEHJyKgRrVNnwZPz2xfsW9AZMWWLh792fFsMtHV666vNdNv7bX4fCX4XxEgQ7-Lh4GTUm5k"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-4 w-full">
+<p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Chief (1920-1945)</p>
+<h3 class="text-white font-bold leading-tight">Nana Kwesi II</h3>
+</div>
+</div>
+</div>
+<!-- Leader 2 -->
+<div class="flex-none w-64 snap-center">
+<div class="relative rounded-custom overflow-hidden aspect-[3/4]">
+<img alt="Portrait of Queen Mother Nana Abena" class="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtjWGVUN5kR9pq5cSD2NGmmuealI8ZTsjBsnChTbfFwZlGh21AAhp6iGHqY6o5iTVAYC60JP7uYcOVGnjfuz5fe7DA3rsdJKZZTmVEGZ3rpslSxjX9sxPSJwrQE4x1QC7DaLKAdXBllzj6WbmfGMdv5Ed039P0m6SnoYnKhphkEkder_0Qug4IbjirW2eeZM1qgfJrVPcFBWwl2wzTpmNTSF8sI2fGE-72kxc1-OJA326qCWSEcFbN8S69J0BAL2X7DR83N9m7mMY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-4 w-full">
+<p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Queen Mother (1938-1962)</p>
+<h3 class="text-white font-bold leading-tight">Nana Abena I</h3>
+</div>
+</div>
+</div>
+<!-- Leader 3 -->
+<div class="flex-none w-64 snap-center">
+<div class="relative rounded-custom overflow-hidden aspect-[3/4]">
+<img alt="Portrait of Chief Togbe Afeku" class="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi_jFnoRbwShlQ1ub7R8-Y_rvJHqibONpFs6smXN6_XIjsiWPlyEsZVxm1p4eW4GRI9PCEk0LJgHoqFJSpeg4KrxogoLstMRVhzJuEemxESMMD9M7MQD96VxyPZnovzTX9pDziX8uI9sTtW94YQqbkTtqkgaRMEmiQrKi3YbhyLckGF8JGNMwoJe82W4g2WeF3vhJGBzUao4b_18l6m5wpctVylCj-w76Mar0DSRVONL0zr5tT0aX24exp98Gw8xMCHt6FWnmPEQk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-4 w-full">
+<p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Chief (1895-1918)</p>
+<h3 class="text-white font-bold leading-tight">Togbe Afeku III</h3>
+</div>
+</div>
+</div>
+<!-- Leader 4 -->
+<div class="flex-none w-64 snap-center">
+<div class="relative rounded-custom overflow-hidden aspect-[3/4]">
+<img alt="Portrait of Queen Mother Nana Yaa" class="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArLH5c_8-9_TuRGpZXiS6kIYfUHuUd8JMIreNzVBsE1M2_X7WA5_KVcY-V7YfrBzVMIcNw67MuIa_NhQ7rB2PNX7whq32ba7tqtL9c_KxWNYKcNcLYtsB-w377nEVRHfbdl7eLyeE3a-XgnvDxbT0FbNPVXZOZnOxNF9_gbtc4UeQHo9X4euUcjhe68JK_OWKlOOoTBMySfZ4rcRZ6leNxbd5JeA0qEDY9t12mVnghPn4A3nJDp6nAoqjuXdIbiQSj7hqP_nsPBes"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-4 w-full">
+<p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Queen Mother (1910-1935)</p>
+<h3 class="text-white font-bold leading-tight">Nana Yaa Asantewaa II</h3>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-center gap-1.5 mt-4">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-600"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-600"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-600"></div>
+</div>
+</section>
+<!-- END: Ancestral Leaders Slideshow -->
+<!-- BEGIN: Cultural Traditions -->
+<section class="py-12 bg-gray-50 px-6" data-purpose="cultural-traditions">
+<div class="max-w-screen-xl mx-auto">
+<h2 class="text-2xl font-bold mb-8">Cultural Traditions</h2>
+<div class="space-y-6">
+<!-- Tradition 1 -->
+<div class="bg-white p-4 rounded-custom shadow-sm border border-gray-100">
+<img alt="Town Harvest Festival" class="w-full h-48 object-cover rounded-custom mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2G5DmO0QsL10Ed79rJVJlt5zhqFvMy_4XFU8CJ2Hce26ns_o8TADYBuPAKbUhvxH7ChcRE95EITe-EUtOG29EE3beNzZnIJwR9bn6N5opuaz-57HB0yzw-pbStxVPgFIXAe0j1Uabi_T4n_PHtg2H1YgHsUwtw0xkEPK70h-Oj4dw4i2rlVd3a6u6_9_OfzBWLtPMPLE8pVsoEQnAuqUamUpPJOnE_-9Iacw5MDiWm_0uG32rCTqp8GC_low0RvZF88oH09a7YkM"/>
+<h3 class="text-xl font-bold mb-2">The Autumn Harvest Gala</h3>
+<p class="text-gray-600 text-sm leading-relaxed mb-4">
+              A two-century-old tradition where local farmers share their bounty. The event is famous for the 'River Dance' and the crowning of the Harvest King.
+            </p>
+<button class="text-primary font-semibold text-sm flex items-center gap-1">
+              Read the story 
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<!-- Tradition 2 -->
+<div class="bg-white p-4 rounded-custom shadow-sm border border-gray-100">
+<img alt="Traditional Pottery" class="w-full h-48 object-cover rounded-custom mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5xdrFhd5HjiEogHss8kGziROOr9yU7dW1dgkVEcZqN6fBnx8nXou4w-ln7KvtB2vowj3mT2u0L5uNUJLfc73BqlluGAHoJTNjwQMf8g0aJ5kkbc938oQm2nE_LcvY8D0iNOCuMZD8PmthUXW7Bcepu5UvdutG30Sbbs9cjF-Y2NuxuXGfUONBgBblDZn_xCZ5P6Q02ZPQkqUF1iC1KHe-uOn_kqlGVP47GI7lFFZ5VXaA9ljcO6yUH7X_dsGryj1BFJ1n8VS2Yi8"/>
+<h3 class="text-xl font-bold mb-2">Artisans of the Valley</h3>
+<p class="text-gray-600 text-sm leading-relaxed mb-4">
+              Our town's unique blue-glaze pottery has been passed down through seven generations. Every summer, masters teach youth the ancient wheel techniques.
+            </p>
+<button class="text-primary font-semibold text-sm flex items-center gap-1">
+              Read the story 
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Cultural Traditions -->
+<!-- BEGIN: Historical Landmarks -->
+<section class="py-12 px-6" data-purpose="landmarks-gallery">
+<h2 class="text-2xl font-bold mb-6">Historical Landmarks</h2>
+<div class="grid grid-cols-2 gap-4">
+<!-- Landmark 1 -->
+<div class="group relative overflow-hidden rounded-custom aspect-square">
+<img alt="Old Clock Tower" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCylrU-FT8sT0fJ8UUfqJbFLZ8TjaA_8Vl7HF3d6XflZDcvtRxE-1jfkj7UPlfco13568-1m-yXi3uDAiRddl7croCEN3uaUOABtPUeO5ogUBFKe-wHozFjcXcDBiYVrreNf917aANcNDOS8q0d1lcDAdD14eYcBgWr4BJxmprdq9c4MylUnZUQYdJdSqZgDt3a36occ4mbpSa0Zix5wybyoeLKii5FwwFSUF9f7kOu-y8mTYSN6KqwNWQxgG0gG0EAhG12LRCQer0"/>
+<div class="absolute inset-0 bg-black/40 flex items-end p-3">
+<span class="text-white text-xs font-semibold">Clock Tower (1880)</span>
+</div>
+</div>
+<!-- Landmark 2 -->
+<div class="group relative overflow-hidden rounded-custom aspect-square">
+<img alt="Grand Library Interior" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqTSVx0MYJ5ONlQR32eH1kV0dBXmpoHENleeEI9ePV1bvX_DA1Bmj9HDqI9M5PM-PkZBbp3V230cYzXMrdGfhaTSbSDEk38bDgZB2MWSQGAmmjqs26l6usyJOVDiI5rFa8kGno_9UgP24dqpqP2QtfRaEoUlZJ8wyz83FToWBOHG0KNQ0JbFC_eius-rY8CYB5r-u7vTvcrN8xPFgf00X9i4njZx0xIbnDqTQTIgkz00_xb5CQiAfyILuskvu1wconknke3wcQDT8"/>
+<div class="absolute inset-0 bg-black/40 flex items-end p-3">
+<span class="text-white text-xs font-semibold">The Library</span>
+</div>
+</div>
+<!-- Landmark 3 -->
+<div class="group relative overflow-hidden rounded-custom aspect-square">
+<img alt="Stone Bridge" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAk070kFCdMQC_Qhyqya9mFzpnsHLcrvafQ013ZEnzvLJ-09iH3AJJPDy4S5qTeJj-k1c_rrU83ckHP3xxLstXtxWiwq4vpq3thEEYzdxRIOdpwlxwwOBsM-g67gQcmxTb51SCO8ZzdqNxv4yS5fTpJvDvyZRqDwo1UT5yvBRMN88U4P_sc18wbaMfWKaxC6zB5hE_d7z8ev98afhWZ-BXVtkqk9isUDkaxrGPgncov8qTHe3hVBw415blBeYLQs1Bxqc7yn4l-bM"/>
+<div class="absolute inset-0 bg-black/40 flex items-end p-3">
+<span class="text-white text-xs font-semibold">River Stone Bridge</span>
+</div>
+</div>
+<!-- Landmark 4 -->
+<div class="group relative overflow-hidden rounded-custom aspect-square">
+<img alt="Town Hall" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKeKYs9FweHIkS44D6NkQ-H826Vm2EeZ5DxXK3GVxLHknAPFCY1NSWQPYO7oJTqwUVaNkwn5bhTGDwjy6c-7GzTp1Gq8N8v9Dew3uCIT79V2ogz0Kdi5GHqVArsVXt-_ymVYCp9bZKHHark-ner7ADRdLBPPjy9GG9Yx7i9wA42cY7amb87O5DJJZ-_RF_WhSAVtmSUOamtKuge7-ym2Y9ZyjVVZbE-QJ6uz28-AsADKtS6HqkG9hORlYM8tWhtL1N3hQa77m5oXQ"/>
+<div class="absolute inset-0 bg-black/40 flex items-end p-3">
+<span class="text-white text-xs font-semibold">Classic Town Hall</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Historical Landmarks -->
+<!-- BEGIN: Community Memories -->
+<section class="py-12 bg-primary/5 px-6" data-purpose="community-memories">
+<div class="max-w-screen-xl mx-auto text-center mb-8">
+<h2 class="text-2xl font-bold">Community Memories</h2>
+<p class="text-gray-600 mt-2">Shared stories from our neighbors.</p>
+</div>
+<div class="space-y-4">
+<!-- Memory 1 -->
+<div class="bg-white p-5 rounded-custom border border-orange-100 italic text-gray-700 relative">
+<svg class="absolute -top-3 left-4 w-8 h-8 text-primary/20" fill="currentColor" viewbox="0 0 32 32">
+<path d="M10 8v8h6v-8h-6zm12 0v8h6v-8h-6z"></path>
+</svg>
+<p class="mb-4">"I remember the summer of '72 when the whole town gathered at the square to watch the moon landing on a single projector. The unity was palpable."</p>
+<div class="flex items-center gap-3 non-italic">
+<div class="w-8 h-8 rounded-full bg-gray-200"></div>
+<span class="text-sm font-bold">— Martha G., Resident since 1960</span>
+</div>
+</div>
+<!-- Memory 2 -->
+<div class="bg-white p-5 rounded-custom border border-orange-100 italic text-gray-700">
+<p class="mb-4">"My grandfather used to tell me about the first train that arrived. He said it was the loudest and most exciting thing the town had ever seen."</p>
+<div class="flex items-center gap-3 non-italic">
+<div class="w-8 h-8 rounded-full bg-gray-200"></div>
+<span class="text-sm font-bold">— David L., Local Baker</span>
+</div>
+</div>
+</div>
+<!-- Memory Submission Form -->
+<div class="mt-10 bg-white p-6 rounded-custom shadow-md" data-purpose="submission-form">
+<h3 class="font-bold text-lg mb-4">Share Your Memory</h3>
+<form class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+<input class="w-full rounded-custom border-gray-300 focus:ring-primary focus:border-primary" placeholder="Jane Doe" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Your Story</label>
+<textarea class="w-full rounded-custom border-gray-300 focus:ring-primary focus:border-primary" placeholder="Describe a moment in our town's history..." rows="3"></textarea>
+</div>
+<button class="w-full bg-primary text-white font-bold py-3 rounded-custom hover:bg-orange-600 transition-colors" type="submit">
+            Post My Story
+          </button>
+</form>
+</div>
+</section>
+<!-- END: Community Memories -->
+</main>
+<!-- BEGIN: Footer -->
+<footer class="bg-secondary text-white py-12 px-6">
+<div class="max-w-screen-xl mx-auto">
+<div class="flex items-center gap-2 mb-6">
+<div class="w-8 h-8 bg-primary rounded-custom flex items-center justify-center">
+<span class="text-white font-bold">H</span>
+</div>
+<span class="font-bold text-lg">HeritageTown Archive</span>
+</div>
+<p class="text-gray-400 text-sm mb-8 leading-relaxed">
+        Preserving the past, celebrating the present, and inspiring the future of our beautiful community.
+      </p>
+<div class="grid grid-cols-2 gap-8 text-sm border-t border-gray-700 pt-8">
+<div>
+<h4 class="font-bold mb-4 uppercase text-xs tracking-widest text-primary">Explore</h4>
+<ul class="space-y-2 text-gray-300">
+<li><a class="hover:text-primary" href="#">Museum Tours</a></li>
+<li><a class="hover:text-primary" href="#">Oral Histories</a></li>
+<li><a class="hover:text-primary" href="#">Photo Archive</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-4 uppercase text-xs tracking-widest text-primary">Visit</h4>
+<ul class="space-y-2 text-gray-300">
+<li><a class="hover:text-primary" href="#">Visitor Center</a></li>
+<li><a class="hover:text-primary" href="#">Historical Map</a></li>
+<li><a class="hover:text-primary" href="#">Contact Us</a></li>
+</ul>
+</div>
+</div>
+<div class="mt-12 text-xs text-gray-500 text-center">
+        © 2024 Heritage Town Historical Society. All rights reserved.
+      </div>
+</div>
+</footer>
+<!-- END: Footer -->
+</body></html>

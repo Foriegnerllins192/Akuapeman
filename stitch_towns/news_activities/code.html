@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>News &amp; Activities Feed</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- BEGIN: Theme Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ec5b13',
+            surface: '#ffffff',
+            background: '#f8fafc',
+            text: '#1e293b',
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          borderRadius: {
+            'theme': '8px', // Based on ROUND_EIGHT
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: Theme Configuration -->
+<style data-purpose="custom-overrides">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;  
+      overflow: hidden;
+    }
+  </style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/></head>
+<body class="antialiased">
+<!-- BEGIN: Main Container -->
+<main class="max-w-md mx-auto min-h-screen bg-background pb-12" data-purpose="feed-container">
+<!-- BEGIN: Header -->
+<header class="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 py-4">
+<h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Community Hub</h1>
+<p class="text-sm text-slate-500 mt-1">Stay updated with news and events</p>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: News Section -->
+<section class="mt-6 px-4" data-purpose="recent-news">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-bold text-slate-800">Recent News</h2>
+<button class="text-primary text-sm font-semibold hover:opacity-80">View all</button>
+</div>
+<div class="space-y-4">
+<!-- News Article 1 -->
+<article class="flex gap-4 p-3 bg-surface rounded-theme shadow-sm border border-slate-100" data-purpose="news-item">
+<div class="w-24 h-24 flex-shrink-0">
+<img alt="New Park Opening" class="w-full h-full object-cover rounded-theme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsb1QJHpeI5hXqdbCECWlRdKKs7aIFJ5PIPm5jcegaTqjS7XvBBTqlNN6VFtXZsImfUkpATiN_3KN7RGLVVywhfQsIGcAZwFZgTVU4eoNsJFFEMiG9JH-8Bivk99BJv_iNHXIdzkDVApwDozVoiJGcQ-9Wv39P_yVIH-vNMf-jzoQGdPG2i6KnvE5SNVinhlLM7YdR1YrOzZyo3YJhD1WC57vPOHu82tuKBRVtq1P4RsMDkkhXy7CSohoqGHG6OQTMzEiDhnZZ0Hs"/>
+</div>
+<div class="flex flex-col justify-between py-1">
+<div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-primary mb-1 block">Local Update</span>
+<h3 class="text-sm font-bold leading-tight line-clamp-2 text-slate-900">Grand Opening: The New Central Park &amp; Recreation Area</h3>
+</div>
+<p class="text-[11px] text-slate-400">2 hours ago • 4 min read</p>
+</div>
+</article>
+<!-- News Article 2 -->
+<article class="flex gap-4 p-3 bg-surface rounded-theme shadow-sm border border-slate-100" data-purpose="news-item">
+<div class="w-24 h-24 flex-shrink-0">
+<img alt="Volunteer Success" class="w-full h-full object-cover rounded-theme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAii8w44mmyweS8tI1e3iPYtYDjrXilQ93783cb75HM_tjSvWSPVLFlyu2JBNEgaSfG6TklwYVWqgHRNHIoVubnr7yY_8-INQNqPdhIH_bHGwdygYyByhyqzIPhZMaqSqb0jMLpWoCAmPeTPsyXz44IAVbLDXQTyYhzJlEQ0CZe8pyC3-tQhfnlz_9YQuM_Fly_4mWKUS56w7nqRex0b0Ww4g7LHnI-ByGbebmb8UHCi9boiiS6CI1mRe-jZLPPKR7xiO3F1pDyG-k"/>
+</div>
+<div class="flex flex-col justify-between py-1">
+<div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-primary mb-1 block">Community</span>
+<h3 class="text-sm font-bold leading-tight line-clamp-2 text-slate-900">Over 500 Residents Join Weekend Cleanup Drive</h3>
+</div>
+<p class="text-[11px] text-slate-400">Yesterday • 3 min read</p>
+</div>
+</article>
+<!-- News Article 3 -->
+<article class="flex gap-4 p-3 bg-surface rounded-theme shadow-sm border border-slate-100" data-purpose="news-item">
+<div class="w-24 h-24 flex-shrink-0">
+<img alt="Tech Workshop" class="w-full h-full object-cover rounded-theme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuh9cf9g-N6DLg4tRWxt7aGlZiB7IrzBUTgW5zLzxwjCqhFiwJPhwltoyGGWEe48OO0Cst4IAe5LWrVzYxrlHeOud9yUt0N0fzbUi27PoL4B8d9bSbFCWUgraPHV_3wbLwQLpl6mUKmZaMmmx8ArntTRCTiATCmKA4TzUJoyEWj81Ft-cjUANsv_Vap9MZhc4s5npIhEvs91CeS6CHfm4vk4PUlruYmcykw2VNYlzXv8CkyJFXBDH-8tbf_Qw5VP3SJP8tXsPK4QQ"/>
+</div>
+<div class="flex flex-col justify-between py-1">
+<div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-primary mb-1 block">Events</span>
+<h3 class="text-sm font-bold leading-tight line-clamp-2 text-slate-900">Digital Literacy Workshop Series Starts Next Monday</h3>
+</div>
+<p class="text-[11px] text-slate-400">Oct 24 • 5 min read</p>
+</div>
+</article>
+</div>
+</section>
+<!-- END: News Section -->
+<!-- BEGIN: Calendar Section -->
+<section class="mt-8 px-4" data-purpose="upcoming-activities">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-bold text-slate-800">Upcoming Events</h2>
+<div class="flex items-center gap-1 text-slate-400">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xs font-medium">October 2023</span>
+</div>
+</div>
+<div class="space-y-3">
+<!-- Event Card 1 -->
+<div class="flex bg-surface rounded-theme shadow-sm overflow-hidden border border-slate-100" data-purpose="event-item">
+<div class="bg-primary/10 w-16 flex flex-col items-center justify-center border-r border-slate-100">
+<span class="text-[10px] font-bold text-primary uppercase">Oct</span>
+<span class="text-xl font-extrabold text-primary">28</span>
+</div>
+<div class="p-3 flex-1">
+<div class="flex justify-between items-start">
+<h4 class="text-sm font-bold text-slate-900">Farmers Market Saturday</h4>
+<span class="text-[10px] font-semibold bg-slate-100 px-2 py-0.5 rounded-full text-slate-500">Free</span>
+</div>
+<div class="flex items-center gap-2 mt-2 text-xs text-slate-500">
+<svg class="h-3 w-3" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>08:00 AM - 01:00 PM</span>
+</div>
+<div class="flex items-center gap-2 mt-1 text-xs text-slate-500">
+<svg class="h-3 w-3" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Town Square Plaza</span>
+</div>
+</div>
+</div>
+<!-- Event Card 2 -->
+<div class="flex bg-surface rounded-theme shadow-sm overflow-hidden border border-slate-100" data-purpose="event-item">
+<div class="bg-primary/10 w-16 flex flex-col items-center justify-center border-r border-slate-100">
+<span class="text-[10px] font-bold text-primary uppercase">Oct</span>
+<span class="text-xl font-extrabold text-primary">31</span>
+</div>
+<div class="p-3 flex-1">
+<div class="flex justify-between items-start">
+<h4 class="text-sm font-bold text-slate-900">Halloween Night Festival</h4>
+<span class="text-[10px] font-semibold bg-primary text-white px-2 py-0.5 rounded-full">Hot</span>
+</div>
+<div class="flex items-center gap-2 mt-2 text-xs text-slate-500">
+<svg class="h-3 w-3" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>06:00 PM - 10:00 PM</span>
+</div>
+<div class="flex items-center gap-2 mt-1 text-xs text-slate-500">
+<svg class="h-3 w-3" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Community Center Garden</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Calendar Section -->
+<!-- BEGIN: Call to Action -->
+<section class="mt-10 px-4" data-purpose="cta-section">
+<div class="bg-slate-900 rounded-theme p-6 relative overflow-hidden">
+<!-- Background Pattern Decor -->
+<div class="absolute -right-6 -bottom-6 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
+<div class="absolute -left-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-xl"></div>
+<div class="relative z-10">
+<h2 class="text-xl font-bold text-white mb-2">Want to make an impact?</h2>
+<p class="text-slate-400 text-sm mb-6 leading-relaxed">Join our volunteer network or suggest a new activity for the community.</p>
+<div class="flex flex-col gap-3">
+<button class="w-full bg-primary text-white font-bold py-3 px-4 rounded-theme hover:brightness-110 transition-all shadow-lg shadow-primary/20">
+              Get Involved
+            </button>
+<button class="w-full bg-slate-800 text-white font-semibold py-3 px-4 rounded-theme border border-slate-700 hover:bg-slate-700 transition-all">
+              Suggest an Activity
+            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Call to Action -->
+<!-- BEGIN: Tab Bar (App-like Navigation) -->
+<nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-slate-200 py-3 flex justify-between items-center px-2" data-purpose="bottom-nav"><button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[24px]">news</span>
+<span class="text-[10px] font-bold">News</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[24px]">calendar_today</span>
+<span class="text-[10px] font-bold">Events</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[24px]">account_tree</span>
+<span class="text-[10px] font-bold">Projects</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[24px]">photo_library</span>
+<span class="text-[10px] font-bold">Gallery</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[24px]">diversity_3</span>
+<span class="text-[10px] font-bold">Connect</span>
+</button></nav>
+<!-- END: Tab Bar -->
+</main>
+<!-- END: Main Container -->
+</body></html>

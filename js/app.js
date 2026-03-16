@@ -55,8 +55,8 @@ const footerHTML = `
 document.addEventListener('DOMContentLoaded', () => {
   const page = location.pathname.split('/').pop() || 'index.html';
 
-  // Don't inject nav/footer on the community chat page
-  if (page !== 'chat.html') {
+  // Don't inject nav/footer on pages with their own app-style navigation
+  if (page !== 'chat.html' && page !== 'town-detail.html') {
     document.body.insertAdjacentHTML('afterbegin', navHTML);
     document.body.insertAdjacentHTML('beforeend', footerHTML);
 

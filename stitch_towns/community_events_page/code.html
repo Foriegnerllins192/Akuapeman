@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Community Events Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .active-icon { font-variation-settings: 'FILL' 1; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 justify-between max-w-5xl mx-auto">
+<div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">menu</span>
+</div>
+<h1 class="text-xl font-bold leading-tight tracking-tight flex-1 text-center">Events</h1>
+<div class="flex w-10 items-center justify-end">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/10 text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-slate-200 dark:border-slate-800 px-4 gap-8 max-w-5xl mx-auto overflow-x-auto">
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4" href="#">
+<span class="text-sm font-bold">All</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-4" href="#">
+<span class="text-sm font-bold">Upcoming</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4" href="#">
+<span class="text-sm font-bold">Past</span>
+</a>
+</div>
+</header>
+<main class="max-w-5xl mx-auto pb-32">
+<!-- Upcoming Events Section -->
+<section class="p-4 @container">
+<h2 class="text-2xl font-bold mb-6 pt-4">Upcoming Events</h2>
+<div class="grid gap-6">
+<!-- Event Card 1 -->
+<div class="flex flex-col lg:flex-row overflow-hidden rounded-xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="w-full lg:w-72 bg-center bg-no-repeat aspect-video lg:aspect-square bg-cover" data-alt="People enjoying a summer community outdoor picnic" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBwAfklolqambihzwo3k3_2fZoAhxe19UA_fASdfLkPflV14g7BRA7f0IzcACMbwKc4Pz0wmQQGhZ3izxPdAykg_TeFyky2xIK5KpJ4P6ukirk6NgxUfB05AeWpu6qubCFD1RWRM_2EZYciyvEjNisZpmaNvXoB8RpuOhbdfD3QAaI6Umy2ggpgYhpMONKHvhZZ3D_G3nTvyMnDfGaqeMOmUt5pdVTJnjDVhivXuFvb7lKX5JT_GJsn0U8cC_HNOj1A8IEteM76ivE");'></div>
+<div class="flex grow flex-col justify-between p-6">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Summer Community Picnic</h3>
+<span class="bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded">Community</span>
+</div>
+<div class="space-y-2 mb-6">
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span class="text-sm">July 15, 2024 • 12:00 PM - 4:00 PM</span>
+</div>
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-sm">Central Park North Pavillion</span>
+</div>
+</div>
+</div>
+<!-- Inline RSVP Form -->
+<div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800"><p class="text-sm font-semibold mb-3">RSVP Details</p><div class="flex flex-col gap-1"><p class="text-sm text-slate-700 dark:text-slate-300"><span class="font-medium">Host:</span> Sarah Johnson</p><p class="text-sm text-slate-700 dark:text-slate-300"><span class="font-medium">Contact:</span> sarah.j@community.org</p></div></div>
+</div>
+</div>
+<!-- Event Card 2 -->
+<div class="flex flex-col lg:flex-row overflow-hidden rounded-xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="w-full lg:w-72 bg-center bg-no-repeat aspect-video lg:aspect-square bg-cover" data-alt="Group of volunteers cleaning up a local neighborhood park" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBW4S_UU950cre67PsPX8-A9lnENTuJjawEOVCcO9XrNyMsxWtY_THMMGoQUmZ2u0XfwOrr8LYjpcf7kW6K_ofZbEofXZpwJFX__A6XdkkTNHWF6GL3tNf_WNF2NGDsmWxeUMcuDEQu9flxgLGDP54jEoJbv0vcWk5URGvwRr-y8d91BrPmXUNozfKx2CEvIEFeC3H0eu0x4PFVjqNDwcQW7rG0OtI_CCjTM3Sz_tSVVPeNkyfvNI56MPMsVS13hqbe2oyetN62a20");'></div>
+<div class="flex grow flex-col justify-between p-6">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Neighborhood Clean-up Day</h3>
+<span class="bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded">Volunteer</span>
+</div>
+<div class="space-y-2 mb-6">
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span class="text-sm">August 05, 2024 • 09:00 AM - 1:00 PM</span>
+</div>
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-sm">Meet at Community Center Lobby</span>
+</div>
+</div>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800"><p class="text-sm font-semibold mb-3">RSVP Details</p><div class="flex flex-col gap-1"><p class="text-sm text-slate-700 dark:text-slate-300"><span class="font-medium">Host:</span> Mike Peterson</p><p class="text-sm text-slate-700 dark:text-slate-300"><span class="font-medium">Contact:</span> 555-0123</p></div></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Past Events Section -->
+<section class="p-4 mt-8">
+<h2 class="text-2xl font-bold mb-6 text-slate-700 dark:text-slate-300">Past Events</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Past Event 1 -->
+<div class="group overflow-hidden rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+<div class="aspect-video bg-cover bg-center" data-alt="Stack of books on a wooden table for a book club" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAQTyupsXUOIojEGQ9-I9Y6ID3uArrP6AO47hAUAnT3DMStJ5rR74VcGNPAdbW0GSqWQWnjJPZEEL0dQVMT1p9URtKfH0VpWP4qe0cHlmhxj7T9mnu6IhnRR7Dq9WyRkr11h46N95hf4isEksJspG6vVyWSd86HsevNlY5Nc-PuX__e8jPaf0PIjnhF90LFRfCIGyXNDi7XRIPEvGkBbLo2aHAqNOOcY65N9DfiW6JkXK251ACIaH1eLmkq6DDstx_7cj8QitcplqA");'></div>
+<div class="p-4">
+<p class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wider">June 20, 2024</p>
+<h4 class="font-bold text-slate-800 dark:text-slate-200">Community Book Exchange</h4>
+<p class="text-sm text-slate-500 mt-2">Over 200 books found new homes in our first summer swap.</p>
+</div>
+</div>
+<!-- Past Event 2 -->
+<div class="group overflow-hidden rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+<div class="aspect-video bg-cover bg-center" data-alt="Outdoor movie screen set up in a park at sunset" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAb_M415_dYNzEbRkuINkCIL6QX2cl197Vc1Y_cnqXAxKfQfjkEic_G7Q9giMJ7OuIt5I4rS5_alAlCh24KivpdOhVqjUIzjGjH_h6gL9robBUmPheAHnFxvX3dDPIzdBWRtnFNaP_TnHc1cYLCvCVrx4TK-wUlLtph2gJVup8fqnK2n4HRF9kBeh7cSimgqDFQeOJWLLaLDKgOYtNaSuxCjII3zRweOK1Qn10z9APRGvLgOGSxT0-QCejn-2F1OX2mQ3WL9XdXRg8");'></div>
+<div class="p-4">
+<p class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wider">June 12, 2024</p>
+<h4 class="font-bold text-slate-800 dark:text-slate-200">Movie Under The Stars</h4>
+<p class="text-sm text-slate-500 mt-2">A magical night watching 'Back to the Future' in the park.</p>
+</div>
+</div>
+<!-- Past Event 3 -->
+<div class="group overflow-hidden rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+<div class="aspect-video bg-cover bg-center" data-alt="Fresh vegetables displayed at a local farmers market stall" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJvSrEIW5jDJkPKLbLVWB3iVSl_zh7aAm1EX0UEWP-FDv1CFWNtsSs63g8k6CLAlbKxaKf_IrfdPt9l3_ixZypriAHMJ0L1Nw8teI5fagcPs5AotWoyfBgdd3IcO8_p4h26Vw7miy_RJiI720wUwpfQ8LylK98HmGgXfn4auom95GTE48jXwu9qXIJtOowNMyjDtHVa9ONQnJvVlIjwVwbMJiWFVOTJxTBD5Wld8x59Vl0iIjxz04qawe3FskJXwrBogz1DdVAT-8");'></div>
+<div class="p-4">
+<p class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wider">May 28, 2024</p>
+<h4 class="font-bold text-slate-800 dark:text-slate-200">Spring Farmers Market</h4>
+<p class="text-sm text-slate-500 mt-2">Supporting local growers and artisans in our town square.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pb-safe shadow-lg">
+<div class="flex items-center justify-around max-w-5xl mx-auto px-2">
+<a class="flex flex-1 flex-col items-center justify-center py-3 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium mt-1">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center py-3 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">newspaper</span>
+<p class="text-[10px] font-medium mt-1">News</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center py-3 text-primary" href="#">
+<span class="material-symbols-outlined active-icon">calendar_month</span>
+<p class="text-[10px] font-bold mt-1">Events</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center py-3 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">folder</span>
+<p class="text-[10px] font-medium mt-1">Projects</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center py-3 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">gallery_thumbnail</span>
+<p class="text-[10px] font-medium mt-1">Gallery</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center py-3 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">groups</span>
+<p class="text-[10px] font-medium mt-1">Connect</p>
+</a>
+</div>
+</nav>
+</body></html>

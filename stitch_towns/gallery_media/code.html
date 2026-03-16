@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Town Gallery - Experience Our Beauty</title>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ec5b13',
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          borderRadius: {
+            'custom': '8px',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-styling">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f9fafb;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .media-card:active {
+      transform: scale(0.98);
+      transition: transform 0.1s ease;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="text-slate-900">
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100">
+<div class="px-4 h-16 flex items-center justify-between">
+<button aria-label="Go back" class="p-2 -ml-2 text-slate-600">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Town Gallery</h1>
+<button aria-label="Search" class="p-2 -mr-2 text-slate-600">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</header>
+<!-- END: MainHeader -->
+<main class="pb-20">
+<!-- BEGIN: CategoryFilter -->
+<nav class="sticky top-16 z-30 bg-white border-b border-slate-100 py-3 overflow-x-auto hide-scrollbar" data-purpose="category-navigation">
+<ul class="flex space-x-2 px-4 whitespace-nowrap">
+<li>
+<button class="px-4 py-1.5 rounded-full bg-primary text-white text-sm font-medium transition-colors">All</button>
+</li>
+<li>
+<button class="px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition-colors">Festivals</button>
+</li>
+<li>
+<button class="px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition-colors">Nature</button>
+</li>
+<li>
+<button class="px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition-colors">People</button>
+</li>
+<li>
+<button class="px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition-colors">Architecture</button>
+</li>
+<li>
+<button class="px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition-colors">History</button>
+</li>
+</ul>
+</nav>
+<!-- END: CategoryFilter -->
+<!-- BEGIN: GalleryGrid -->
+<section class="p-4 grid grid-cols-2 gap-3" data-purpose="gallery-content">
+<!-- Media Item 1 -->
+<div class="media-card relative aspect-square overflow-hidden rounded-custom shadow-sm group" onclick="openViewer('Nature Bliss', 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&amp;fit=crop&amp;w=800&amp;q=80')">
+<img alt="Scenic town view" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxv3ncF0ILBPsjNQJH6vWgXVYAUbMPpgHMbqdZEI0t4Bbz0H_X-9KFYFFVNr8u4x2jr6n3gUBRiPU2yd2Frvu4pV0Dv6VEjIkLE3YU1PfsOtQuoNRKb6gVyf7UmuFt5Ug-BbSmpE7TbLW2MUNqgtvd97x2CzPoOdg2jjEQdFe87WRrn0mjZAkuvbETbA70AUA_MfBza317Qn6X5ZHGoR_Xg8cD0pSTKlcNqUIYKv1XvUSctB14qrFbF4_EOKed7DlpeV14BpUapvQ"/>
+<div class="absolute bottom-2 left-2 right-2">
+<span class="bg-black/40 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">Nature</span>
+</div>
+</div>
+<!-- Media Item 2 (Video Placeholder) -->
+<div class="media-card relative aspect-square overflow-hidden rounded-custom shadow-sm group" onclick="openViewer('Festival Joy', 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&amp;fit=crop&amp;w=800&amp;q=80')">
+<img alt="Local festival" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd-y2bQ-wcjVJUsV8dMAhExr9OiI1XaePAFFm0IeVReiPSF2jH_cf5zmxCp5wY3ngUtrI8XA0QmbZ0W29QgfU_gLQkYrBtQqsG8Vy0fhzVStv0MoYVIRS1DyQ3MMa6we3LbghhizbckIgy-QGnVIr-Njwult_lDuagFwNI9Mr1KyMezD7NwkYsDN-L96tLN2dsFKlwXgYd5rVh3umucF91uylWqhvZMoxlyBCWARRFjB3kvgF5Rvf1wpa9G-WBuq-WQi_pGKcD0sM"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-10 h-10 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center border border-white/50">
+<svg class="h-5 w-5 text-white fill-current" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path>
+</svg>
+</div>
+</div>
+<div class="absolute bottom-2 left-2 right-2">
+<span class="bg-black/40 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">Festivals</span>
+</div>
+</div>
+<!-- Media Item 3 -->
+<div class="media-card relative aspect-[3/4] col-span-2 overflow-hidden rounded-custom shadow-sm" onclick="openViewer('Golden Hour', 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&amp;fit=crop&amp;w=800&amp;q=80')">
+<img alt="Mountains at dusk" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTqmChvtbbcN41PEAVizVsuCYM9VyGozqj65yNvgg-_uiP36kRiiFN3Vml6j2AWdLO86bqExWCmWJgnIK8xrfPTzx6-FPBVDCxW_ilMH48cp8oJdIsGM-YAFXfzAR0gMSBD7rqWfSsNLJCA3FU3q9sbHIG1C2N308p4vY9_OV5xoAMHKGl65c-fuzcx_lPELzM2eXrt88kIKcRLs2r5pYkTUeL-ljvXhLd1oShfAZM_EGp6f6aUaPtHY5UNohVVGkew9fMdcmOHxo"/>
+<div class="absolute bottom-4 left-4">
+<p class="text-white text-sm font-semibold drop-shadow-md">The Peaks at Sunrise</p>
+<span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider mt-1 inline-block">Nature</span>
+</div>
+</div>
+<!-- Media Item 4 -->
+<div class="media-card relative aspect-square overflow-hidden rounded-custom shadow-sm" onclick="openViewer('The Marketplace', 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&amp;fit=crop&amp;w=800&amp;q=80')">
+<img alt="Market scene" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_0ZwFd_rxTia4DIL1oSVnpQc3zfQrVOjTJ0fJbqF3B_TBt9yQxzzHXoCAGiIlOJDjeSVkjXYgZO_r9HPiLHHeKerUaAv71iLlyhFcK94cAEjB0wZ36t-zPZp0BtrZNAquOm56Ymy-c8mQ68JtjBBrTFt1rYGWZwISdQhYGuA9CM_gdeimejkTf1mSPcnwsPSB2mVjPG7AkmOWrxhPpEHEA36k5bcpGUm-yuqggOc_GI9MCYKB-VSR6GcgI4oNY8pJ38RR4erNiqM"/>
+<div class="absolute bottom-2 left-2 right-2">
+<span class="bg-black/40 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">People</span>
+</div>
+</div>
+<!-- Media Item 5 -->
+<div class="media-card relative aspect-square overflow-hidden rounded-custom shadow-sm" onclick="openViewer('Ancient Walls', 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&amp;fit=crop&amp;w=800&amp;q=80')">
+<img alt="Stone architecture" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApqMYcmdkRbDXyzGa6h8_fkLxq2UvlzDON_JhHmjhcj8ajwW-VSi4bhbsInDLuGyiq8LYS7PG8DfuXj6x8-u-ao7VI8LIPKcO8UhC9kcsIEd4NnzWcqQ39YIulyGOn3oPyTIo9vlTeTQfiTMhG4RzLALCUTZep-C0iXhP8F78O2wzacAH5VX7z8f0NlGARgA0pnCAJr4V-T09G0KxuP7sT5BllhT-5cssmUhZofz6yIA6MdRBcboRjCct19D4ThDJNe4QlXngKTKc"/>
+<div class="absolute bottom-2 left-2 right-2">
+<span class="bg-black/40 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">History</span>
+</div>
+</div>
+<!-- Media Item 6 -->
+<div class="media-card relative aspect-square overflow-hidden rounded-custom shadow-sm" onclick="openViewer('Spring Carnival', 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&amp;fit=crop&amp;w=800&amp;q=80')">
+<img alt="Carnival lights" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmul3tvh2Dzl7KlzFQ9nWAXtukcDiU7-Te4Owc0WOpzEFJi0DKl7HbHjRk5RerEg9NgofEPAMJ12WRDWc2RAfcvfRKOxoXWUrxDjOrGjCmzj-vfCmVQ7s8p2mJ0YXb4i8OUR_tQfusip0HJrYqkJuKnjozizVLmXzWxBkNSSG_hQHhISzhMJCFOW1WJPQICRIaeXU9SIVfJvZ9hEpG0m_55_D3RfhR_ibhO4MFXgbB2XxV2gCpGAqbNMBkMioS9Py9kpfWABRon7M"/>
+<div class="absolute bottom-2 left-2 right-2">
+<span class="bg-black/40 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">Festivals</span>
+</div>
+</div>
+<!-- Media Item 7 -->
+<div class="media-card relative aspect-square overflow-hidden rounded-custom shadow-sm" onclick="openViewer('Local Crafts', 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&amp;fit=crop&amp;w=800&amp;q=80')">
+<img alt="Artisan at work" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfYlKr-KKmEld-CozhVnekGRcL-q4OjC2LZJknap25ofvlZOQ7wAVngRFiBwx_P_qDmIe2I9cuAWvIPWfGS-VO5s59a5ZRdd_u92koLowe7RIDdlg4XbussZMZsiCnxpIE7CLwy-f8fbQRVzwwx3pjOR4uSYpNEbNp65y8_xC6HadbIFgLvv-lrRWbZRnNel5OrPs1cqDE6xmIT74zZr6U0LKxcetfKibpj-PDI0N5Au6O9dEHum9DxoEYiFFX_Blhv3UIT-yjlUk"/>
+<div class="absolute bottom-2 left-2 right-2">
+<span class="bg-black/40 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">People</span>
+</div>
+</div>
+</section>
+<!-- END: GalleryGrid -->
+</main>
+<!-- BEGIN: MediaViewerOverlay -->
+<div class="fixed inset-0 z-50 bg-black hidden flex-col items-center justify-center" data-purpose="full-screen-viewer" id="mediaViewer">
+<!-- Viewer Header -->
+<div class="absolute top-0 left-0 right-0 p-4 flex items-center justify-between text-white z-10">
+<button class="p-2 bg-white/10 rounded-full backdrop-blur-md" onclick="closeViewer()">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<h3 class="text-sm font-medium" id="viewerTitle">Image Details</h3>
+<button class="p-2 bg-white/10 rounded-full backdrop-blur-md">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<!-- Main Content Container -->
+<div class="w-full h-full flex items-center justify-center p-4">
+<img alt="Full view" class="max-w-full max-h-[80vh] object-contain rounded-sm" id="viewerImage" src=""/>
+</div>
+<!-- Viewer Footer -->
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white">
+<div class="flex items-center space-x-4">
+<button class="flex items-center space-x-1 group">
+<svg class="h-5 w-5 text-white group-active:text-primary transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xs">1.2k</span>
+</button>
+<button class="flex items-center space-x-1">
+<svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xs">Share</span>
+</button>
+</div>
+</div>
+</div>
+<!-- END: MediaViewerOverlay -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="viewer-logic">
+    /**
+     * Handles opening the full-screen media viewer
+     * @param {string} title - The title of the image
+     * @param {string} src - The image URL
+     */
+    function openViewer(title, src) {
+      const viewer = document.getElementById('mediaViewer');
+      const viewerImg = document.getElementById('viewerImage');
+      const viewerTitle = document.getElementById('viewerTitle');
+      
+      viewerImg.src = src;
+      viewerTitle.textContent = title;
+      
+      viewer.classList.remove('hidden');
+      viewer.classList.add('flex');
+      
+      // Prevent body scrolling when viewer is open
+      document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Handles closing the full-screen media viewer
+     */
+    function closeViewer() {
+      const viewer = document.getElementById('mediaViewer');
+      viewer.classList.add('hidden');
+      viewer.classList.remove('flex');
+      
+      // Re-enable body scrolling
+      document.body.style.overflow = 'auto';
+    }
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>

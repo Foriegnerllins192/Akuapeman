@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Town Community Portal</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration for Theme Customization -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#ec5b13',
+              light: '#fdeee7',
+              dark: '#be490f',
+            },
+            earthy: {
+              50: '#f9fafb',
+              100: '#f3f4f6',
+              800: '#1f2937',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          borderRadius: {
+            'custom': '8px',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-styling">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/></head>
+<body class="bg-earthy-50 text-earthy-800 antialiased">
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-brand rounded-custom flex items-center justify-center text-white">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+</div>
+<span class="font-extrabold text-lg tracking-tight">TownPortal</span>
+</div>
+<button class="p-2 text-earthy-800" data-purpose="mobile-menu-toggle">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</header>
+<!-- END: MainHeader -->
+<main class="pb-24">
+<!-- BEGIN: HeroSection -->
+<section class="relative w-full h-[45vh] min-h-[300px] overflow-hidden">
+<!-- Main Town Landscape Image -->
+<img alt="Town Landscape" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaBlFby-u6lZ5J_SzoUy74oufi84QVoCkO5q-GPdGced8n8kiErqpweotCPFYwX6YUfPECQLuPTbla3J84WAB_b-5T_8xnCF9zXMWnuRDR7fMHEpQwPsAk4PBRERO2i0YhzZqX3iE19_LpunYvmGBLLcfuEvQyXR93eYqiZmnztQtPK7djdAt2KexLozJGjb3TaKNigcBz0-XvET3tg_Y3YCE10NtoS_Uf6K1RQU14NFm16REFY7L0WpmlEUPI59itpdJFrHdKGeY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-6">
+<h1 class="text-3xl font-extrabold text-white mb-2 leading-tight">Welcome to Our Vibrant Community</h1>
+<p class="text-white/90 text-sm leading-relaxed max-w-[90%]">Stay connected with the latest updates, heritage stories, and local events in our beautiful town.</p>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: LatestNews -->
+<section class="mt-8">
+<div class="px-4 flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold">Latest News</h2>
+<a class="text-brand text-sm font-semibold" href="#">View All</a>
+</div>
+<!-- Horizontal Scrollable News Carousel -->
+<div class="flex overflow-x-auto gap-4 px-4 pb-4 hide-scrollbar">
+<!-- News Card 1 -->
+<div class="min-w-[280px] bg-white rounded-custom shadow-sm border border-gray-100 overflow-hidden" data-purpose="news-item">
+<img alt="News 1" class="w-full h-32 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsAzHi389KqQDifAXUtjV2Lk86y7GuC6d6-O5x6yP63VpeVb6RFrRy9sdDXULpybTvxsIUVzOZGVWpnQdEL2D57zW9g3ZP0TMfKAx8GHKdvKCEjpTIVVXtTFf6QOLEy1HiNzoiv34GIz3Vsb0105HCPX_-LKDhbZEYOMXzu4lYoDFJtE99graY2HutiiM0EBT9jeMYA4Mb58amL1ugIQqrr2pSAD1GYbvmkH67j45x_bRFKsUZKIr5a_dM35keOhtm9A9A7XtkpLw"/>
+<div class="p-4">
+<span class="text-[10px] uppercase tracking-wider text-brand font-bold">Local Government</span>
+<h3 class="font-bold text-base mt-1 line-clamp-2">Town Hall meeting scheduled for park renovation plans</h3>
+<p class="text-gray-500 text-xs mt-2">Yesterday</p>
+</div>
+</div>
+<!-- News Card 2 -->
+<div class="min-w-[280px] bg-white rounded-custom shadow-sm border border-gray-100 overflow-hidden" data-purpose="news-item">
+<img alt="News 2" class="w-full h-32 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuRNK1sDtNEzy_dFX5AKTykDunOTmrX_aVorh8CDemK0UwUVascH1ZStFkcFY4UpfaxR-M75UMKd3YscDIZ2wteBytgNEFgaThwcHCqNYxh-ZzlCn0MHljTDzNs5E780xI36x-K5Zi45SjIkI02ydqKhvlloBXIcVXE8Nrh8ifQob2rGmWU6uu7gF5pvuy4m9LYg099Zqseq-EdkNlU5LA3HTbqhx7CrJisfQZrGwP8tMxoRo-JG3xwjwPwCeioYZgKVK7YElsEZg"/>
+<div class="p-4">
+<span class="text-[10px] uppercase tracking-wider text-brand font-bold">Events</span>
+<h3 class="font-bold text-base mt-1 line-clamp-2">Annual Farmer's Market kicks off this Saturday morning</h3>
+<p class="text-gray-500 text-xs mt-2">2 days ago</p>
+</div>
+</div>
+<!-- News Card 3 -->
+<div class="min-w-[280px] bg-white rounded-custom shadow-sm border border-gray-100 overflow-hidden" data-purpose="news-item">
+<img alt="News 3" class="w-full h-32 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnY5yKTIMrXs8xs8RQynhn5942FayvYNamFMe1oRw3ix_MYsCxL3IbGxA7Irk2GUzTgpJQK5A8Hgn_7KurmAolLluOgdpa9cMN8gY7JlNG2zwJrLwwns3C72p3vGzuwZV5Su3enpjEzqsvpIVfcB01WXNBBZdHTVy8vwLnNIzcv0bS8do9FpOA6LNG413U9ieqL4WcsbPdjjZzDg7RpnAR8VZRdtCtDRAK2iJzditmniw7Zlmd31wC-rnNIdQeEhYQKV_R81aXXds"/>
+<div class="p-4">
+<span class="text-[10px] uppercase tracking-wider text-brand font-bold">Community</span>
+<h3 class="font-bold text-base mt-1 line-clamp-2">Local library expands digital collection for residents</h3>
+<p class="text-gray-500 text-xs mt-2">3 days ago</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: LatestNews -->
+<!-- BEGIN: CommunityAnnouncementsBanner -->
+<section class="mt-4">
+<div class="px-4 mb-4">
+<h2 class="text-xl font-bold">Community Announcements</h2>
+</div>
+<div class="flex overflow-x-auto gap-4 px-4 pb-4 hide-scrollbar snap-x snap-mandatory">
+<!-- Announcement 1: Funeral -->
+<div class="min-w-[85vw] bg-white rounded-custom shadow-sm border border-gray-100 overflow-hidden flex snap-center" data-purpose="announcement-item">
+<div class="w-1/3 h-28 bg-gray-100">
+<img alt="Celebration of Life" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr_j5X_3A8oX9zO55K0f5z2-3uX4f09P59p6H0O8S6R5C5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A5N5A5M5A"/>
+</div>
+<div class="w-2/3 p-3 flex flex-col justify-center">
+<span class="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Celebration of Life</span>
+<h3 class="font-bold text-sm mt-0.5 text-earthy-800">In memory of Samuel Thompson</h3>
+<p class="text-[11px] text-gray-600 line-clamp-2 mt-1">Service held this Sunday at St. Jude's Chapel, 2 PM.</p>
+</div>
+</div>
+<!-- Announcement 2: Wedding -->
+<div class="min-w-[85vw] bg-white rounded-custom shadow-sm border border-gray-100 overflow-hidden flex snap-center" data-purpose="announcement-item">
+<div class="w-1/3 h-28 bg-gray-100">
+<img alt="Wedding Bells" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnY5yKTIMrXs8xs8RQynhn5942FayvYNamFMe1oRw3ix_MYsCxL3IbGxA7Irk2GUzTgpJQK5A8Hgn_7KurmAolLluOgdpa9cMN8gY7JlNG2zwJrLwwns3C72p3vGzuwZV5Su3enpjEzqsvpIVfcB01WXNBBZdHTVy8vwLnNIzcv0bS8do9FpOA6LNG413U9ieqL4WcsbPdjjZzDg7RpnAR8VZRdtCtDRAK2iJzditmniw7Zlmd31wC-rnNIdQeEhYQKV_R81aXXds"/>
+</div>
+<div class="w-2/3 p-3 flex flex-col justify-center">
+<span class="text-[9px] uppercase tracking-wider text-brand font-bold">Wedding Bells</span>
+<h3 class="font-bold text-sm mt-0.5 text-earthy-800">Sarah &amp; James are Wed!</h3>
+<p class="text-[11px] text-gray-600 line-clamp-2 mt-1">Congratulations to the new couple who married at the Old Mill yesterday.</p>
+</div>
+</div>
+<!-- Announcement 3: Program -->
+<div class="min-w-[85vw] bg-white rounded-custom shadow-sm border border-gray-100 overflow-hidden flex snap-center" data-purpose="announcement-item">
+<div class="w-1/3 h-28 bg-gray-100">
+<img alt="Youth Outreach" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuRNK1sDtNEzy_dFX5AKTykDunOTmrX_aVorh8CDemK0UwUVascH1ZStFkcFY4UpfaxR-M75UMKd3YscDIZ2wteBytgNEFgaThwcHCqNYxh-ZzlCn0MHljTDzNs5E780xI36x-K5Zi45SjIkI02ydqKhvlloBXIcVXE8Nrh8ifQob2rGmWU6uu7gF5pvuy4m9LYg099Zqseq-EdkNlU5LA3HTbqhx7CrJisfQZrGwP8tMxoRo-JG3xwjwPwCeioYZgKVK7YElsEZg"/>
+</div>
+<div class="w-2/3 p-3 flex flex-col justify-center">
+<span class="text-[9px] uppercase tracking-wider text-green-600 font-bold">Community Program</span>
+<h3 class="font-bold text-sm mt-0.5 text-earthy-800">Youth Coding Workshop</h3>
+<p class="text-[11px] text-gray-600 line-clamp-2 mt-1">Registration now open for the summer tech mentorship program.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: CommunityAnnouncementsBanner -->
+<!-- BEGIN: SupportCommunityBanner -->
+<section class="px-4 mt-6">
+<div class="bg-brand rounded-custom p-6 text-white shadow-lg relative overflow-hidden" data-purpose="donation-banner">
+<!-- Abstract background pattern -->
+<div class="absolute top-0 right-0 -mr-8 -mt-8 opacity-10">
+<svg fill="currentColor" height="150" viewbox="0 0 100 100" width="150"><circle cx="50" cy="50" r="50"></circle></svg>
+</div>
+<h2 class="text-2xl font-extrabold mb-2 relative z-10">Support Our Community</h2>
+<p class="text-white/90 text-sm mb-5 relative z-10 leading-relaxed">Your contributions help us maintain public spaces and support local initiatives that keep our town thriving.</p>
+<button class="bg-white text-brand px-6 py-3 rounded-custom font-bold text-sm shadow-sm active:scale-95 transition-transform" data-purpose="donate-button">
+          Donate Now
+        </button>
+</div>
+</section>
+<!-- END: SupportCommunityBanner -->
+<!-- BEGIN: ExploreSection -->
+<section class="mt-10 px-4">
+<h2 class="text-xl font-bold mb-4">Explore</h2>
+<div class="grid grid-cols-2 gap-4">
+<!-- History -->
+<a class="relative flex flex-col items-center justify-center gap-1 p-6 h-36 rounded-custom shadow-md overflow-hidden group transition-transform active:scale-95" href="#">
+<img alt="Historical Building" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhA19_BdbMJ5F-69ULueQ0DB0ajqdAE776bEclmDWtk1Od8xiNqTWRng0lVarG6Ml3AU_gbkgbFHfVSxBN9ICR92DNqFiM2l9xKYqMqprJQUV5OAlj3dOkmRyEsxaOlY9V4DqDmMVxxEHrH-n7xKIgPn_vSTOKh1UVs6p8PPBo5tQBEAW0bAdYP8Qjbtf4yWdJn3e-wBawi0Wdm5kxTEnWEGB7FI2lOdBr85CXj1ocTno_-N-jFE2SMNhfhWG6QSUVuzfrJXFP120"/>
+<div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors"></div>
+<div class="relative z-10 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-3xl text-white">history_edu</span>
+<span class="text-sm font-bold uppercase tracking-wide text-white">History</span>
+<p class="text-[10px] text-white/80 leading-tight mt-1 px-1">Our legacy and roots</p>
+</div>
+</a>
+<!-- News -->
+<a class="relative flex flex-col items-center justify-center gap-1 p-6 h-36 rounded-custom shadow-md overflow-hidden group transition-transform active:scale-95" href="#">
+<img alt="Newsroom" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAmiGFfkMPg3Z7S3230TE9jde67vW3vBcOL1O677zEpRzxJShkWVzl3B4u8Wt-pn2JcewzUI4JjE5sNgE37J2PsBZr1hbpNJL9-srGAwZEe5D9cCiO3yMj8lUYDp-EbZfSjQu9N0CR5LA0-LXlhhP3-buqenFXoJ6jaWL5Y9vN5lemp_eRgH0xreVe6zkb9nNTB9y9y_3m30eBYPDHAGGSLz0lOY36RvKyYBg3Izm3gx7CDFkwNf5eWFMZR9eYYk8QaqNtBvSDdGA"/>
+<div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors"></div>
+<div class="relative z-10 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-3xl text-white">article</span>
+<span class="text-sm font-bold uppercase tracking-wide text-white">News</span>
+<p class="text-[10px] text-white/80 leading-tight mt-1 px-1">Stay updated with local news</p>
+</div>
+</a>
+<!-- Events -->
+<a class="relative flex flex-col items-center justify-center gap-1 p-6 h-36 rounded-custom shadow-md overflow-hidden group transition-transform active:scale-95" href="#">
+<img alt="Calendar Events" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgMU6sZ2cZoBR42Vicm8ejQ66kot554O-Z2X7MQaBwPkf5zIMWZeIKMtig5S3HgbB5R_3WAnWx1_jmkXB9BtUNNHQ0U1O5jn_dWsx8pxGzwS4leEVpqYdivDbilF4w5s1Xbh_D7M6rUrrNKQHttfh-OAwhEOLWtb7FQupHQVuAl0_jxHlCA15fMHRnFVZGkc40Fg1SaLFJocEBtuBcSuj-aJ_k_m4PnVGNMg1Sy9U94qvTp-LhppMQ4cT4NDPNV61wt8OtveH9zZ0"/>
+<div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors"></div>
+<div class="relative z-10 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-3xl text-white">event</span>
+<span class="text-sm font-bold uppercase tracking-wide text-white">Events</span>
+<p class="text-[10px] text-white/80 leading-tight mt-1 px-1">Community gatherings and festivals</p>
+</div>
+</a>
+<!-- Projects -->
+<a class="relative flex flex-col items-center justify-center gap-1 p-6 h-36 rounded-custom shadow-md overflow-hidden group transition-transform active:scale-95" href="#">
+<img alt="Local Projects" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpQDBv12TdNEiYvmoS9fj-VED7P01yBlQpALw-JUDhpHQIgFsGzV2tFf-d3OBFMP3_OkD5hG8IKmPuI2Vqc_CXoiARIHYqdecBikURnsxsMwj_2NnM9SpEUUip_cRoPbAkdSrHNLqhHTdeEX2GUKCrYZeyptoQp1ESJyXclxdm3smnB7E5phKFP3qyckHws3fc1ahWWAgr21vP0x69K9ENxl7vwvYrCRFJsb_nuBuar21IRHYZrFwIzDIxCsGW17YgxjLs8So_g-g"/>
+<div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors"></div>
+<div class="relative z-10 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-3xl text-white">account_tree</span>
+<span class="text-sm font-bold uppercase tracking-wide text-white">Projects</span>
+<p class="text-[10px] text-white/80 leading-tight mt-1 px-1">Local initiatives we support</p>
+</div>
+</a>
+<!-- Gallery -->
+<a class="relative flex flex-col items-center justify-center gap-1 p-6 h-36 rounded-custom shadow-md overflow-hidden group transition-transform active:scale-95" href="#">
+<img alt="Art Gallery" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2rnQBuQDPx_Dn4h9WQAmdJLvDhiBEn0fIHHlQV4uqU9m_OBaeMkSWp5QMe5R9etbnmZ6EXDZI9ca9FebhHz80NTSLVNUsLEHQCPbgNFiNaqTbvw4zIOBAIUu5mYm29MUe5GDQj6CWzccvlWchf5J8EtfhXFFIqeCXGU-iXoG02xLNC24edsKRiLKpZlHpuJogtCB_2SQ-MXIgXT8W5SjR9_xxd07aY6iplc96LU-V2YJPB_CDP6DN5PaLElxvpqIKXGAsaKXGUpw"/>
+<div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors"></div>
+<div class="relative z-10 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-3xl text-white">gallery_thumbnail</span>
+<span class="text-sm font-bold uppercase tracking-wide text-white">Gallery</span>
+<p class="text-[10px] text-white/80 leading-tight mt-1 px-1">A visual journey of our town</p>
+</div>
+</a>
+<!-- Connect -->
+<a class="relative flex flex-col items-center justify-center gap-1 p-6 h-36 rounded-custom shadow-md overflow-hidden group transition-transform active:scale-95" href="#">
+<img alt="People Talking" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWwJrHjITmOItxg7kqBJHUiNJ5EJLuKAuSse2Zvtwe2vZBhO4BBC6DNJah_bVRKB9cLrzNUNtcMugTm9Zoyt35LjnolI5KVKTvLUXc7x3B3ya51fdD5GkaQ6ePnlUNFTKR1EsGbHYBetemjlJFUCkMhVCR9VSD0-E9LAPyRmpvGs7gFG-bFDffZxF4FeOHGbyK1ZVfEtwNE_yzckUScfsalJK-bXVewqOS4_XQ2UNCjVD1OMd5EeN2Pqiump5mIQIGS1BFf1DHxvw"/>
+<div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors"></div>
+<div class="relative z-10 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-3xl text-white">person_add</span>
+<span class="text-sm font-bold uppercase tracking-wide text-white">Connect</span>
+<p class="text-[10px] text-white/80 leading-tight mt-1 px-1">Meet and message fellow residents</p>
+</div>
+</a>
+</div>
+</section>
+<!-- END: ExploreSection -->
+<!-- BEGIN: PersonalitiesOfTheMonth -->
+<section class="mt-10 px-4">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold">Personalities of the Month</h2>
+</div>
+<div class="space-y-4">
+<!-- Personality 1 -->
+<div class="p-4 bg-white rounded-custom border border-gray-100 shadow-sm" data-purpose="member-card">
+<div class="flex items-start gap-4">
+<div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 border-2 border-brand-light">
+<img alt="Elena Rodriguez" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBfPiZPKcAbSvkALW6Xh-hL2tTtPbBXYDdvsOoBJHVfuuGIVx5POWJ8reZQIrijbFpPNkX9ArlI-b0YG2NhMIuudcuiC2vKL7E1eSiTIfp4oItgTuTNvrDmObiFscdzdEQ3kvj-NMOtMhfGBbbmhHTzLqCxQLqolRy-Ei1NwR-Ehz0qR2j5J_wQ7MUmpVfWTFTKejpSdyJdAVuMzf7CcDT-6KTkDnF4tr4RYWaZZpCQh0Js6m-VZv9AKpX7v3Y8k8oDSCkMAtgwZw"/>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-brand">Elena Rodriguez</h4>
+<p class="text-xs text-gray-500 font-medium mb-1">Youth Program Coordinator</p>
+<p class="text-sm text-gray-600 leading-snug mb-3">Spearheaded the 'Green Teens' initiative, planting over 500 trees in local parks this season.</p>
+<button class="w-full bg-earthy-100 hover:bg-earthy-200 text-earthy-800 text-xs font-bold py-2 rounded-custom transition-colors" data-purpose="connect-btn">Connect</button>
+</div>
+</div>
+</div>
+<!-- Personality 2 -->
+<div class="p-4 bg-white rounded-custom border border-gray-100 shadow-sm" data-purpose="member-card">
+<div class="flex items-start gap-4">
+<div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 border-2 border-brand-light">
+<img alt="Marcus Thorne" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAboeve1qJDAN2Vwyg7MzeWtDRAbtnNXJt001FcvNF9RJRIQUA9mNxNFfHwsJjr8EuklBjtrHdK-Wk9Eqp1FaZ8rrKjAZh_hQQJoh4O-ihvJuRnXoxP3CIFhitsPpv6ZA7lzT7hekKqfG5WJ29KFM6CPD3AIrQMVSoEMfwGhy5wkPQzlKT-3wUefL4qCVLqxU7CjHdx0LtW1qOMT4qmz80t9qFCZXVCW0ta6J-VukkT9wWNoQJWtTlodOGQxFqwYG6erXBGG2ljZwQ"/>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-brand">Marcus Thorne</h4>
+<p class="text-xs text-gray-500 font-medium mb-1">Local Business Owner</p>
+<p class="text-sm text-gray-600 leading-snug mb-3">Organized the 'Safe Streets' volunteer patrol, significantly improving evening neighborhood security.</p>
+<button class="w-full bg-earthy-100 hover:bg-earthy-200 text-earthy-800 text-xs font-bold py-2 rounded-custom transition-colors" data-purpose="connect-btn">Connect</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: PersonalitiesOfTheMonth -->
+<!-- BEGIN: CultureHistorySection (Placeholder for requested Culture & History) -->
+<section class="mt-10 px-4">
+<h2 class="text-xl font-bold mb-4">Culture &amp; History</h2>
+<div class="bg-white p-4 rounded-custom border border-gray-100 shadow-sm">
+<img alt="Culture and History" class="w-full h-40 object-cover rounded-custom mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhA19_BdbMJ5F-69ULueQ0DB0ajqdAE776bEclmDWtk1Od8xiNqTWRng0lVarG6Ml3AU_gbkgbFHfVSxBN9ICR92DNqFiM2l9xKYqMqprJQUV5OAlj3dOkmRyEsxaOlY9V4DqDmMVxxEHrH-n7xKIgPn_vSTOKh1UVs6p8PPBo5tQBEAW0bAdYP8Qjbtf4yWdJn3e-wBawi0Wdm5kxTEnWEGB7FI2lOdBr85CXj1ocTno_-N-jFE2SMNhfhWG6QSUVuzfrJXFP120"/>
+<h3 class="font-bold text-lg mb-2">Our Town's Founding Stories</h3>
+<p class="text-sm text-gray-600 leading-relaxed">Discover the rich tapestry of events that shaped our community over the last two centuries.</p>
+<a class="inline-block mt-4 text-brand font-bold text-sm" href="#">Learn more →</a>
+</div>
+</section>
+<!-- END: CultureHistorySection -->
+<!-- BEGIN: AdvertisementBanner -->
+<section class="mt-10 px-4">
+<div class="w-full h-24 bg-gray-100 rounded-custom border border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 group cursor-pointer overflow-hidden relative">
+<!-- Ad Placeholder Image (Simulated) -->
+<img alt="Local Advertisement" class="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlwnZsxO2vgX691qx54EfMV3IubJZJ7H5JZ9VRmHmiYtt02fxBzQ6jsj4wtVGPk0QdZcwQDrqpP-jSijCxs129t-bn587GKctvMVipoGMBRoNgcpg3RyCkp0THWfKCg7FjIYAvARyPv9vMR0Dh6eOnaG_xCDe1kr1jBdbnLp_QBMEjNitiCNrNn0c5xPv6BjtNbTStSl42LnzPhrhzsJDHrJyqWaaRBQUMY-Zz2Q7au7tdGQZs8uPe1E_xmzFzedKVJoA7SSyUWtU"/>
+<div class="absolute bottom-1 right-2">
+<span class="text-[8px] bg-black/20 text-white px-1 rounded">AD</span>
+</div>
+</div>
+</section>
+<!-- END: AdvertisementBanner -->
+</main>
+<!-- BEGIN: BottomNavigation -->
+<nav class="fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 flex items-center justify-around py-3 px-2 z-50">
+<a class="flex flex-col items-center gap-1 text-gray-400" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-gray-400" href="#">
+<span class="material-symbols-outlined text-2xl">article</span>
+<span class="text-[10px] font-medium">News</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-gray-400" href="#">
+<span class="material-symbols-outlined text-2xl">event</span>
+<span class="text-[10px] font-medium">Events</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-gray-400" href="#">
+<span class="material-symbols-outlined text-2xl">account_tree</span>
+<span class="text-[10px] font-medium">Projects</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-brand" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1">gallery_thumbnail</span>
+<span class="text-[10px] font-bold">Gallery</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-gray-400" href="#">
+<span class="material-symbols-outlined text-2xl">person_add</span>
+<span class="text-[10px] font-medium">Connect</span>
+</a>
+</nav>
+<!-- END: BottomNavigation -->
+<script data-purpose="interaction-logic">
+    document.querySelectorAll('[data-purpose="donate-button"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        alert('Thank you for your interest in supporting our community! This would normally open a payment/donation gateway.');
+      });
+    });
+    
+    document.querySelectorAll('[data-purpose="connect-btn"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const name = e.target.closest('[data-purpose="member-card"]').querySelector('h4').innerText;
+        alert(`Request sent to connect with ${name}!`);
+      });
+    });
+  </script>
+</body></html>

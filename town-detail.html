@@ -5,109 +5,767 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Town — Akuapeman.com</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ec5b13',
+            brand: { DEFAULT: '#1a6b3c', gold: '#d4a017' }
+          },
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          borderRadius: { custom: '8px' }
+        }
+      }
+    }
+  </script>
   <style>
-    @media (max-width: 768px) {
-      .town-detail-body { max-width: 100% !important; }
-      .cards-grid { grid-template-columns: repeat(2, 1fr) !important; }
-      .news-grid { grid-template-columns: 1fr !important; }
-      .town-tabs { overflow-x: auto; flex-wrap: nowrap; }
-      .town-tab { flex-shrink: 0; }
-    }
-    @media (max-width: 480px) {
-      .cards-grid { grid-template-columns: 1fr !important; }
-    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8f6f6; padding-bottom: 64px; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+    /* override global nav from style.css */
+    nav { position: static !important; top: auto !important; background: none !important; padding: 0 !important; box-shadow: none !important; display: block !important; }
+    /* top bar */
+    .top-bar { position: sticky !important; top: 0 !important; left: 0; right: 0; height: 56px; background: #1a6b3c !important; display: flex !important; align-items: center; justify-content: space-between; padding: 0 1rem; z-index: 300; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+    /* bottom nav */
+    .bottom-nav { position: fixed !important; bottom: 0 !important; top: auto !important; left: 0; right: 0; height: 56px; background: #1a6b3c !important; display: flex !important; align-items: center; justify-content: space-around; z-index: 300; box-shadow: 0 -2px 8px rgba(0,0,0,0.18); }
+    .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 1px; color: rgba(255,255,255,0.65); font-size: 10px; cursor: pointer; padding: 4px 8px; border-radius: 8px; background: none; border: none; transition: color .2s; }
+    .bottom-nav-item .mat-icon { font-size: 22px; line-height: 1; }
+    .bottom-nav-item.active { color: #d4a017; }
+    .bottom-nav-item.active .mat-icon { font-variation-settings: 'FILL' 1; }
+    .timeline-line { position: absolute; left: 19px; top: 0; bottom: 0; width: 2px; background: #e5e7eb; }
+    .snap-x { scroll-snap-type: x mandatory; }
+    .snap-center { scroll-snap-align: center; }
+    .progress-bar { height: 8px; background: #e5e7eb; border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #ec5b13; border-radius: 99px; }
+    .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .gallery-item { border-radius: 8px; overflow: hidden; position: relative; cursor: pointer; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery-item .badge { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); color: white; font-size: 9px; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; letter-spacing: .05em; }
+    .cat-btn { padding: 6px 14px; border-radius: 99px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all .2s; }
+    .cat-btn.active { background: #ec5b13; color: white; }
+    .cat-btn:not(.active) { background: #f1f5f9; color: #475569; }
+    #mediaViewer { display: none; position: fixed; inset: 0; z-index: 9999; background: black; flex-direction: column; align-items: center; justify-content: center; }
+    #mediaViewer.open { display: flex; }
   </style>
 </head>
-<body>
+<body class="text-slate-900">
 
-<div class="page-banner" id="townBanner">
-  <h1 id="townName">Loading...</h1>
-  <p>Akuapem Ridge, Eastern Region, Ghana</p>
-  <div class="breadcrumb"><a href="index.html">Home</a> / <a href="towns.html">Towns</a> / <span id="townBreadcrumb"></span></div>
+<!-- TOP BAR -->
+<div class="top-bar">
+  <!-- Back to Towns -->
+  <a href="towns.html" style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.85);text-decoration:none;font-size:0.85rem;font-weight:600;flex-shrink:0;">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Towns
+  </a>
+  <!-- Logo → Home (centered) -->
+  <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;position:absolute;left:50%;transform:translateX(-50%);">
+    <div style="width:30px;height:30px;background:#d4a017;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.95rem;color:#1a1a2e;flex-shrink:0;">A</div>
+    <span style="color:#d4a017;font-size:1.1rem;font-weight:800;letter-spacing:0.5px;white-space:nowrap;">Akuapeman</span>
+  </a>
+  <!-- Current town name (right) -->
+  <span id="headerTownName" style="color:rgba(255,255,255,0.7);font-size:0.78rem;font-weight:600;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;">...</span>
 </div>
 
-<div class="section">
-  <div class="town-tabs">
-    <div class="town-tab active" data-tab="history-tab">📜 History</div>
-    <div class="town-tab" data-tab="activities-tab">🎉 Activities</div>
-    <div class="town-tab" data-tab="news-tab">📰 News</div>
+<!-- HERO SECTION -->
+<section class="relative w-full overflow-hidden" style="height:42vh;min-height:260px;">
+  <div id="heroImg" class="w-full h-full bg-gradient-to-br from-[#1a6b3c] via-[#0d3d22] to-[#1a1a2e] flex items-end">
+    <div class="absolute inset-0 opacity-20" style="background:url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200') center/cover"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+    <div class="relative p-6 pb-8 w-full">
+      <h1 id="townHeroName" class="text-3xl font-extrabold text-white mb-1 leading-tight">Loading...</h1>
+      <p class="text-white/80 text-sm">Akuapem Ridge · Eastern Region · Ghana</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK STATS BAR -->
+<div class="bg-white border-b border-slate-100 px-4 py-3 flex gap-6 overflow-x-auto hide-scrollbar">
+  <div class="flex flex-col items-center min-w-fit">
+    <span class="text-[#ec5b13] font-extrabold text-lg" id="statPop">—</span>
+    <span class="text-[10px] text-slate-500 uppercase tracking-wide">Population</span>
+  </div>
+  <div class="w-px bg-slate-100"></div>
+  <div class="flex flex-col items-center min-w-fit">
+    <span class="text-[#ec5b13] font-extrabold text-lg" id="statFounded">—</span>
+    <span class="text-[10px] text-slate-500 uppercase tracking-wide">Founded</span>
+  </div>
+  <div class="w-px bg-slate-100"></div>
+  <div class="flex flex-col items-center min-w-fit">
+    <span class="text-[#ec5b13] font-extrabold text-lg" id="statFestival">—</span>
+    <span class="text-[10px] text-slate-500 uppercase tracking-wide">Festival</span>
+  </div>
+  <div class="w-px bg-slate-100"></div>
+  <div class="flex flex-col items-center min-w-fit">
+    <span class="text-[#ec5b13] font-extrabold text-lg" id="statElevation">~450m</span>
+    <span class="text-[10px] text-slate-500 uppercase tracking-wide">Elevation</span>
+  </div>
+</div>
+
+<!-- MAIN CONTENT SECTIONS -->
+<main id="mainContent">
+
+<!-- ===== HOME TAB ===== -->
+<section id="tab-home" class="tab-section active">
+  <!-- Latest News Carousel -->
+  <div class="mt-6">
+    <div class="px-4 flex items-center justify-between mb-3">
+      <h2 class="text-lg font-bold">Latest News</h2>
+      <button onclick="switchTab('news')" class="text-[#ec5b13] text-sm font-semibold">View All</button>
+    </div>
+    <div class="flex overflow-x-auto gap-3 px-4 pb-3 hide-scrollbar" id="homeNewsCarousel"></div>
   </div>
 
-  <div id="history-tab" class="tab-content active">
-    <div class="town-detail-body" style="max-width: 800px; line-height: 1.9; color: #333;">
-      <h2 style="color: var(--green); margin-bottom: 1rem;" id="historyTitle">History</h2>
-      <p id="historyText">Loading town history...</p>
+  <!-- Community Announcements -->
+  <div class="mt-5">
+    <div class="px-4 mb-3"><h2 class="text-lg font-bold">Community Announcements</h2></div>
+    <div class="flex overflow-x-auto gap-3 px-4 pb-3 hide-scrollbar snap-x" id="announcementsCarousel">
+      <div class="min-w-[85vw] bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden flex snap-center">
+        <div class="w-1/3 bg-[#1a6b3c]/10 flex items-center justify-center text-3xl">🎊</div>
+        <div class="w-2/3 p-3 flex flex-col justify-center">
+          <span class="text-[9px] uppercase tracking-wider text-[#ec5b13] font-bold">Festival Season</span>
+          <h3 class="font-bold text-sm mt-0.5">Odwira Festival 2026</h3>
+          <p class="text-[11px] text-gray-600 mt-1">Annual homecoming festival dates announced. All sons and daughters welcome.</p>
+        </div>
+      </div>
+      <div class="min-w-[85vw] bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden flex snap-center">
+        <div class="w-1/3 bg-[#d4a017]/10 flex items-center justify-center text-3xl">🏗️</div>
+        <div class="w-2/3 p-3 flex flex-col justify-center">
+          <span class="text-[9px] uppercase tracking-wider text-[#1a6b3c] font-bold">Development</span>
+          <h3 class="font-bold text-sm mt-0.5">New Road Construction</h3>
+          <p class="text-[11px] text-gray-600 mt-1">Road rehabilitation project begins next month. Minor traffic disruptions expected.</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div id="activities-tab" class="tab-content">
-    <h2 style="color: var(--green); margin-bottom: 1.5rem;">Activities & Events</h2>
-    <div class="cards-grid" id="activitiesGrid"></div>
+  <!-- Support Banner -->
+  <div class="px-4 mt-5">
+    <div class="bg-[#ec5b13] rounded-lg p-5 text-white relative overflow-hidden">
+      <div class="absolute top-0 right-0 -mr-6 -mt-6 opacity-10">
+        <svg fill="currentColor" height="120" viewBox="0 0 100 100" width="120"><circle cx="50" cy="50" r="50"/></svg>
+      </div>
+      <h2 class="text-xl font-extrabold mb-1 relative z-10">Support Our Town</h2>
+      <p class="text-white/85 text-sm mb-4 relative z-10">Help fund community projects and keep our town thriving.</p>
+      <button onclick="switchTab('projects')" class="bg-white text-[#ec5b13] px-5 py-2.5 rounded-lg font-bold text-sm shadow-sm">View Projects</button>
+    </div>
   </div>
 
-  <div id="news-tab" class="tab-content">
-    <h2 style="color: var(--green); margin-bottom: 1.5rem;">Latest News</h2>
-    <div class="news-grid" id="newsGrid"></div>
+  <!-- Explore Grid -->
+  <div class="px-4 mt-6">
+    <h2 class="text-lg font-bold mb-3">Explore</h2>
+    <div class="grid grid-cols-2 gap-3" id="exploreGrid"></div>
+  </div>
+
+  <!-- Personalities -->
+  <div class="px-4 mt-6 mb-4">
+    <h2 class="text-lg font-bold mb-3">Personalities of the Month</h2>
+    <div class="space-y-3" id="personalitiesList"></div>
+  </div>
+</section>
+
+<!-- ===== NEWS TAB ===== -->
+<section id="tab-news" class="tab-section">
+  <div class="px-4 pt-5">
+    <h2 class="text-xl font-bold mb-4">Recent News</h2>
+    <div class="space-y-3" id="newsListFull"></div>
+  </div>
+  <div class="px-4 mt-6 mb-4">
+    <h2 class="text-xl font-bold mb-4">Upcoming Events</h2>
+    <div class="space-y-3" id="eventsList"></div>
+  </div>
+</section>
+
+<!-- ===== HISTORY TAB ===== -->
+<section id="tab-history" class="tab-section">
+  <!-- Hero -->
+  <div class="relative h-48 overflow-hidden">
+    <div class="w-full h-full bg-gradient-to-br from-[#1a1a2e] to-[#1a6b3c] flex items-end">
+      <div class="absolute inset-0 opacity-30" style="background:url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800') center/cover"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+      <div class="relative p-5">
+        <h2 class="text-2xl font-extrabold text-white">Our Living History</h2>
+        <p class="text-white/75 text-sm" id="historySubtitle">Roots, traditions and stories</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="px-4 py-6">
+    <h3 class="text-lg font-bold border-l-4 border-[#ec5b13] pl-3 mb-5">The Journey Through Time</h3>
+    <div class="relative space-y-6" id="historyTimeline">
+      <div class="timeline-line"></div>
+    </div>
+  </div>
+
+  <!-- Past Chiefs -->
+  <div class="bg-[#1a1a2e] py-6 overflow-hidden">
+    <div class="px-4 mb-4">
+      <h3 class="text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+        <span class="w-6 h-px bg-[#ec5b13]"></span> Past Chiefs &amp; Queen Mothers
+      </h3>
+    </div>
+    <div class="flex overflow-x-auto hide-scrollbar gap-3 px-4 pb-2" id="chiefsList"></div>
+  </div>
+
+  <!-- Cultural Traditions -->
+  <div class="px-4 py-6">
+    <h3 class="text-lg font-bold mb-4">Cultural Traditions</h3>
+    <div class="space-y-4" id="traditionsList"></div>
+  </div>
+
+  <!-- Share Memory -->
+  <div class="px-4 pb-6">
+    <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-100">
+      <h3 class="font-bold text-base mb-3">Share Your Memory</h3>
+      <form class="space-y-3" onsubmit="submitMemory(event)">
+        <input type="text" placeholder="Your Name" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#ec5b13]">
+        <textarea rows="3" placeholder="Describe a moment in our town's history..." class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#ec5b13]"></textarea>
+        <button type="submit" class="w-full bg-[#ec5b13] text-white font-bold py-3 rounded-lg text-sm">Post My Story</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS TAB ===== -->
+<section id="tab-projects" class="tab-section">
+  <div class="px-4 pt-5">
+    <h2 class="text-xl font-bold mb-1">Community Projects</h2>
+    <p class="text-slate-500 text-sm mb-5">Join hands to improve our town. Every contribution counts.</p>
+    <div class="space-y-5" id="projectsList"></div>
+  </div>
+  <!-- Donate CTA -->
+  <div class="bg-slate-900 text-white px-4 py-8 mt-6">
+    <h2 class="text-xl font-extrabold mb-2">Support a Project</h2>
+    <p class="text-slate-400 text-sm mb-5">Your donations directly fund materials and labor for our community.</p>
+    <div class="bg-white/5 p-5 rounded-lg border border-white/10">
+      <p class="text-xs uppercase font-bold tracking-widest text-[#ec5b13] mb-3">Select Amount</p>
+      <div class="grid grid-cols-3 gap-2 mb-4">
+        <button class="py-2.5 border border-white/20 rounded-lg font-bold text-sm hover:bg-[#ec5b13] hover:border-[#ec5b13] transition-colors" onclick="selectAmount(this, 25)">GH₵25</button>
+        <button class="py-2.5 border border-[#ec5b13] bg-[#ec5b13] rounded-lg font-bold text-sm" onclick="selectAmount(this, 50)">GH₵50</button>
+        <button class="py-2.5 border border-white/20 rounded-lg font-bold text-sm hover:bg-[#ec5b13] hover:border-[#ec5b13] transition-colors" onclick="selectAmount(this, 100)">GH₵100</button>
+      </div>
+      <button class="w-full bg-[#ec5b13] text-white font-extrabold py-3.5 rounded-lg text-base shadow-lg" onclick="alert('Thank you! Payment gateway coming soon.')">Donate Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GALLERY TAB ===== -->
+<section id="tab-gallery" class="tab-section">
+  <div class="sticky top-[57px] z-30 bg-white border-b border-slate-100 py-3 overflow-x-auto hide-scrollbar">
+    <div class="flex gap-2 px-4 whitespace-nowrap">
+      <button class="cat-btn active" onclick="filterGallery('all', this)">All</button>
+      <button class="cat-btn" onclick="filterGallery('festivals', this)">Festivals</button>
+      <button class="cat-btn" onclick="filterGallery('nature', this)">Nature</button>
+      <button class="cat-btn" onclick="filterGallery('people', this)">People</button>
+      <button class="cat-btn" onclick="filterGallery('history', this)">History</button>
+    </div>
+  </div>
+  <div class="p-4 gallery-grid" id="galleryGrid"></div>
+</section>
+
+<!-- ===== CONNECT TAB ===== -->
+<section id="tab-connect" class="tab-section">
+  <div class="px-4 pt-5">
+    <!-- Members -->
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-bold">Town Members</h2>
+      <button class="text-[#ec5b13] text-sm font-semibold">View all</button>
+    </div>
+    <div class="grid grid-cols-2 gap-3 mb-6" id="memberGrid"></div>
+
+    <!-- Chat Groups -->
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-bold">Chat Groups</h2>
+      <button class="text-[#ec5b13] text-sm font-semibold flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm">add_circle</span> Create
+      </button>
+    </div>
+    <div class="grid grid-cols-1 gap-3 mb-6" id="chatGroups"></div>
+
+    <!-- Direct Messages -->
+    <h2 class="text-lg font-bold mb-3">Direct Messages</h2>
+    <div class="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100" id="dmList"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+  <button class="bottom-nav-item active" onclick="switchTab('home')">
+    <span class="material-symbols-outlined mat-icon">home</span>
+    <span>Home</span>
+  </button>
+  <button class="bottom-nav-item" onclick="switchTab('news')">
+    <span class="material-symbols-outlined mat-icon">newspaper</span>
+    <span>News</span>
+  </button>
+  <button class="bottom-nav-item" onclick="switchTab('history')">
+    <span class="material-symbols-outlined mat-icon">history_edu</span>
+    <span>History</span>
+  </button>
+  <button class="bottom-nav-item" onclick="switchTab('projects')">
+    <span class="material-symbols-outlined mat-icon">account_tree</span>
+    <span>Projects</span>
+  </button>
+  <button class="bottom-nav-item" onclick="switchTab('gallery')">
+    <span class="material-symbols-outlined mat-icon">gallery_thumbnail</span>
+    <span>Gallery</span>
+  </button>
+  <button class="bottom-nav-item" onclick="switchTab('connect')">
+    <span class="material-symbols-outlined mat-icon">groups</span>
+    <span>Connect</span>
+  </button>
+</div>
+
+<!-- MEDIA VIEWER OVERLAY -->
+<div id="mediaViewer">
+  <div class="absolute top-0 left-0 right-0 p-4 flex items-center justify-between text-white z-10">
+    <button class="p-2 bg-white/10 rounded-full backdrop-blur-md" onclick="closeViewer()">
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+    </button>
+    <span id="viewerTitle" class="text-sm font-medium"></span>
+    <div class="w-10"></div>
+  </div>
+  <div class="w-full h-full flex items-center justify-center p-4">
+    <img id="viewerImage" src="" alt="Full view" class="max-w-full max-h-[80vh] object-contain rounded-lg">
   </div>
 </div>
 
-<script src="js/app.js"></script>
 <script>
+// ===== TOWN DATA =====
 const townData = {
   Akropong: {
-    history: "Akropong is the capital of the Akuapem Traditional Area and the seat of the Okuapehene. Founded in the 18th century, it became a major center of Christianity and education when the Basel Mission established its headquarters here in 1835. The Akropong Presbyterian Training College, one of Ghana's oldest teacher training institutions, is located here. The town is known for its cool climate, beautiful scenery, and the annual Odwira festival.",
-    activities: ["Odwira Festival 🎊", "Presbyterian Church Services ⛪", "Akropong Market 🛒", "Cultural Durbar 🥁", "Hiking Trails 🥾", "Basel Mission Museum 🏛️"],
-    news: ["Odwira Festival 2026 Dates Announced", "New Road Construction Begins in Akropong", "Akropong Presbyterian College Celebrates 150 Years"]
+    emoji: '👑', pop: '~12k', founded: '1733', festival: 'Odwira', elevation: '~610m',
+    heroGradient: 'from-[#1a6b3c] via-[#0d3d22] to-[#1a1a2e]',
+    news: [
+      { tag: 'Festival', title: 'Odwira Festival 2026 Dates Announced', time: '2 days ago' },
+      { tag: 'Development', title: 'New Road Construction Begins in Akropong', time: '1 week ago' },
+      { tag: 'Education', title: 'Akropong Presbyterian College Celebrates 150 Years', time: '2 weeks ago' }
+    ],
+    events: [
+      { month: 'Sep', day: '14', title: 'Odwira Festival Opening', time: '8:00 AM', location: 'Akropong Palace Grounds', tag: 'Festival' },
+      { month: 'Oct', day: '05', title: 'Community Clean-Up Day', time: '7:00 AM', location: 'Town Center', tag: 'Volunteer' }
+    ],
+    timeline: [
+      { year: '1733', title: 'Foundation', desc: 'Akropong was established as the capital of the Akuapem Traditional Area under Okuapehene.' },
+      { year: '1835', title: 'Basel Mission Arrives', desc: 'The Basel Mission established its headquarters in Akropong, transforming education and Christianity in the region.' },
+      { year: '1848', title: 'First Bible Translation', desc: 'The New Testament was translated into Twi in Akropong, a landmark in Ghanaian literary history.' },
+      { year: '1920', title: 'Teacher Training College', desc: 'Akropong Presbyterian Training College became one of Ghana\'s oldest teacher training institutions.' }
+    ],
+    chiefs: [
+      { name: 'Nana Addo Dankwa I', period: 'Chief (1733–1780)', emoji: '👑' },
+      { name: 'Nana Akuamoa Boateng', period: 'Chief (1820–1860)', emoji: '🏛️' },
+      { name: 'Nana Ofori Kuma', period: 'Queen Mother (1900–1935)', emoji: '👸' }
+    ],
+    traditions: [
+      { title: 'Odwira Festival', desc: 'The annual homecoming festival where all sons and daughters of Akropong return to celebrate their heritage with drumming, dancing and feasting.' },
+      { title: 'Basel Mission Heritage', desc: 'The town preserves its deep Christian heritage through annual commemorations at the historic Basel Mission church.' }
+    ],
+    projects: [
+      { title: 'Akropong Palace Restoration', tag: 'Heritage', desc: 'Restoring the historic Okuapehene palace to preserve our cultural landmark for future generations.', raised: 18500, goal: 25000 },
+      { title: 'Youth Skills Center', tag: 'Education', desc: 'Building a modern vocational training center to equip youth with marketable skills.', raised: 9200, goal: 20000 }
+    ],
+    gallery: [
+      { cat: 'history', label: 'History', src: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=400', title: 'Akropong Ridge' },
+      { cat: 'festivals', label: 'Festivals', src: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400', title: 'Odwira Festival' },
+      { cat: 'nature', label: 'Nature', src: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400', title: 'Ridge View' },
+      { cat: 'people', label: 'People', src: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=400', title: 'Market Day' },
+      { cat: 'history', label: 'History', src: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400', title: 'Basel Mission' },
+      { cat: 'nature', label: 'Nature', src: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400', title: 'Sunrise' }
+    ],
+    members: [
+      { name: 'Kofi Mensah', role: 'Community Leader', online: true },
+      { name: 'Abena Osei', role: 'Youth Coordinator', online: false },
+      { name: 'Kwame Boateng', role: 'Cultural Historian', online: true },
+      { name: 'Akosua Darko', role: 'Health Volunteer', online: false }
+    ],
+    groups: [
+      { name: 'Akropong Diaspora', desc: 'Connecting sons & daughters worldwide', tag: 'Global', emoji: '🌍' },
+      { name: 'Youth Development', desc: 'Empowering the next generation', tag: 'Youth', emoji: '🎓' }
+    ]
   },
   Aburi: {
-    history: "Aburi is one of the most well-known towns on the Akuapem Ridge, famous for the Aburi Botanical Gardens established in 1890. The town sits at about 450m above sea level and enjoys a pleasant climate. Aburi is also historically significant as the site of the 1967 Aburi Accord, where Nigerian leaders met to negotiate during the Nigerian Civil War crisis.",
-    activities: ["Aburi Botanical Gardens 🌺", "Craft Market 🎨", "Aburi Girls School Visit 🏫", "Nature Walks 🌿", "Weekend Getaways 🏡", "Local Food Fair 🍲"],
-    news: ["Aburi Botanical Gardens Renovation Complete", "New Craft Village Opens in Aburi", "Aburi Girls School Tops National Exams"]
-  },
-  Mampong: {
-    history: "Mampong-Akuapem is a historic town on the ridge known for its traditional governance and cultural heritage. The town has a strong agricultural base and is known for producing some of the finest yams and plantains in the region. Mampong has a vibrant community life centered around its traditional festivals and church activities.",
-    activities: ["Yam Festival 🌽", "Traditional Drumming 🥁", "Community Market 🛒", "Church Choir Festival 🎵", "Football Tournament ⚽", "Farming Cooperative 🌾"],
-    news: ["Mampong Yam Festival Draws Large Crowd", "New Health Center Opens in Mampong", "Mampong FC Wins Regional League"]
+    emoji: '🌿', pop: '~8k', founded: '1800s', festival: 'Aburi Day', elevation: '~450m',
+    news: [
+      { tag: 'Tourism', title: 'Aburi Botanical Gardens Renovation Complete', time: '3 days ago' },
+      { tag: 'Business', title: 'New Craft Village Opens in Aburi', time: '1 week ago' },
+      { tag: 'Education', title: 'Aburi Girls School Tops National Exams', time: '2 weeks ago' }
+    ],
+    events: [
+      { month: 'Aug', day: '20', title: 'Aburi Craft Fair', time: '9:00 AM', location: 'Botanical Gardens', tag: 'Culture' },
+      { month: 'Sep', day: '10', title: 'Nature Walk & Picnic', time: '7:30 AM', location: 'Aburi Gardens', tag: 'Free' }
+    ],
+    timeline: [
+      { year: '1890', title: 'Botanical Gardens Founded', desc: 'The Aburi Botanical Gardens were established by the British colonial government, becoming a landmark attraction.' },
+      { year: '1967', title: 'The Aburi Accord', desc: 'Nigerian leaders met in Aburi to negotiate during the Nigerian Civil War crisis, putting Aburi on the world map.' },
+      { year: '1990s', title: 'Tourism Boom', desc: 'Aburi became one of Ghana\'s top weekend getaway destinations, known for its cool climate and scenic beauty.' }
+    ],
+    chiefs: [
+      { name: 'Nana Kwesi Adu', period: 'Chief (1850–1890)', emoji: '👑' },
+      { name: 'Nana Yaa Asante', period: 'Queen Mother (1900–1940)', emoji: '👸' }
+    ],
+    traditions: [
+      { title: 'Craft Market Tradition', desc: 'Aburi is famous for its woodcraft and batik markets, a tradition passed down through generations of skilled artisans.' },
+      { title: 'Botanical Heritage', desc: 'The annual Aburi Gardens Day celebrates the town\'s unique botanical heritage with guided tours and cultural displays.' }
+    ],
+    projects: [
+      { title: 'Craft Village Expansion', tag: 'Economy', desc: 'Expanding the artisan craft village to support more local craftspeople and boost tourism revenue.', raised: 6500, goal: 12000 },
+      { title: 'Gardens Restoration Fund', tag: 'Environment', desc: 'Restoring rare plant species and improving visitor facilities at the Botanical Gardens.', raised: 14000, goal: 18000 }
+    ],
+    gallery: [
+      { cat: 'nature', label: 'Nature', src: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400', title: 'Botanical Gardens' },
+      { cat: 'people', label: 'People', src: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=400', title: 'Craft Market' },
+      { cat: 'festivals', label: 'Festivals', src: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400', title: 'Aburi Day' },
+      { cat: 'nature', label: 'Nature', src: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400', title: 'Ridge Sunrise' },
+      { cat: 'history', label: 'History', src: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400', title: 'Old Aburi' },
+      { cat: 'people', label: 'People', src: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400', title: 'Artisans' }
+    ],
+    members: [
+      { name: 'Ama Boateng', role: 'Tourism Officer', online: true },
+      { name: 'Kojo Asante', role: 'Craft Artisan', online: true },
+      { name: 'Efua Mensah', role: 'School Teacher', online: false },
+      { name: 'Nana Adu', role: 'Garden Curator', online: false }
+    ],
+    groups: [
+      { name: 'Aburi Artisans', desc: 'Craftspeople sharing skills & markets', tag: 'Craft', emoji: '🎨' },
+      { name: 'Aburi Tourism Board', desc: 'Promoting our beautiful town', tag: 'Tourism', emoji: '🌿' }
+    ]
   }
 };
+</script>
 
+<script>
+// Default data for towns without specific data
 const defaultData = {
-  history: "This town is one of the proud communities on the Akuapem Ridge. With a rich cultural heritage and strong community bonds, it contributes uniquely to the tapestry of Akuapem life. The town has its own chief, traditional festivals, and a growing population both at home and in the diaspora.",
-  activities: ["Community Festival 🎊", "Local Market 🛒", "Cultural Dance 💃", "Sports Day ⚽", "Church Events ⛪", "Farming Activities 🌾"],
-  news: ["Community Development Project Launched", "Local School Receives New Equipment", "Annual Festival Dates Confirmed"]
+  emoji: '🏘️', pop: '~5k', founded: '1700s', festival: 'Odwira', elevation: '~450m',
+  news: [
+    { tag: 'Community', title: 'Community Development Project Launched', time: '1 week ago' },
+    { tag: 'Education', title: 'Local School Receives New Equipment', time: '2 weeks ago' },
+    { tag: 'Culture', title: 'Annual Festival Dates Confirmed', time: '3 weeks ago' }
+  ],
+  events: [
+    { month: 'Oct', day: '12', title: 'Town Festival Opening', time: '9:00 AM', location: 'Town Center', tag: 'Festival' },
+    { month: 'Nov', day: '03', title: 'Community Meeting', time: '6:00 PM', location: 'Community Hall', tag: 'Free' }
+  ],
+  timeline: [
+    { year: '1700s', title: 'Foundation', desc: 'The town was established as part of the Akuapem Traditional Area, with its own chief and community structure.' },
+    { year: '1800s', title: 'Growth & Trade', desc: 'The town grew as a trading hub on the Akuapem Ridge, connecting communities across the region.' },
+    { year: '1900s', title: 'Modern Era', desc: 'Schools, churches and modern infrastructure transformed the town while preserving its rich cultural heritage.' }
+  ],
+  chiefs: [
+    { name: 'Nana Kofi Adu', period: 'Chief (1800–1840)', emoji: '👑' },
+    { name: 'Nana Akua Mensah', period: 'Queen Mother (1870–1910)', emoji: '👸' }
+  ],
+  traditions: [
+    { title: 'Odwira Festival', desc: 'The annual Odwira festival brings the community together to celebrate their heritage, honor ancestors and welcome the new yam season.' },
+    { title: 'Traditional Drumming', desc: 'The town is known for its vibrant drumming tradition, with master drummers passing their skills to younger generations.' }
+  ],
+  projects: [
+    { title: 'Community Center Renovation', tag: 'Infrastructure', desc: 'Renovating the community center to provide a modern space for meetings, events and youth programs.', raised: 4500, goal: 10000 },
+    { title: 'Borehole Water Project', tag: 'Health', desc: 'Installing clean water boreholes to improve access to safe drinking water for all residents.', raised: 7800, goal: 15000 }
+  ],
+  gallery: [
+    { cat: 'nature', label: 'Nature', src: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400', title: 'Ridge View' },
+    { cat: 'festivals', label: 'Festivals', src: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400', title: 'Festival Day' },
+    { cat: 'people', label: 'People', src: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=400', title: 'Market Day' },
+    { cat: 'history', label: 'History', src: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400', title: 'Heritage Site' },
+    { cat: 'nature', label: 'Nature', src: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400', title: 'Sunrise' },
+    { cat: 'people', label: 'People', src: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400', title: 'Artisans' }
+  ],
+  members: [
+    { name: 'Kofi Asante', role: 'Community Leader', online: true },
+    { name: 'Ama Boateng', role: 'Youth Coordinator', online: false },
+    { name: 'Kweku Mensah', role: 'Cultural Historian', online: true },
+    { name: 'Akosua Darko', role: 'Health Volunteer', online: false }
+  ],
+  groups: [
+    { name: 'Town Diaspora Group', desc: 'Connecting members worldwide', tag: 'Global', emoji: '🌍' },
+    { name: 'Youth & Development', desc: 'Empowering the next generation', tag: 'Youth', emoji: '🎓' }
+  ]
 };
 
+let currentGalleryItems = [];
+let currentTown = '';
+
+// ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(location.search);
-  const town = params.get('town') || 'Akropong';
-  const data = townData[town] || defaultData;
+  currentTown = params.get('town') || 'Akropong';
+  const data = townData[currentTown] || { ...defaultData };
 
-  document.title = town + ' — Akuapeman.com';
-  document.getElementById('townName').textContent = '🏘️ ' + town;
-  document.getElementById('townBreadcrumb').textContent = town;
-  document.getElementById('historyTitle').textContent = 'History of ' + town;
-  document.getElementById('historyText').textContent = data.history;
+  document.title = currentTown + ' — Akuapeman.com';
+  document.getElementById('headerTownName').textContent = currentTown;
+  document.getElementById('townHeroName').textContent = (data.emoji || '🏘️') + ' ' + currentTown;
+  document.getElementById('historySubtitle').textContent = 'Roots, traditions and stories of ' + currentTown;
+  document.getElementById('statPop').textContent = data.pop || '~5k';
+  document.getElementById('statFounded').textContent = data.founded || '1700s';
+  document.getElementById('statFestival').textContent = data.festival || 'Odwira';
+  document.getElementById('statElevation').textContent = data.elevation || '~450m';
 
-  const activitiesGrid = document.getElementById('activitiesGrid');
-  data.activities.forEach(act => {
-    activitiesGrid.innerHTML += `<div class="card"><div class="card-body" style="text-align:center; padding:2rem;"><div style="font-size:2rem;">${act.split(' ').pop()}</div><h3 style="margin-top:0.5rem;">${act.replace(/[^\w\s]/g,'').trim()}</h3></div></div>`;
-  });
-
-  const newsGrid = document.getElementById('newsGrid');
-  data.news.forEach(n => {
-    newsGrid.innerHTML += `<div class="news-card"><div class="news-img">📰</div><div class="news-body"><span class="news-tag">${town}</span><h3>${n}</h3><p>Stay tuned for more details on this story from ${town}.</p><div class="news-meta">📅 March 2026</div></div></div>`;
-  });
-
-  // Town tabs
-  document.querySelectorAll('.town-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.town-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(tab.dataset.tab).classList.add('active');
-    });
-  });
+  buildHomeNews(data.news);
+  buildExploreGrid();
+  buildPersonalities(data.members);
+  buildNewsFull(data.news, data.events);
+  buildHistory(data.timeline, data.chiefs, data.traditions);
+  buildProjects(data.projects);
+  buildGallery(data.gallery);
+  buildConnect(data.members, data.groups);
 });
+
+// ===== TAB SWITCHING =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
+  const tabIndex = ['home','news','history','projects','gallery','connect'].indexOf(tab);
+  const navBtns = document.querySelectorAll('.bottom-nav-item');
+  if (navBtns[tabIndex]) navBtns[tabIndex].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ===== HOME NEWS CAROUSEL =====
+function buildHomeNews(news) {
+  const el = document.getElementById('homeNewsCarousel');
+  el.innerHTML = news.map(n => `
+    <div class="min-w-[260px] bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden flex-shrink-0">
+      <div class="h-28 bg-gradient-to-br from-[#1a6b3c] to-[#0d3d22] flex items-center justify-center text-4xl">📰</div>
+      <div class="p-3">
+        <span class="text-[10px] uppercase tracking-wider text-[#ec5b13] font-bold">${n.tag}</span>
+        <h3 class="font-bold text-sm mt-1 leading-tight">${n.title}</h3>
+        <p class="text-slate-400 text-xs mt-1.5">${n.time}</p>
+      </div>
+    </div>`).join('');
+}
+
+// ===== EXPLORE GRID =====
+function buildExploreGrid() {
+  const items = [
+    { icon: 'history_edu', label: 'History', sub: 'Our legacy & roots', tab: 'history', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=400' },
+    { icon: 'newspaper', label: 'News', sub: 'Stay updated', tab: 'news', img: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400' },
+    { icon: 'calendar_month', label: 'Events', sub: 'Festivals & gatherings', tab: 'news', img: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400' },
+    { icon: 'account_tree', label: 'Projects', sub: 'Local initiatives', tab: 'projects', img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400' },
+    { icon: 'gallery_thumbnail', label: 'Gallery', sub: 'A visual journey', tab: 'gallery', img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400' },
+    { icon: 'groups', label: 'Connect', sub: 'Meet residents', tab: 'connect', img: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=400' }
+  ];
+  document.getElementById('exploreGrid').innerHTML = items.map(i => `
+    <button onclick="switchTab('${i.tab}')" class="relative flex flex-col items-center justify-center gap-1 p-4 h-32 rounded-lg shadow-sm overflow-hidden group transition-transform active:scale-95">
+      <img src="${i.img}" alt="${i.label}" class="absolute inset-0 w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors"></div>
+      <div class="relative z-10 flex flex-col items-center text-center">
+        <span class="material-symbols-outlined text-3xl text-white">${i.icon}</span>
+        <span class="text-xs font-bold uppercase tracking-wide text-white mt-0.5">${i.label}</span>
+        <p class="text-[9px] text-white/75 leading-tight mt-0.5 px-1">${i.sub}</p>
+      </div>
+    </button>`).join('');
+}
+
+// ===== PERSONALITIES =====
+function buildPersonalities(members) {
+  document.getElementById('personalitiesList').innerHTML = members.slice(0, 2).map(m => `
+    <div class="p-4 bg-white rounded-lg border border-slate-100 shadow-sm flex items-start gap-3">
+      <div class="w-16 h-16 rounded-full bg-[#1a6b3c]/10 flex items-center justify-center text-2xl flex-shrink-0 border-2 border-[#ec5b13]/20">👤</div>
+      <div class="flex-1">
+        <h4 class="font-bold text-[#ec5b13]">${m.name}</h4>
+        <p class="text-xs text-slate-500 mb-2">${m.role}</p>
+        <p class="text-sm text-slate-600 leading-snug mb-2">Active community member contributing to the growth and development of ${currentTown}.</p>
+        <button class="w-full bg-slate-100 text-slate-800 text-xs font-bold py-1.5 rounded-lg">Connect</button>
+      </div>
+    </div>`).join('');
+}
+</script>
+
+<script>
+// ===== NEWS FULL =====
+function buildNewsFull(news, events) {
+  document.getElementById('newsListFull').innerHTML = news.map(n => `
+    <article class="flex gap-3 p-3 bg-white rounded-lg shadow-sm border border-slate-100">
+      <div class="w-20 h-20 flex-shrink-0 bg-gradient-to-br from-[#1a6b3c] to-[#0d3d22] rounded-lg flex items-center justify-center text-2xl">📰</div>
+      <div class="flex flex-col justify-between py-0.5">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-[#ec5b13] block mb-0.5">${n.tag}</span>
+          <h3 class="text-sm font-bold leading-tight text-slate-900">${n.title}</h3>
+        </div>
+        <p class="text-[11px] text-slate-400">${n.time} · 3 min read</p>
+      </div>
+    </article>`).join('');
+
+  document.getElementById('eventsList').innerHTML = events.map(e => `
+    <div class="flex bg-white rounded-lg shadow-sm overflow-hidden border border-slate-100">
+      <div class="bg-[#ec5b13]/10 w-14 flex flex-col items-center justify-center border-r border-slate-100 flex-shrink-0">
+        <span class="text-[10px] font-bold text-[#ec5b13] uppercase">${e.month}</span>
+        <span class="text-xl font-extrabold text-[#ec5b13]">${e.day}</span>
+      </div>
+      <div class="p-3 flex-1">
+        <div class="flex justify-between items-start">
+          <h4 class="text-sm font-bold text-slate-900">${e.title}</h4>
+          <span class="text-[10px] font-semibold bg-[#ec5b13]/10 text-[#ec5b13] px-2 py-0.5 rounded-full">${e.tag}</span>
+        </div>
+        <div class="flex items-center gap-1.5 mt-1.5 text-xs text-slate-500">
+          <span class="material-symbols-outlined text-sm">schedule</span><span>${e.time}</span>
+        </div>
+        <div class="flex items-center gap-1.5 mt-0.5 text-xs text-slate-500">
+          <span class="material-symbols-outlined text-sm">location_on</span><span>${e.location}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ===== HISTORY =====
+function buildHistory(timeline, chiefs, traditions) {
+  document.getElementById('historyTimeline').innerHTML = `<div class="timeline-line"></div>` +
+    timeline.map(t => `
+      <div class="relative pl-10">
+        <div class="absolute left-0 top-1 w-10 h-10 flex items-center justify-center">
+          <div class="w-4 h-4 rounded-full bg-[#ec5b13] ring-4 ring-orange-100"></div>
+        </div>
+        <span class="text-sm font-bold text-[#ec5b13]">${t.year}</span>
+        <h3 class="text-base font-bold mt-0.5">${t.title}</h3>
+        <p class="text-slate-600 text-sm mt-1 leading-relaxed">${t.desc}</p>
+      </div>`).join('');
+
+  document.getElementById('chiefsList').innerHTML = chiefs.map(c => `
+    <div class="flex-none w-48">
+      <div class="relative rounded-lg overflow-hidden" style="aspect-ratio:3/4">
+        <div class="w-full h-full bg-gradient-to-br from-[#1a1a2e] to-[#1a6b3c] flex items-center justify-center text-6xl">${c.emoji}</div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+        <div class="absolute bottom-0 left-0 p-3 w-full">
+          <p class="text-[#ec5b13] text-[9px] font-bold uppercase tracking-wider mb-0.5">${c.period}</p>
+          <h3 class="text-white font-bold text-sm leading-tight">${c.name}</h3>
+        </div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('traditionsList').innerHTML = traditions.map(t => `
+    <div class="bg-white p-4 rounded-lg border border-slate-100 shadow-sm">
+      <h3 class="text-base font-bold mb-2">${t.title}</h3>
+      <p class="text-slate-600 text-sm leading-relaxed">${t.desc}</p>
+      <button class="text-[#ec5b13] font-semibold text-sm mt-3 flex items-center gap-1">
+        Read more <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </button>
+    </div>`).join('');
+}
+
+// ===== PROJECTS =====
+function buildProjects(projects) {
+  document.getElementById('projectsList').innerHTML = projects.map(p => {
+    const pct = Math.round((p.raised / p.goal) * 100);
+    return `
+    <article class="bg-white rounded-lg border border-slate-100 shadow-sm overflow-hidden">
+      <div class="h-40 bg-gradient-to-br from-[#1a6b3c] to-[#0d3d22] flex items-center justify-center text-5xl">🏗️</div>
+      <div class="p-4">
+        <span class="inline-block px-2 py-0.5 bg-[#ec5b13]/10 text-[#ec5b13] text-xs font-bold rounded mb-2 uppercase tracking-wider">${p.tag}</span>
+        <h3 class="text-base font-bold mb-1.5">${p.title}</h3>
+        <p class="text-sm text-slate-500 mb-4 leading-snug">${p.desc}</p>
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-sm font-medium">
+            <span>GH₵${p.raised.toLocaleString()} raised</span>
+            <span class="text-[#ec5b13]">${pct}%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <div class="text-[11px] text-slate-400 flex justify-between pt-0.5">
+            <span>Goal: GH₵${p.goal.toLocaleString()}</span>
+            <span>Active</span>
+          </div>
+        </div>
+        <button onclick="alert('Thank you for your interest! Payment gateway coming soon.')" class="w-full mt-4 bg-[#ec5b13] text-white font-bold py-2.5 rounded-lg text-sm">Support This Project</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+// ===== GALLERY =====
+function buildGallery(items) {
+  currentGalleryItems = items;
+  renderGallery(items);
+}
+
+function renderGallery(items) {
+  document.getElementById('galleryGrid').innerHTML = items.map((g, i) => `
+    <div class="gallery-item" style="aspect-ratio:1" onclick="openViewer('${g.title}','${g.src}')">
+      <img src="${g.src}" alt="${g.title}" loading="lazy">
+      <div class="badge">${g.label}</div>
+    </div>`).join('');
+}
+
+function filterGallery(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = cat === 'all' ? currentGalleryItems : currentGalleryItems.filter(g => g.cat === cat);
+  renderGallery(filtered);
+}
+
+// ===== CONNECT =====
+function buildConnect(members, groups) {
+  document.getElementById('memberGrid').innerHTML = members.map(m => `
+    <div class="bg-white p-3 rounded-xl border border-slate-200 flex flex-col items-center text-center">
+      <div class="relative mb-2">
+        <div class="w-16 h-16 rounded-full bg-[#1a6b3c]/10 flex items-center justify-center text-2xl border-2 border-[#ec5b13]/20">👤</div>
+        ${m.online ? '<span class="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>' : ''}
+      </div>
+      <h3 class="font-bold text-sm">${m.name}</h3>
+      <p class="text-xs text-slate-500 mt-0.5 mb-3 line-clamp-2">${m.role}</p>
+      <button class="w-full py-1.5 bg-[#ec5b13] text-white rounded-lg text-xs font-bold">Connect</button>
+    </div>`).join('');
+
+  document.getElementById('chatGroups').innerHTML = groups.map(g => `
+    <div class="bg-white overflow-hidden rounded-xl border border-slate-200 flex items-center gap-3 p-3 cursor-pointer hover:shadow-md transition-shadow">
+      <div class="w-12 h-12 rounded-lg bg-[#ec5b13]/10 flex items-center justify-center text-2xl flex-shrink-0">${g.emoji}</div>
+      <div class="flex-1 min-w-0">
+        <h3 class="font-bold text-sm">${g.name}</h3>
+        <p class="text-xs text-slate-500 truncate">${g.desc}</p>
+        <span class="text-[10px] font-bold px-2 py-0.5 bg-slate-100 rounded-full mt-1 inline-block">${g.tag}</span>
+      </div>
+      <span class="material-symbols-outlined text-[#ec5b13] text-sm">arrow_forward_ios</span>
+    </div>`).join('');
+
+  document.getElementById('dmList').innerHTML = members.slice(0, 3).map((m, i) => `
+    <div class="p-3 flex gap-3 hover:bg-slate-50 transition-colors cursor-pointer">
+      <div class="relative flex-shrink-0">
+        <div class="w-11 h-11 rounded-full bg-[#1a6b3c]/10 flex items-center justify-center text-xl">👤</div>
+        ${m.online ? '<span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>' : ''}
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between mb-0.5">
+          <h4 class="font-bold text-sm">${m.name}</h4>
+          <span class="text-[10px] text-slate-400">${i === 0 ? 'Just now' : i === 1 ? 'Yesterday' : '2 days ago'}</span>
+        </div>
+        <p class="text-xs text-slate-500 truncate">Hey! Looking forward to the upcoming community event.</p>
+      </div>
+    </div>`).join('');
+}
+
+// ===== MEDIA VIEWER =====
+function openViewer(title, src) {
+  document.getElementById('viewerTitle').textContent = title;
+  document.getElementById('viewerImage').src = src;
+  document.getElementById('mediaViewer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeViewer() {
+  document.getElementById('mediaViewer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ===== HELPERS =====
+function selectAmount(btn, amount) {
+  document.querySelectorAll('.grid button').forEach(b => {
+    b.classList.remove('bg-[#ec5b13]', 'border-[#ec5b13]');
+    b.classList.add('border-white/20');
+  });
+  btn.classList.add('bg-[#ec5b13]', 'border-[#ec5b13]');
+}
+function submitMemory(e) {
+  e.preventDefault();
+  alert('Thank you for sharing your memory! It will be reviewed and posted soon.');
+  e.target.reset();
+}
 </script>
 </body>
 </html>

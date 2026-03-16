@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Community Connect - Town Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">groups</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Community Connect</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-primary"></span>
+</button>
+</div>
+</header>
+<main class="flex-1 max-w-5xl mx-auto w-full p-4 md:p-6 space-y-8 pb-24">
+<!-- Member Profiles Section -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-bold">Member Profiles</h2>
+<button class="text-primary text-sm font-semibold hover:underline">View all</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Profile 1 -->
+<div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col items-center text-center">
+<div class="relative mb-3">
+<img class="w-20 h-20 rounded-full object-cover border-2 border-primary/20 p-0.5" data-alt="Portrait of a smiling woman outdoors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX9MJvp4q6QGULc8tpgEEp3-hh_G09BOei__R1OQ9D3EXQRrhDWfYjiP67uFh4d0dIIE6c-zTBBz6PUILbYparWEiMogn7xuc6s7XS8nLiQm1fHGYhWTPJc6SXszA35aLST2TRNyZwBPCSQyrLRiMCVX-YHi8hYFw0NI1_0-AbQRAlyqGgvm6PSdi-PYdJBzlZInDT6jUOttTeMP9XqhMpbEiczG-ZTPBHRaHg4CmNluV9YZQ7yk6TFJH5tsVwzH7L7EUKhbI1GoY"/>
+<span class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-slate-800 rounded-full"></span>
+</div>
+<h3 class="font-bold text-sm">Sarah Jenkins</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4 line-clamp-2">Avid gardener and local baker</p>
+<button class="w-full py-2 bg-primary text-white rounded-lg text-xs font-bold hover:opacity-90 transition-opacity">Connect</button>
+</div>
+<!-- Profile 2 -->
+<div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col items-center text-center">
+<div class="relative mb-3">
+<img class="w-20 h-20 rounded-full object-cover border-2 border-primary/20 p-0.5" data-alt="Portrait of a man in casual attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUWmLVgi3FNdsMzND0VWP4VMfI25NkgtuSH1tcQhxvvv-xrnFgEKddHvIira9q0IM6T1A1r6wgnFTn2nFa-phjNNP8xlyOJXV2oxW7wcRb9tha0YxUhZqex19xu_UA_k3x9rIqVDEmpebzP5Wwe7_16f4ULkUdBjMxTeu6KOlA3r8lWkQS82GayZblsELDMFQg6TYMeMxD5_Mng9EaRQ8ndkXNtVNwczsbBefo2xuMDBfbwn982ghr4LpvOeJ2BdtEKuJG97Gwltw"/>
+</div>
+<h3 class="font-bold text-sm">Marcus Chen</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4 line-clamp-2">Youth sports coach and educator</p>
+<button class="w-full py-2 bg-primary/10 text-primary rounded-lg text-xs font-bold hover:bg-primary/20 transition-colors">Connect</button>
+</div>
+<!-- Profile 3 -->
+<div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col items-center text-center">
+<div class="relative mb-3">
+<img class="w-20 h-20 rounded-full object-cover border-2 border-primary/20 p-0.5" data-alt="Portrait of a woman smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWwH5hH0-OnaFFoV0rUXbNEvvrvPgbIwRASsopIlcYPMQRvuC79EhBigEi9CPG0EFDldsOZYc1yV69lVBykzTX9XWtoWHSrwKrkGbx26cmPExYq_rmh4ZIbHLbJhbVOsFkTDwqboHrRqNkX05dGUttGxzWJ3P81vF1vmd57lE1KStIGwZrBozho4IaBZ0Hw9oXpMNviGYulXyt4OeREp1Bxfe1FH1mQkeGhtOVGcOZ_Lp0QJZmp8njygNTTXpGAsP04u2GpkLwL28"/>
+</div>
+<h3 class="font-bold text-sm">Elena Rodriguez</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4 line-clamp-2">Local historian and archivist</p>
+<button class="w-full py-2 bg-primary/10 text-primary rounded-lg text-xs font-bold hover:bg-primary/20 transition-colors">Connect</button>
+</div>
+<!-- Profile 4 -->
+<div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col items-center text-center">
+<div class="relative mb-3">
+<img class="w-20 h-20 rounded-full object-cover border-2 border-primary/20 p-0.5" data-alt="Portrait of a man with beard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu-f1rwyMf2lqVnx40mn3gQE1GsPdPZVnzrF-IZKskm3WyFDYpYXYzh-TQ4L9kYFK2gKtE1yLfft6aROLlYbM6oee7O4Rqh2Wh8xktIPR1UQpctqWTpvXl0qCh2EABEU2vQZ0tcKsDs9b-8DHjTtdokj5TMH8tNHFrb2-6t0yUmORWLpKkn7XZqPKu2CpgnG8uRCF9R253r681BLqpOQnJ2tBUM4VMl3Z-YJwHlh4_n--LMm145AuMcukAEMllp5Ha33xJ3rCx0qE"/>
+<span class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-slate-800 rounded-full"></span>
+</div>
+<h3 class="font-bold text-sm">David Thompson</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4 line-clamp-2">Weekend hiker and dog lover</p>
+<button class="w-full py-2 bg-primary/10 text-primary rounded-lg text-xs font-bold hover:bg-primary/20 transition-colors">Connect</button>
+</div>
+</div>
+</section>
+<!-- Chat Groups Section -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-bold">Chat Groups</h2>
+<button class="text-primary text-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                    Create Group
+                </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Group Card 1 -->
+<div class="bg-white dark:bg-slate-800/50 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 group cursor-pointer hover:shadow-lg transition-shadow">
+<div class="h-24 w-full relative">
+<div class="absolute inset-0 bg-primary/20"></div>
+<img class="w-full h-full object-cover opacity-60" data-alt="Lush community garden with flowers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1zu836ePMvf9yDeDZofdmW1Nw-Tpq-w2ZcWa4pCTvjDf7c3F6jvxGqSwdbQD0U4EPhqPGWbkQ3tnAg-IuECcxebxzWKagWFKJlU1NtrBtLfc4UaqO7ULyb_pqXlt3SrivoLlMnLM4R0zhr6NX9vnYE9VRpacEKxUXwZ3KEhQzWzPNVYHVChHJaHaXE7AgyI1T7kybn3Hn1T8kFw1FHqeQKyy5rrkr4e4_RQq6yGswc8Tm0Upc-gdnOMFjooYLE9h03r8OWCo87T0"/>
+<div class="absolute bottom-2 left-3 flex -space-x-2">
+<img class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-800" data-alt="User avatar small" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-SwWfmiA0wOVFLmDgjWhLiQUxVOUResYInqe0p0VHe819FE26Kzoq6zoTDM2CHgc_o5sihlm8-nMrd3leYS5yN4wtwU51gtkits6-kKbhPuLOuiM4R5o9CMHdQyWKfkZAdaEatrFgcZxTq-ZtPalTfVTbjczp0LT04CTtiKLD19-Pn5lcXECcHRRh0F-njyHMKCQ_jSz5TSW2VSAHMeKJWYdwImDzQNkCnwrT4hzJq8GGCnqG8gZqgHb3C6hGMZ3lfh4KEiGfryw"/>
+<img class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-800" data-alt="User avatar small" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBidj4GEymWiSDvIopAYgb05uh8sGHoVxJbLw8-tWx8xbykQU6v6vlFqQZagWkt_KDSx_m4_8v29G7q4mVQBj979O-xTICE0dLXha8V0KB7Jweort1Ouxeh2sDVO-N_uWWz9ssvRm_7ZQoBpqpJmewteb3gE9IBV3sAZBmDYKt_4qqAhYjPRLPZbmNPdIHKdAX3Gv5hH4ABbEAh7m8_P08oOP9W30GyQX9vdtSKoZ8Xt4J5L5Jnx6Cjl_EpgClJX4ypsQIq_tWxiNQ"/>
+<div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold border-2 border-white dark:border-slate-800">+12</div>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-bold text-base mb-1">Town Beautification</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">Discussing new flower beds on Main St.</p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-[10px] font-bold px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-full">Eco Friendly</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</div>
+</div>
+</div>
+<!-- Group Card 2 -->
+<div class="bg-white dark:bg-slate-800/50 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 group cursor-pointer hover:shadow-lg transition-shadow">
+<div class="h-24 w-full relative">
+<div class="absolute inset-0 bg-primary/20"></div>
+<img class="w-full h-full object-cover opacity-60" data-alt="Kids playing soccer on a green field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYmy_QO7_oVNPNPh8MyfRXBN7jnWUzMQOhu1i9j20m6mCYsSF76M4XwdCNA_j9PKw2fUTKqZYodP1lsXkh9S9SgQbd028xtR0B4iT4qPtaAPln9AjWPHZP3RpI5m6sjVO48OrUCE9e8qijU5i5EO-JVuBTw946g9rkFNziVVhIrSvl8SUQ26cgkfGU-0Y8Q-4APtubgh46l2dnc3IwMmfi0rSz7KpeYFpZHMSgd6B1Y5lXU6lsqOo1e2IFBi163DAAqz1K0xSKVog"/>
+<div class="absolute bottom-2 left-3 flex -space-x-2">
+<img class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-800" data-alt="User avatar small" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy0WXwO6tiX-dGrIo0nm6kWFGEPkkZCAZKHk8lHMvkMXsDOu2QsrPRp1xIgCeDHDxSZ7JmbxljGSswCtnCbPTMWFRwtx6QdJlG-2iCAGnEnKz16F5zIUHKjZ9aTd4GZzETaxjA566AwgrJb6VXM4Rk3efGqVFsRcqSUqcwzROm1tuvNM6t1Iqc59KXpctJkAbXWcoVzDEKQ3qX9Yb__xJ6kBxJk3EVZ7lhiZ0kpPmleK3WZfI7dpBwF-o8-ur48RpZpGMUHEvg-1M"/>
+<div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold border-2 border-white dark:border-slate-800">+45</div>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-bold text-base mb-1">Youth Sports</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">Coordinating weekend leagues &amp; snacks.</p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-[10px] font-bold px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-full">Community</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</div>
+</div>
+</div>
+<!-- Group Card 3 -->
+<div class="bg-white dark:bg-slate-800/50 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 group cursor-pointer hover:shadow-lg transition-shadow">
+<div class="h-24 w-full relative">
+<div class="absolute inset-0 bg-primary/20"></div>
+<img class="w-full h-full object-cover opacity-60" data-alt="Group of hikers on a mountain trail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5LPuiJP0B9tYzUAkRJHbjILAA1VR4_UTU0jmy-Y2i21rwnjyj_3UwHwEue65xnRcOKtSyHbMdks84IaIY2nqzWS7fsZI18ewS8mWHdmCc3uKlihzgLRqiyBFJ_hoDssOIUqu-ANO9EfLo_aO-5isAlP9hH0MnSo52eo1TO4G1Nx1k6cj9Rkk8-q6uDhVI8y76LZG5IxI9BNaR0XxjPf9LTaMq-Diun6dKcd3mg7EEcqm894G6DEMcRK_TsehdXAgz6Rxw391Wu9g"/>
+<div class="absolute bottom-2 left-3 flex -space-x-2">
+<img class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-800" data-alt="User avatar small" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASOQxOhoVK6AqhDYaggvc1DmhdFw7NgnXlxGVabDn5EsoCFm5gzTNrOmRCC9CvUlCjfP6Fk2YSBjJfSZwfXoE-Beatyp-QJQ5OdnlZu7zNabsPQ0w4cNJq9rnA1vz1gViX119kwOk5t6w7xP5g4kaCQwLykOIuLUQhT9nveZ--mbRxqevmDjh7meThxgHKiassBekYHHK9IqlDPYp4GP8NFmfJOoXDz1ygs6RV0Mkls_dEYiagxL0w_q85Q5wOg1wPpkO2I8676xs"/>
+<img class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-800" data-alt="User avatar small" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7evqVqVC22jH14TRDQOJh18I0SJFXiFhpA5S7wgpN4Ql91Xsk0yycbS0v6eXciJScWFkVlv70D4DzT1sPRLi8ckn5NP3efGMIuzd0AgajfP2-22bfTKFE9Q7c-u43CENv-nD-XKeRGEmOZtMTIfVdiXHCj0HyIjp3CkVwkRojXoFs2TA2C52mB8jpD5rE3eD27Jhw_I_S0c1p-aUcaigtID7bcUMnV2NYnyGGVwYZlss92gtUMJ-caqd8pT5pfuB_2LySDgUjjgE"/>
+<div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold border-2 border-white dark:border-slate-800">+28</div>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-bold text-base mb-1">Weekend Hikers</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">Exploring trails in the valley every Sat.</p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-[10px] font-bold px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-full">Outdoors</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Activity Area -->
+<section>
+<h2 class="text-lg font-bold mb-4">Direct Messages</h2>
+<div class="bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-700">
+<!-- Message 1 -->
+<div class="p-4 flex gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+<div class="relative flex-shrink-0">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Small round user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY-DG5erGar4boBFdPa1jaJDaUL0BodKrcNGQ25KuAQ5wmCSa9sK8etMoF7aC0zcrEYvM-ICr2T43QmA5-1maGIrvRfuMcFZqJqwTCPuam1pMMIUAV_Il3gtb1-lRY_xQYwexFd72RRPNdv5LOaMSFzYSTVY_f2GHkxyKYfXEjCmHbC_m2H_bUT-qO-6Ep4awXPYuQpa8zTt0rKOEyvbNjOwlWl90GQAS4URo3RaxXzJrW2IIxhBiNq8l9HwTk80DP43-xPXq8yi0"/>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-slate-800 rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<h4 class="font-bold text-sm">Sarah Jenkins</h4>
+<span class="text-[10px] text-slate-500">2:45 PM</span>
+</div>
+<p class="text-xs text-primary font-medium truncate">Hey! Those sunflower seeds you gave me are starting to sprout!</p>
+</div>
+<div class="flex flex-col items-end justify-center">
+<span class="w-5 h-5 bg-primary text-white text-[10px] flex items-center justify-center rounded-full font-bold">1</span>
+</div>
+</div>
+<!-- Message 2 -->
+<div class="p-4 flex gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer opacity-80">
+<div class="relative flex-shrink-0">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Small round user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8BSjaPlpHoxfBYSXhA7Hkv9jU8yW0OmeA4O3vpORju2XLSn8eBQWd_9ScMJ5Mada2G0KIx7m93eOR0OrqDy6X6dkGuwV34w5zjM3L6zFT7YNuoJAI-A-gKKQ0Ns1DCYkOqvXn5brSa7CW-vWK1Q2Gf4rf7mmzRrizshG5jj54IK8v1JxlH92Ybil5OFrYCDcqf2uGQPGNMSol52FW445Xf9LFZ0hCnLLWYFE-9uLLTHmNyJcr68Y0AxYkpyBJorDJ6bm7CsXozqw"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<h4 class="font-bold text-sm">Marcus Chen</h4>
+<span class="text-[10px] text-slate-500">Yesterday</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 truncate">Thanks for the feedback on the coaching schedule. I'll update it by tonight.</p>
+</div>
+</div>
+<!-- Message 3 -->
+<div class="p-4 flex gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer opacity-80">
+<div class="relative flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">forum</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<h4 class="font-bold text-sm">Main Street Huddle</h4>
+<span class="text-[10px] text-slate-500">Oct 12</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 truncate"><span class="font-semibold">Elena:</span> Don't forget the historical society meeting tomorrow at 6 PM.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-background-dark/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-2 pb-safe">
+<div class="max-w-md mx-auto flex justify-around items-center h-16">
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary active-nav" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Connect</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-[10px] font-medium">Events</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-[10px] font-medium">Messages</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</a>
+</div>
+</nav>
+</body></html>

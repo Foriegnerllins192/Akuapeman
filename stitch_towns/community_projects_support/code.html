@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Community Projects &amp; Support</title>
+<!-- Load Tailwind CSS v3 with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Load Plus Jakarta Sans font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- BEGIN: Theme Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ec5b13',
+            surface: '#ffffff',
+            background: '#fcfcfc',
+            muted: '#64748b'
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          borderRadius: {
+            'custom': '8px',
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: Theme Configuration -->
+<style data-purpose="typography">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .text-balance {
+      text-wrap: balance;
+    }
+  </style>
+<style data-purpose="custom-shadows">
+    .card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body class="bg-background text-slate-900 min-h-screen">
+<!-- BEGIN: Mobile Navigation Header -->
+<header class="sticky top-0 z-50 bg-white border-b border-slate-100 px-4 py-4 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded-custom flex items-center justify-center">
+<svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<span class="font-extrabold text-lg tracking-tight">CommuniFix</span>
+</div>
+<button class="p-2" data-purpose="mobile-menu-trigger">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 6h16M4 12h16m-7 6h7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</header>
+<!-- END: Mobile Navigation Header -->
+<main class="pb-20">
+<!-- BEGIN: Hero Section -->
+<section class="px-4 py-8 bg-white border-b border-slate-50">
+<h1 class="text-3xl font-extrabold leading-tight mb-3">Community Projects</h1>
+<p class="text-muted text-base leading-relaxed">Join hands to improve our neighborhood. Every contribution brings us closer to a better living space.</p>
+</section>
+<!-- END: Hero Section -->
+<!-- BEGIN: Projects Grid -->
+<section class="px-4 py-8" data-purpose="ongoing-projects">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-bold">Ongoing Projects</h2>
+<a class="text-primary font-semibold text-sm" href="#">See all</a>
+</div>
+<div class="space-y-6">
+<!-- Project Card 1: Park Renovation -->
+<article class="bg-white rounded-custom border border-slate-100 card-shadow overflow-hidden">
+<img alt="Greenwood Park Renovation" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtRyHXwX9pPOiOAEdhGAd4rfHl9taVDL-DKILocntctV9eFUXyqJuIxWTinzrF28zbHyKq7C_SXN2xQ6NAiZ3InVFrvOYGEGTjE4VgIexpgOBvdxwY3b0tZLXKmnzcH0Bn4glgHPNlFm0qNqZThBI1xrF1oYdAdNJM_03F7F0JzKuvKNWJA9NZkIrCyOVHDNa0ZBPlpY4kAsfXJfcptKyhnSRkdKfW5fQ6p-O2uDiOwEFH6fdkeIPA8XjVl9Ep8xI74FI4PLve-50"/>
+<div class="p-5">
+<span class="inline-block px-2 py-1 bg-green-50 text-green-700 text-xs font-bold rounded mb-3 uppercase tracking-wider">Infrastructure</span>
+<h3 class="text-lg font-bold mb-2">Greenwood Park Renovation</h3>
+<p class="text-sm text-muted mb-5 leading-snug">Upgrading playgrounds, adding solar lighting, and planting 50 new native trees across the north wing.</p>
+<!-- Progress Bar -->
+<div class="space-y-2">
+<div class="flex justify-between text-sm font-medium">
+<span>$12,450 raised</span>
+<span class="text-primary">83%</span>
+</div>
+<div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 83%"></div>
+</div>
+<div class="text-[11px] text-muted flex justify-between pt-1">
+<span>Goal: $15,000</span>
+<span>12 days left</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Project Card 2: Community Garden -->
+<article class="bg-white rounded-custom border border-slate-100 card-shadow overflow-hidden">
+<img alt="Urban Rooftop Garden" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbSacuDFCmRUGMUVjJKGgFLl5oBdktI3Ry7Ik3ppceI0FvMQFRvAgHJZh5JlfCJvodBMLO9CG8nRyjWAJDCkQtuoAJ7TWQykICN9WG3wPkReuYdS2brOe-RwKYleHhHqFvZOO38DDAqePBWtt1wB0uXXGpUN-d9ch7-P2VWp3NC0bOTUuqx4Nq2-Gk7RjKUe74A9wOXLaXd5bXmLwv43oUqgva4p06KlR9UlR3CEXVJC9pc1_U7gaJ6GvvCAOPxQi8FqWqpbPtLpA"/>
+<div class="p-5">
+<span class="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded mb-3 uppercase tracking-wider">Environment</span>
+<h3 class="text-lg font-bold mb-2">Urban Rooftop Garden</h3>
+<p class="text-sm text-muted mb-5 leading-snug">Converting the old community center roof into a sustainable vegetable garden for local families.</p>
+<!-- Progress Bar -->
+<div class="space-y-2">
+<div class="flex justify-between text-sm font-medium">
+<span>$3,200 raised</span>
+<span class="text-primary">40%</span>
+</div>
+<div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 40%"></div>
+</div>
+<div class="text-[11px] text-muted flex justify-between pt-1">
+<span>Goal: $8,000</span>
+<span>28 days left</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- END: Projects Grid -->
+<!-- BEGIN: Support Section -->
+<section class="px-4 py-10 bg-slate-900 text-white" data-purpose="support-cta">
+<div class="text-center">
+<h2 class="text-2xl font-extrabold mb-4">Support This Project</h2>
+<p class="text-slate-400 text-sm mb-8 px-4">Your donations directly fund materials and professional labor for our community initiatives.</p>
+<div class="bg-white/5 p-6 rounded-custom border border-white/10 mb-6">
+<p class="text-xs uppercase font-bold tracking-widest text-primary mb-4">Select Amount</p>
+<div class="grid grid-cols-3 gap-3 mb-6">
+<button class="py-3 px-2 border border-white/20 rounded-custom hover:bg-primary hover:border-primary transition-colors font-bold">$25</button>
+<button class="py-3 px-2 border border-primary bg-primary rounded-custom font-bold">$50</button>
+<button class="py-3 px-2 border border-white/20 rounded-custom hover:bg-primary hover:border-primary transition-colors font-bold">$100</button>
+</div>
+<button class="w-full bg-primary hover:bg-orange-600 text-white font-extrabold py-4 px-6 rounded-custom text-lg shadow-lg shadow-primary/20 transition-all active:scale-95" data-purpose="donate-button">
+            Donate Now
+          </button>
+</div>
+<p class="text-[11px] text-slate-500 italic">Secure payment via Stripe. Tax-deductible receipts will be emailed automatically.</p>
+</div>
+</section>
+<!-- END: Support Section -->
+<!-- BEGIN: Contributors List -->
+<section class="px-4 py-8" data-purpose="top-contributors">
+<h2 class="text-xl font-bold mb-6">Top Contributors</h2>
+<div class="space-y-4">
+<!-- Contributor 1 -->
+<div class="flex items-center justify-between p-3 bg-white border border-slate-100 rounded-custom">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-200 border-2 border-primary overflow-hidden">
+<img alt="John Smith" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtxMlS8AswWA_SUjeDcH-Prv836qPwEyKOTz-TcoaN2-jJbzg4xvnAK8vgW_bJDVG0nTspy1lWJveKVWiSNIJ5ooLR6F_cQR6eb1b727hFmAjZhtRHouzew_-qmAgztgZ_S-QoUuKjnsjwwnMhW_7CHSo4_t5YXkO-oO7BJ6oKNWPsE0D_zCvSUGdw-SD04wX5orOvPnvfed28OgHJNT3ELS4-gJtFmGzlKQYU7O15cNcSWzWcaawinOt6f7ZaLJexzyOkyqHRppE"/>
+</div>
+<div>
+<p class="font-bold text-sm">John Smith</p>
+<p class="text-[11px] text-muted">12 Projects Supported</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-primary font-extrabold">$1,250</p>
+<p class="text-[10px] text-slate-400 uppercase tracking-tighter font-bold">Total Donated</p>
+</div>
+</div>
+<!-- Contributor 2 -->
+<div class="flex items-center justify-between p-3 bg-white border border-slate-100 rounded-custom">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-200 border-2 border-slate-100 overflow-hidden">
+<img alt="Alice Morgan" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgKTFOE0m2UZbMSOFRDZ87D7w1xufwPI9XO4g5RBS11r2pzY8w1Yse3PeCZ3YAVP64cCf7cDtCibR7nBrdu0gDMbuIHtRb9BU1nDeHOgWpmFoP5Qh5V2BfX64Y6O1efHhSbGDXyR5laKxaLsUH34PISHEW3cTQl3sj0ACQBdePx11HdSfcftERbvioSoopxUzZ6-dt9L--DPrHvWdIHw_n8NmUBoF01hv5ZnvnG5rwJD8O3zrODyzmbtDSxtxfV_0iClk0VNg-pDM"/>
+</div>
+<div>
+<p class="font-bold text-sm">Alice Morgan</p>
+<p class="text-[11px] text-muted">8 Projects Supported</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-primary font-extrabold">$840</p>
+<p class="text-[10px] text-slate-400 uppercase tracking-tighter font-bold">Total Donated</p>
+</div>
+</div>
+<!-- Contributor 3 -->
+<div class="flex items-center justify-between p-3 bg-white border border-slate-100 rounded-custom">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-200 border-2 border-slate-100 overflow-hidden">
+<img alt="Robert Lee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuVxWfeXxoYj8NzcUZzXrsqBt_poOqj0EKTumm-R-pOdIE2S22msGtpAv74qifu2vFwvVjW9oQ6m_bJU7at91_Ye2RTDWuBFpK26FBWy-Cp4aiQLqQOSWoW-Fqu2j8z_O0AfPwWdTn2d6c6ZnVaWtzIvzYFUHsEitc_n2v8CnU1XpMHuCW4LaFLSa7EzqSqdlHRZJb-yiOlSr8w5y_cXBNAyPVCjNfBHY-RtwPsIM8cVT6ubdGJs5U8MSV6DraelX4NG_Va6eEY3U"/>
+</div>
+<div>
+<p class="font-bold text-sm">Robert Lee</p>
+<p class="text-[11px] text-muted">5 Projects Supported</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-primary font-extrabold">$610</p>
+<p class="text-[10px] text-slate-400 uppercase tracking-tighter font-bold">Total Donated</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 text-sm font-semibold text-slate-500 border border-slate-200 rounded-custom">
+        View All Supporters
+      </button>
+</section>
+<!-- END: Contributors List -->
+</main>
+<!-- BEGIN: Bottom Mobile Menu -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 px-4 py-3 flex justify-between items-center z-50">
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-bold">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-bold">News</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-bold">Events</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-bold">Projects</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-bold">Gallery</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-bold">Connect</span>
+</div>
+</nav>
+<!-- END: Bottom Mobile Menu -->
+</body></html>
