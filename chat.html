@@ -466,6 +466,7 @@
     <button class="nav-tab active" onclick="switchView('feed',this)" title="Feed">🏠</button>
     <button class="nav-tab" onclick="switchView('groups',this)" title="Groups">👥</button>
     <button class="nav-tab" onclick="switchView('chats',this)" title="Chats">💬</button>
+    <button class="nav-tab" onclick="switchView('people',this)" title="People">🤝</button>
     <button class="nav-tab" onclick="switchView('towns',this)" title="Town Groups">🏘️</button>
     <button class="nav-tab" onclick="switchView('search',this)" title="Search">🔍</button>
   </div>
@@ -549,6 +550,7 @@
       <a class="left-nav-item" href="#" onclick="switchView('feed',null)"><div class="lni-icon" style="background:#e8f5e9">📰</div><span class="lni-label">Feed</span></a>
       <a class="left-nav-item" href="#" onclick="switchView('groups',null)"><div class="lni-icon" style="background:#e3f2fd">👥</div><span class="lni-label">Groups</span></a>
       <a class="left-nav-item" href="#" onclick="switchView('chats',null)"><div class="lni-icon" style="background:#f3e5f5">💬</div><span class="lni-label">Chats</span></a>
+      <a class="left-nav-item" href="#" onclick="switchView('people',null)"><div class="lni-icon" style="background:#e8f0fe">🤝</div><span class="lni-label">People</span></a>
       <a class="left-nav-item" href="#" onclick="switchView('towns',null)"><div class="lni-icon" style="background:#fff8e1">🏘️</div><span class="lni-label">Town Groups</span></a>
       <a class="left-nav-item" href="#" onclick="switchView('notifications',null)"><div class="lni-icon" style="background:#fce4ec">🔔</div><span class="lni-label">Notifications</span></a>
       <a class="left-nav-item" href="#" onclick="switchView('search',null)"><div class="lni-icon" style="background:#e8eaf6">🔍</div><span class="lni-label">Search</span></a>
@@ -814,6 +816,26 @@
   </div>
 </div>
 
+<!-- ===== PEOPLE VIEW ===== -->
+<div id="view-people" class="view">
+  <div class="fb-layout" style="grid-template-columns:1fr;max-width:760px;">
+    <div>
+      <div style="background:white;border-radius:12px;padding:1rem 1.2rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);margin-bottom:1rem;">
+        <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:0.3rem;">People You May Know</h2>
+        <p style="font-size:0.82rem;color:var(--gray);">Connect with members of the Akuapem community</p>
+        <div style="position:relative;margin-top:0.8rem;">
+          <span style="position:absolute;left:0.9rem;top:50%;transform:translateY(-50%);">🔍</span>
+          <input id="peopleSearch" type="text" placeholder="Search people..." oninput="filterPeople(this.value)"
+            style="width:100%;padding:0.65rem 1rem 0.65rem 2.5rem;border:1.5px solid var(--border);border-radius:10px;font-size:0.88rem;outline:none;font-family:inherit;"
+            onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div style="display:flex;gap:0.5rem;margin-top:0.8rem;flex-wrap:wrap;" id="peopleTownPills"></div>
+      </div>
+      <div id="peopleGrid"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== STORY VIEWER MODAL ===== -->
 <div id="storyModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:600;align-items:center;justify-content:center;display:none;">
   <div style="position:relative;width:100%;max-width:400px;height:100vh;max-height:700px;border-radius:16px;overflow:hidden;background:#111;">
@@ -864,6 +886,7 @@
     <button class="mbn-item active" onclick="switchView('feed',this)"><span class="mbn-icon">🏠</span>Feed</button>
     <button class="mbn-item" onclick="switchView('groups',this)"><span class="mbn-icon">👥</span>Groups</button>
     <button class="mbn-item" onclick="switchView('chats',this)"><span class="mbn-icon">💬</span>Chats</button>
+    <button class="mbn-item" onclick="switchView('people',this)"><span class="mbn-icon">🤝</span>People</button>
     <button class="mbn-item" onclick="switchView('towns',this)"><span class="mbn-icon">🏘️</span>Towns</button>
     <button class="mbn-item" onclick="switchView('notifications',this)"><span class="mbn-icon">🔔</span>Alerts</button>
     <button class="mbn-item" onclick="switchView('profile',this)"><span class="mbn-icon">�</span>Profile</button>
@@ -1002,6 +1025,7 @@ function switchView(name, btn) {
   showView(name);
   if (name === 'profile') renderProfile();
   if (name === 'notifications') renderNotifications();
+  if (name === 'people') initPeopleView();
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   if (btn) btn.classList.add('active');
   document.querySelectorAll('.mbn-item').forEach(t => t.classList.remove('active'));
@@ -1520,6 +1544,86 @@ function renderGroups() {
       </div>
       <button class="join-btn${g.joined?' joined':''}" onclick="event.stopPropagation();toggleJoin(this)">${g.joined?'✓ Joined':'Join'}</button>
     </div>`).join('');
+}
+
+// ===== PEOPLE =====
+const DEMO_PEOPLE = [
+  { id:10, name:'Abena Asante',    initials:'AA', color:'#1a6b3c', town:'Akropong', mutual:5,  bio:'Community organiser · Loves festivals' },
+  { id:11, name:'Kwame Darko',     initials:'KD', color:'#d4a017', town:'Aburi',    mutual:3,  bio:'Farmer · Fresh produce every Saturday' },
+  { id:12, name:'Ama Boateng',     initials:'AB', color:'#2e7d32', town:'Mampong',  mutual:8,  bio:'Music lover · Akuapem Ridge native' },
+  { id:13, name:'Nana Acheampong', initials:'NA', color:'#6a1a6b', town:'Larteh',   mutual:2,  bio:'Town council member · Road advocate' },
+  { id:14, name:'Yaa Osei',        initials:'YO', color:'#2980b9', town:'Dawu',     mutual:6,  bio:'Teacher · Passionate about education' },
+  { id:15, name:'Kofi Asante',     initials:'KA', color:'#c0392b', town:'Akropong', mutual:4,  bio:'Entrepreneur · Local business owner' },
+  { id:16, name:'Esi Frimpong',    initials:'EF', color:'#b8860b', town:'Tutu',     mutual:1,  bio:'Nurse · Healthcare for the ridge' },
+  { id:17, name:'Fiifi Mensah',    initials:'FM', color:'#1a1a2e', town:'Berekuso', mutual:7,  bio:'Software developer · Tech for Ghana' },
+  { id:18, name:'Adwoa Kusi',      initials:'AK', color:'#2e7d32', town:'Adukrom',  mutual:3,  bio:'Chef · Bringing Akuapem flavours alive' },
+  { id:19, name:'Kweku Boateng',   initials:'KB', color:'#1a6b3c', town:'Aburi',    mutual:9,  bio:'Photographer · Capturing ridge life' },
+  { id:20, name:'Akosua Darko',    initials:'AD', color:'#d4a017', town:'Mampong',  mutual:2,  bio:'Fashion designer · Kente & beyond' },
+  { id:21, name:'Yaw Acheampong',  initials:'YA', color:'#6a1a6b', town:'Larteh',   mutual:5,  bio:'Pastor · Community spiritual leader' },
+];
+
+const connectedPeople = new Set();
+let activePeopleTown = 'All';
+
+function renderPeople(list) {
+  const grid = document.getElementById('peopleGrid');
+  if (!list || !list.length) {
+    grid.innerHTML = `<div style="text-align:center;padding:3rem 1rem;color:var(--gray);"><div style="font-size:3rem;margin-bottom:0.8rem;">🤝</div><p>No people found</p></div>`;
+    return;
+  }
+  grid.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;padding-bottom:1rem;">
+    ${list.map(p => {
+      const connected = connectedPeople.has(p.id);
+      return `<div style="background:white;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,0.1);padding:1.2rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.5rem;">
+        <div style="width:64px;height:64px;border-radius:50%;background:${p.color};color:white;font-weight:800;font-size:1.4rem;display:flex;align-items:center;justify-content:center;">${p.initials}</div>
+        <div style="font-size:0.95rem;font-weight:700;color:#1c1e21;">${p.name}</div>
+        <div style="font-size:0.75rem;color:var(--green);font-weight:600;">📍 ${p.town}</div>
+        <div style="font-size:0.78rem;color:var(--gray);line-height:1.4;">${p.bio}</div>
+        <div style="font-size:0.72rem;color:var(--gray);">👥 ${p.mutual} mutual</div>
+        <button id="connect-btn-${p.id}" onclick="connectPerson(${p.id})"
+          style="margin-top:0.3rem;width:100%;padding:0.55rem;border-radius:8px;border:none;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;background:${connected?'#f0f2f5':'var(--green)'};color:${connected?'var(--gray)':'white'};">
+          ${connected ? '✓ Request Sent' : '🤝 Connect'}
+        </button>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function connectPerson(id) {
+  connectedPeople.add(id);
+  const btn = document.getElementById('connect-btn-' + id);
+  if (btn) {
+    btn.textContent = '✓ Request Sent';
+    btn.style.background = '#f0f2f5';
+    btn.style.color = 'var(--gray)';
+    btn.style.cursor = 'default';
+    btn.onclick = null;
+  }
+}
+
+function filterPeople(query) {
+  let list = DEMO_PEOPLE;
+  if (activePeopleTown !== 'All') list = list.filter(p => p.town === activePeopleTown);
+  if (query && query.trim()) list = list.filter(p =>
+    p.name.toLowerCase().includes(query.toLowerCase()) ||
+    p.town.toLowerCase().includes(query.toLowerCase())
+  );
+  renderPeople(list);
+}
+
+function setPeopleTown(town, el) {
+  activePeopleTown = town;
+  document.querySelectorAll('#peopleTownPills .cat-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  filterPeople(document.getElementById('peopleSearch').value);
+}
+
+function initPeopleView() {
+  const towns = ['All', ...new Set(DEMO_PEOPLE.map(p => p.town))];
+  document.getElementById('peopleTownPills').innerHTML = towns.map(t =>
+    `<button class="cat-pill${t === activePeopleTown ? ' active' : ''}" onclick="setPeopleTown('${t}',this)">${t}</button>`
+  ).join('');
+  filterPeople('');
 }
 </script>
 </body>
