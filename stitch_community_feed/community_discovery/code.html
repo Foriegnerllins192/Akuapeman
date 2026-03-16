@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Community Discovery</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="custom-fonts">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+<style data-purpose="ui-tweaks">
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-gray-50 text-slate-900 pb-20">
+<!-- BEGIN: Sticky Header -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 py-3">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<h1 class="text-xl font-bold tracking-tight">Communities</h1>
+<button class="p-2 bg-gray-100 rounded-full text-slate-600">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<!-- Search Bar -->
+<div class="relative" data-purpose="search-container">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+<input class="w-full bg-gray-100 border-none rounded-xl py-2.5 pl-10 text-sm focus:ring-2 focus:ring-blue-500/20 placeholder-gray-500" placeholder="Search for communities..." type="text"/>
+</div>
+</div>
+</header>
+<!-- END: Sticky Header -->
+<main class="mt-4 space-y-8">
+<!-- BEGIN: Featured Communities -->
+<section data-purpose="featured-carousel">
+<div class="px-4 mb-3 flex items-center justify-between">
+<h2 class="text-lg font-semibold">Featured Communities</h2>
+</div>
+<div class="flex overflow-x-auto gap-4 px-4 hide-scrollbar snap-x">
+<!-- Photography Card -->
+<div class="flex-none w-72 h-44 relative rounded-2xl overflow-hidden snap-center shadow-lg shadow-blue-900/10">
+<img alt="Photography" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5pT9_sSPXQQWmj3oADG1XRiDMEq6WJj49JshdfvO9UehCFkuLUWC4y_ZwhX82R4PkpOiF7xaMqlI47LJGx7vhGLnJe38-7M7MFrheRgLWh2o9czLVzWX4anNk2Bn5M7x81jY-bN0naASiD6v5m4Bn2j4kKunrHZJoAvtZEnF8cQytPfvj8aKFjdd41Z8XXIcHvg1No1YY1vAMh6s4mZO9XQ25NjeY_vbHSD2NbKxLEsw9JyAoIazPMYUN1aMVbmD4Nyll88Kcz14"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 flex flex-col justify-end">
+<span class="text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">Photography</span>
+<h3 class="text-white font-bold text-lg leading-tight">Lens &amp; Light Collective</h3>
+<p class="text-gray-300 text-xs mt-1">12.4k Members • 42 Online</p>
+</div>
+</div>
+<!-- Tech Card -->
+<div class="flex-none w-72 h-44 relative rounded-2xl overflow-hidden snap-center shadow-lg shadow-teal-900/10">
+<img alt="Tech" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH5x34YpCbA0QQELZkW0X2IHGoLVvaqZZyUjMHDnVp982TvPxJnKGcypfQa2jvxT_MoInxjjKdmZfM4P6ARSRqHY8nTrtyjuPCbZ5TLqJciyv0H1xPi-GlVdPWytebKgurVMdyp7ngtjPsPCM_gJakEuD4gnsylpr4HWVjQRDovDQerizlNxPvSW0qELkofxBQCluJyivoVIKlIyXDcHOKp53LzlP9A5ADtDTZHLkDHsuX62tlzNnxcx7qB0K7Ufwii0T3MKCEin0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 flex flex-col justify-end">
+<span class="text-xs font-bold text-teal-400 uppercase tracking-wider mb-1">Technology</span>
+<h3 class="text-white font-bold text-lg leading-tight">Neural Network Hub</h3>
+<p class="text-gray-300 text-xs mt-1">8.9k Members • 156 Online</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Featured Communities -->
+<!-- BEGIN: Categories -->
+<section data-purpose="category-tags">
+<div class="px-4 mb-3">
+<h2 class="text-lg font-semibold">Browse by Topic</h2>
+</div>
+<div class="flex overflow-x-auto gap-2 px-4 hide-scrollbar">
+<button class="flex-none px-5 py-2 bg-blue-600 text-white rounded-full text-sm font-medium">All</button>
+<button class="flex-none px-5 py-2 bg-white border border-gray-200 text-slate-600 rounded-full text-sm font-medium hover:bg-gray-50">Photography</button>
+<button class="flex-none px-5 py-2 bg-white border border-gray-200 text-slate-600 rounded-full text-sm font-medium hover:bg-gray-50">Tech</button>
+<button class="flex-none px-5 py-2 bg-white border border-gray-200 text-slate-600 rounded-full text-sm font-medium hover:bg-gray-50">Gardening</button>
+<button class="flex-none px-5 py-2 bg-white border border-gray-200 text-slate-600 rounded-full text-sm font-medium hover:bg-gray-50">Cooking</button>
+<button class="flex-none px-5 py-2 bg-white border border-gray-200 text-slate-600 rounded-full text-sm font-medium hover:bg-gray-50">Fitness</button>
+</div>
+</section>
+<!-- END: Categories -->
+<!-- BEGIN: Suggested Groups -->
+<section class="px-4 pb-10" data-purpose="suggested-groups-list">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-semibold">Suggested for You</h2>
+<button class="text-sm font-semibold text-blue-600">See All</button>
+</div>
+<div class="space-y-4">
+<!-- Suggested Group Item 1 -->
+<div class="flex items-center gap-3 p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+<div class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Gardening" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCG4s_erF7p-6hcRrmeA5e7Pj7HSK3sTnOdmV79yUclP2pOF_0AVQYN8aJ9tZ2Rujwig-tB6KGDvzZQM61yf09gZF8n4F9vsh2Y9Ll-RofHXuv_cCi8s4DI9mjCn8a-DmsjFWi-AZTi4q1FWn-oHOf9pBJoNYJ0lC_5upSbJvNhVjxrTuAHaurdrhHIZ3HeqyjBXE7V5m5FihDUInHOd8hTe6AaF4q6Kp39NT2cUrqK-tMBb78pVnCfjKRl5RbToPu8bfLrIhKV0QM"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-bold text-slate-800 truncate">Urban Gardeners NY</h4>
+<p class="text-xs text-gray-500">2.1k members • Growing together</p>
+</div>
+<button class="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold hover:bg-blue-100 transition-colors">Join</button>
+</div>
+<!-- Suggested Group Item 2 -->
+<div class="flex items-center gap-3 p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+<div class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Design" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjqIPAxzgL1S8DPBj1uSc3JQGBAyT3cHWpk3Yec2EhuN7C8XNpFGtTRZMkQTN33iSnPhJXrOqg2j7Rp_22Tc0qQTOPNJc3YQVeEvg7bStEIi8aoKC1XlETvydWqX-kk2PoWkJm0YEdmA2HJeX-iRv0IJ2SZot_MDl2dhJ6wWq3x8GEf_2ctJitKH8x-WHCab3yljGen7iw2owpIk9qTVKY9I1QCx6dIYjbL6bKh652W70LLV757qYS1gpcSoe1rulJzhTUp1CYXaU"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-bold text-slate-800 truncate">UI/UX Craft</h4>
+<p class="text-xs text-gray-500">5.4k members • Daily design tips</p>
+</div>
+<button class="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold hover:bg-blue-100 transition-colors">Join</button>
+</div>
+<!-- Suggested Group Item 3 -->
+<div class="flex items-center gap-3 p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+<div class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Cooking" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK1xh4miNaCcEgYBfbWQklPpv2tyw1YMHVhMly796BrkfKPLTXur0DxXMcXjka3JbXmiTM1xtvX9RhKComaZBdfcPx612jynRNGV0tdJNAFXaHYLkB_1ZY_Jst3n_2rS_4GJbQfgpvMdFFxraMb52NxZ7gs-GNCTAz_wHDU_J1vPu0MrRqTVM0mAkLQiyJslSrSKsNvK4EZkVqG3wn3UqegY-Ar2UWbdYXIr4hC_WC1fbzy9LSlMTWUP6X4avh01K2o9tMDtv5l-Q"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-bold text-slate-800 truncate">Home Chef Masters</h4>
+<p class="text-xs text-gray-500">1.2k members • Recipes &amp; Tricks</p>
+</div>
+<button class="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold hover:bg-blue-100 transition-colors">Join</button>
+</div>
+</div>
+</section>
+<!-- END: Suggested Groups -->
+</main>
+<!-- BEGIN: Bottom Navigation -->
+<nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-gray-200 px-6 py-3 flex items-center justify-between z-50">
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-medium">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-blue-600">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"></path>
+</svg>
+<span class="text-[10px] font-medium">Discover</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-medium">Groups</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<div class="w-6 h-6 rounded-full bg-gray-200 border border-gray-300 overflow-hidden">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBULfnpaUtSHWhng-tBK3GWrzkmRWLydEXtnnJfatQ7Pfi1aqUPzYMKPs-sLq9JMLUXRisBkHtuuv_neKFXAFW7qVTQjE9RUtUS62hggGtMzpDlalKg_TXu1WBnWGSjg-J5568zNJ3sm5w8pMFuZ-2UgC-8UgOdjeA4qriiz3XqOeipobIwaxx1IRjyQ1zH3n1xrwTVMfj2DJF74hWDH_zMIede5H5lNHWoDagAyAY5FPelu3F25QHeizqQfGXAfau7LBwaN7HbFzQ"/>
+</div>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</nav>
+<!-- END: Bottom Navigation -->
+</body></html>

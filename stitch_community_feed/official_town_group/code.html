@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Official Town Community - Maple Valley</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#ec5b13",
+                "background-light": "#f8f6f6",
+                "background-dark": "#221610",
+              },
+              fontFamily: {
+                "display": ["Public Sans"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<nav class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-4 py-3">
+<div class="max-w-3xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-icons text-slate-600 dark:text-slate-300">arrow_back</span>
+</button>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="font-bold text-lg leading-tight">Maple Valley Community</h1>
+<span class="material-icons text-primary text-sm" title="Official Verified">verified</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400">12,482 residents • Broadcast only</p>
+</div>
+</div>
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-icons text-slate-600 dark:text-slate-300">more_vert</span>
+</button>
+</div>
+</nav>
+<!-- Header Section -->
+<header class="max-w-3xl mx-auto mt-4 px-4">
+<div class="relative h-48 rounded-xl overflow-hidden shadow-lg border border-primary/10">
+<img class="w-full h-full object-cover" data-alt="Aerial view of a clean modern town hall and park" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7xJ3KsYc6S-fvFCfw0jm9zwCmeNc8oFOX5sHHERkO7Twd5mM6GLWpNWJvRA64CdIQuoHz3W-JrEtxgf-HuYkBSv986XSxNpY3H1olxGJGdW87cRaYsNpgG1xhUcXJrJgI8Y22kBJngSpbOEg99KAgeUw_VBosTWtyvLgI7TN4ZH6YP4DHU1PrhzS3hjfvNeZ6sQB6J0clAf9tvhcsasT3gt-uiPlTwUwYKer2FeLq4O7GsdAG5PAAigTSvzsNKRqaTyFoR82j6iI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent flex flex-end items-end p-6">
+<div class="flex flex-col">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary text-white mb-2 self-start uppercase tracking-wider">
+                        Official Group
+                    </span>
+<h2 class="text-white text-2xl font-bold">The Town Square</h2>
+</div>
+</div>
+</div>
+<!-- Automatic Join Status -->
+<div class="mt-4 bg-primary/5 border border-primary/20 rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-primary/20 p-2 rounded-full">
+<span class="material-icons text-primary">info</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Joined automatically</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">As a registered resident, you're subscribed to critical town alerts.</p>
+</div>
+</div>
+<span class="material-icons text-slate-400">notifications_active</span>
+</div>
+</header>
+<!-- Main Feed -->
+<main class="max-w-3xl mx-auto px-4 py-8 space-y-6">
+<!-- Post 1: High Priority Alert -->
+<article class="bg-white dark:bg-slate-900/50 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+<span class="material-icons text-white text-sm">account_balance</span>
+</div>
+<div>
+<p class="text-sm font-bold">Town Administration</p>
+<p class="text-[10px] text-slate-400 uppercase font-medium">2 hours ago</p>
+</div>
+</div>
+<span class="text-primary bg-primary/10 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">Emergency Alert</span>
+</div>
+<div class="p-5">
+<h3 class="text-lg font-bold mb-2">Main Street Water Main Repair</h3>
+<p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                    Urgent repairs are being conducted on the water main near 5th and Main. Water service may be intermittent for the next 4 hours in the downtown district. We apologize for the inconvenience.
+                </p>
+<div class="rounded-lg overflow-hidden border border-slate-100 dark:border-slate-800">
+<img class="w-full h-48 object-cover" data-alt="Close up of a construction site with orange cones" data-location="Maple Valley City Center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW5kgKJP0dX7EOH8dTYQasznMfr12I99TmuiVgwXUNXr-qNrxjPzhWDre0oqq7Kz8CnfpnIeVdPW3D-SBs_llg6bzDcpkVgmG5V7XrTNGLD8fG9wuCkcto9ENkxgo-hiAPCfv39XQ8YZHokN-_BjqTYijw1OP1ntq4La_y4djbFvfz4AXRdGl4SLYTTUc7Ydffxp04vWBTA53G8HxK7DWY2radPcsWMjFqYyqq9J7jTp5SdOWjnRLTQcy-fpSMtPV0DrGz60-aSiI"/>
+</div>
+</div>
+<div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/50 flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-slate-500">
+<span class="material-icons text-sm">visibility</span>
+<span class="text-xs">4.2k residents reached</span>
+</div>
+<div class="flex items-center gap-1.5 text-slate-500">
+<span class="material-icons text-sm">share</span>
+<span class="text-xs">Share alert</span>
+</div>
+</div>
+</article>
+<!-- Post 2: Community Event -->
+<article class="bg-white dark:bg-slate-900/50 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+<span class="material-icons text-white text-sm">event</span>
+</div>
+<div>
+<p class="text-sm font-bold">Parks &amp; Recreation</p>
+<p class="text-[10px] text-slate-400 uppercase font-medium">Yesterday at 10:45 AM</p>
+</div>
+</div>
+<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">Community Event</span>
+</div>
+<div class="p-5">
+<h3 class="text-lg font-bold mb-2">Maple Valley Fall Harvest Festival</h3>
+<p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                    Join us this Saturday for the annual Fall Harvest Festival at Central Park. We'll have local vendors, live music, and activities for all ages!
+                </p>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex flex-col gap-2 p-3 bg-primary/5 rounded-lg">
+<span class="text-[10px] uppercase font-bold text-primary">When</span>
+<p class="text-sm font-medium">Sat, Oct 12 • 10:00 AM</p>
+</div>
+<div class="flex flex-col gap-2 p-3 bg-primary/5 rounded-lg">
+<span class="text-[10px] uppercase font-bold text-primary">Where</span>
+<p class="text-sm font-medium">Central Town Park</p>
+</div>
+</div>
+</div>
+<div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/50 flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-slate-500">
+<span class="material-icons text-sm">visibility</span>
+<span class="text-xs">8.1k residents reached</span>
+</div>
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-icons text-sm">calendar_add_on</span>
+<span class="text-xs font-semibold">Add to calendar</span>
+</div>
+</div>
+</article>
+<!-- Post 3: Public Policy Update -->
+<article class="bg-white dark:bg-slate-900/50 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+<span class="material-icons text-white text-sm">gavel</span>
+</div>
+<div>
+<p class="text-sm font-bold">Town Council</p>
+<p class="text-[10px] text-slate-400 uppercase font-medium">Oct 08, 2023</p>
+</div>
+</div>
+<span class="text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">Council Update</span>
+</div>
+<div class="p-5">
+<h3 class="text-lg font-bold mb-2">New Zoning Bylaw Voting Results</h3>
+<p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                    The Town Council has approved the new sustainable housing zoning amendment. This will allow for increased density in the East Quarter while maintaining green space standards. Full report available on the official portal.
+                </p>
+<div class="mt-4 p-4 border border-slate-200 dark:border-slate-700 rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-icons text-red-500">picture_as_pdf</span>
+<span class="text-sm font-medium">Bylaw_Amendment_2023_04.pdf</span>
+</div>
+<button class="text-primary text-sm font-bold flex items-center gap-1">
+                        VIEW <span class="material-icons text-sm">open_in_new</span>
+</button>
+</div>
+</div>
+<div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/50 flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-slate-500">
+<span class="material-icons text-sm">visibility</span>
+<span class="text-xs">3.4k residents reached</span>
+</div>
+</div>
+</article>
+</main>
+<!-- Bottom Info Footer (Fixed) -->
+<footer class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 py-4">
+<div class="max-w-3xl mx-auto flex items-center justify-center gap-2">
+<span class="material-icons text-slate-400 text-sm">lock</span>
+<p class="text-xs text-slate-500 font-medium italic">Only administrators can send messages to this group.</p>
+</div>
+</footer>
+<!-- Space for footer -->
+<div class="h-20"></div>
+</body></html>

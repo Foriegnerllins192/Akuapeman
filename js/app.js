@@ -53,14 +53,18 @@ const footerHTML = `
 </footer>`;
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.insertAdjacentHTML('afterbegin', navHTML);
-  document.body.insertAdjacentHTML('beforeend', footerHTML);
-
-  // Mark active nav link
   const page = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    if (a.getAttribute('href') === page) a.classList.add('active');
-  });
+
+  // Don't inject nav/footer on the community chat page
+  if (page !== 'chat.html') {
+    document.body.insertAdjacentHTML('afterbegin', navHTML);
+    document.body.insertAdjacentHTML('beforeend', footerHTML);
+
+    // Mark active nav link
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      if (a.getAttribute('href') === page) a.classList.add('active');
+    });
+  }
 });
 
 function toggleNav() {
