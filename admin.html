@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akuapeman Admin Dashboard</title>
+  <script>window.tailwind={config:{corePlugins:{preflight:false}}};</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f0f2f5; }
+    :root { --green:#1a6b3c; --gold:#d4a017; --dark:#1a1a2e; }
+    /* Layout */
+    .admin-layout { display: flex; min-height: 100vh; }
+    /* Sidebar */
+    .sidebar {
+      width: 240px; background: var(--dark); color: white;
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; height: 100vh;
+      z-index: 200; transition: transform 0.3s;
+      overflow-y: auto;
+    }
+    .sidebar-logo { padding: 1.2rem 1.4rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 0.7rem; }
+    .sidebar-logo span { color: var(--gold); font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px; }
+    .sidebar-logo small { color: rgba(255,255,255,0.4); font-size: 0.65rem; display: block; font-weight: 400; }
+    .sidebar-section { padding: 1rem 0.8rem 0.3rem; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); font-weight: 700; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1.2rem; cursor: pointer; border-radius: 8px; margin: 0.1rem 0.5rem; font-size: 0.88rem; font-weight: 500; color: rgba(255,255,255,0.65); transition: all 0.2s; text-decoration: none; }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: white; }
+    .nav-item.active { background: var(--green); color: white; }
+    .nav-item .badge { margin-left: auto; background: #e74c3c; color: white; font-size: 0.65rem; padding: 0.1rem 0.45rem; border-radius: 20px; font-weight: 700; }
+    .nav-item .icon { width: 18px; text-align: center; font-size: 1rem; }
+    /* Topbar */
+    .topbar { position: fixed; top: 0; left: 240px; right: 0; height: 60px; background: white; z-index: 100; display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+    .topbar-search { flex: 1; max-width: 380px; position: relative; }
+    .topbar-search input { width: 100%; padding: 0.5rem 1rem 0.5rem 2.5rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.85rem; background: #f9fafb; outline: none; }
+    .topbar-search input:focus { border-color: var(--green); }
+    .topbar-search .search-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 0.9rem; }
+    .topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 0.5rem; }
+    .icon-btn { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #f3f4f6; position: relative; font-size: 1.1rem; transition: background 0.2s; }
+    .icon-btn:hover { background: #e5e7eb; }
+    .icon-btn .dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: #e74c3c; border-radius: 50%; border: 2px solid white; }
+    .profile-btn { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; background: #f3f4f6; font-size: 0.85rem; font-weight: 600; position: relative; }
+    .profile-btn:hover { background: #e5e7eb; }
+    .profile-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; }
+    /* Dropdown */
+    .dropdown { position: absolute; top: calc(100% + 8px); right: 0; background: white; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); min-width: 160px; z-index: 300; display: none; overflow: hidden; }
+    .dropdown.open { display: block; }
+    .dropdown a { display: flex; align-items: center; gap: 0.6rem; padding: 0.65rem 1rem; font-size: 0.85rem; color: #374151; text-decoration: none; transition: background 0.15s; }
+    .dropdown a:hover { background: #f3f4f6; }
+    .dropdown hr { border: none; border-top: 1px solid #f3f4f6; margin: 0.2rem 0; }
+    /* Main content */
+    .main-content { margin-left: 240px; margin-top: 60px; padding: 1.8rem; min-height: calc(100vh - 60px); }
+    /* Pages */
+    .page { display: none; }
+    .page.active { display: block; }
+    /* Stat cards */
+    .stat-card { background: white; border-radius: 12px; padding: 1.3rem 1.5rem; box-shadow: 0 1px 6px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 1rem; }
+    .stat-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .stat-info h3 { font-size: 1.6rem; font-weight: 800; color: var(--dark); line-height: 1; }
+    .stat-info p { font-size: 0.78rem; color: #6b7280; margin-top: 0.2rem; }
+    .stat-info .trend { font-size: 0.72rem; font-weight: 700; margin-top: 0.3rem; }
+    .trend-up { color: #10b981; }
+    .trend-down { color: #ef4444; }
+    /* Chart card */
+    .chart-card { background: white; border-radius: 12px; padding: 1.4rem; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+    .chart-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem; }
+    /* Table */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .data-table th { text-align: left; padding: 0.75rem 1rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: #9ca3af; font-weight: 700; border-bottom: 1px solid #f3f4f6; }
+    .data-table td { padding: 0.85rem 1rem; border-bottom: 1px solid #f9fafb; color: #374151; vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #fafafa; }
+    /* Badges */
+    .badge-status { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
+    .badge-active { background: #d1fae5; color: #065f46; }
+    .badge-pending { background: #fef3c7; color: #92400e; }
+    .badge-suspended { background: #fee2e2; color: #991b1b; }
+    .badge-verified { background: #dbeafe; color: #1e40af; }
+    /* Action buttons */
+    .act-btn { padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: none; transition: opacity 0.2s; }
+    .act-btn:hover { opacity: 0.8; }
+    .act-view { background: #f3f4f6; color: #374151; }
+    .act-edit { background: #dbeafe; color: #1e40af; }
+    .act-suspend { background: #fef3c7; color: #92400e; }
+    .act-delete { background: #fee2e2; color: #991b1b; }
+    .act-approve { background: #d1fae5; color: #065f46; }
+    .act-reject { background: #fee2e2; color: #991b1b; }
+    /* Section header */
+    .section-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; }
+    .section-hdr h2 { font-size: 1.2rem; font-weight: 800; color: var(--dark); }
+    /* Filter bar */
+    .filter-bar { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .filter-bar input, .filter-bar select { padding: 0.5rem 0.9rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.82rem; background: white; outline: none; }
+    .filter-bar input:focus, .filter-bar select:focus { border-color: var(--green); }
+    /* Sub tabs */
+    .sub-tabs { display: flex; gap: 0.3rem; margin-bottom: 1.2rem; background: #f3f4f6; padding: 0.3rem; border-radius: 10px; width: fit-content; }
+    .sub-tab { padding: 0.45rem 1rem; border-radius: 7px; font-size: 0.82rem; font-weight: 600; cursor: pointer; color: #6b7280; transition: all 0.2s; }
+    .sub-tab.active { background: white; color: var(--dark); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    /* Form */
+    .form-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+    .form-card label { display: block; font-size: 0.82rem; font-weight: 600; color: #374151; margin-bottom: 0.35rem; }
+    .form-card input, .form-card textarea, .form-card select { width: 100%; padding: 0.6rem 0.9rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.85rem; outline: none; }
+    .form-card input:focus, .form-card textarea:focus, .form-card select:focus { border-color: var(--green); }
+    /* Role card */
+    .role-card { background: white; border-radius: 12px; padding: 1.3rem; box-shadow: 0 1px 6px rgba(0,0,0,0.06); border-top: 3px solid var(--green); }
+    .role-card h4 { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.8rem; }
+    .perm-item { display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid #f9fafb; font-size: 0.82rem; color: #374151; }
+    .toggle { width: 36px; height: 20px; border-radius: 20px; background: #e5e7eb; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+    .toggle.on { background: var(--green); }
+    .toggle::after { content: ''; position: absolute; width: 14px; height: 14px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: left 0.2s; }
+    .toggle.on::after { left: 19px; }
+    /* Notification form */
+    .audience-btn { padding: 0.5rem 1.1rem; border-radius: 8px; border: 2px solid #e5e7eb; font-size: 0.82rem; font-weight: 600; cursor: pointer; background: white; color: #6b7280; transition: all 0.2s; }
+    .audience-btn.active { border-color: var(--green); color: var(--green); background: #f0fdf4; }
+    /* Sidebar toggle for mobile */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 150; }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .topbar { left: 0; }
+      .main-content { margin-left: 0; }
+      .topbar-search { max-width: 180px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div style="width:34px;height:34px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--dark);font-size:0.9rem;flex-shrink:0">A</div>
+    <div><span>Akuapeman</span><small>Admin Panel</small></div>
+  </div>
+
+  <div class="sidebar-section">Main</div>
+  <a class="nav-item active" onclick="showPage('dashboard',this)"><span class="icon">🏠</span> Dashboard</a>
+
+  <div class="sidebar-section">People</div>
+  <a class="nav-item" onclick="showPage('users',this)"><span class="icon">👥</span> Users <span class="badge">1.2k</span></a>
+  <a class="nav-item" onclick="showPage('groups',this)"><span class="icon">👨‍👩‍👧‍👦</span> Groups</a>
+
+  <div class="sidebar-section">Content</div>
+  <a class="nav-item" onclick="showPage('posts',this)"><span class="icon">📰</span> Posts</a>
+  <a class="nav-item" onclick="showPage('messages',this)"><span class="icon">💬</span> Messages <span class="badge">5</span></a>
+
+  <div class="sidebar-section">Commerce</div>
+  <a class="nav-item" onclick="showPage('businesses',this)"><span class="icon">🏢</span> Businesses</a>
+  <a class="nav-item" onclick="showPage('stores',this)"><span class="icon">🛒</span> Stores</a>
+  <a class="nav-item" onclick="showPage('restaurants',this)"><span class="icon">🍽</span> Restaurants</a>
+  <a class="nav-item" onclick="showPage('music',this)"><span class="icon">🎵</span> Music</a>
+
+  <div class="sidebar-section">Moderation</div>
+  <a class="nav-item" onclick="showPage('reports',this)"><span class="icon">🚨</span> Reports <span class="badge">12</span></a>
+  <a class="nav-item" onclick="showPage('notifications',this)"><span class="icon">📢</span> Notifications</a>
+
+  <div class="sidebar-section">System</div>
+  <a class="nav-item" onclick="showPage('analytics',this)"><span class="icon">📊</span> Analytics</a>
+  <a class="nav-item" onclick="showPage('settings',this)"><span class="icon">⚙</span> Settings</a>
+  <a class="nav-item" onclick="showPage('roles',this)"><span class="icon">🔐</span> Admin Management</a>
+
+  <div style="margin-top:auto;padding:1rem 0.8rem;border-top:1px solid rgba(255,255,255,0.08)">
+    <a href="index.html" class="nav-item" style="color:rgba(255,255,255,0.4);font-size:0.8rem"><span class="icon">↩</span> Back to Site</a>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button onclick="toggleSidebar()" style="background:none;border:none;cursor:pointer;font-size:1.3rem;color:#6b7280;display:flex;align-items:center;padding:0.3rem" id="menuBtn">☰</button>
+  <div class="topbar-search">
+    <span class="search-icon">🔍</span>
+    <input type="text" placeholder="Search users, businesses, posts…">
+  </div>
+  <div class="topbar-actions">
+    <div class="icon-btn" title="Notifications" onclick="showPage('notifications',null)">🔔<span class="dot"></span></div>
+    <div class="icon-btn" title="Messages" onclick="showPage('messages',null)">💬<span class="dot"></span></div>
+    <div class="profile-btn" onclick="toggleDropdown()">
+      <div class="profile-avatar">SA</div>
+      Super Admin <span style="font-size:0.7rem;color:#9ca3af">▼</span>
+      <div class="dropdown" id="profileDropdown">
+        <a href="#">👤 Profile</a>
+        <a href="#" onclick="showPage('settings',null)">⚙ Settings</a>
+        <hr>
+        <a href="index.html" style="color:#ef4444">↩ Logout</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+<!-- ===== DASHBOARD PAGE ===== -->
+<div class="page active" id="page-dashboard">
+  <div class="section-hdr">
+    <div>
+      <h2>Dashboard Overview</h2>
+      <p style="font-size:0.82rem;color:#6b7280;margin-top:0.2rem">Welcome back, Super Admin. Here's what's happening today.</p>
+    </div>
+    <span style="font-size:0.8rem;color:#9ca3af">Tuesday, March 17, 2026</span>
+  </div>
+
+  <!-- Stat Cards Row 1 -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#e8f5ee">👥</div>
+      <div class="stat-info"><h3>12,480</h3><p>Total Users</p><span class="trend trend-up">↑ 8.2% this month</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fef3c7">🏢</div>
+      <div class="stat-info"><h3>348</h3><p>Total Businesses</p><span class="trend trend-up">↑ 3.1% this month</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#dbeafe">📰</div>
+      <div class="stat-info"><h3>5,921</h3><p>Total Posts</p><span class="trend trend-up">↑ 12% this week</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#f3e8ff">🛒</div>
+      <div class="stat-info"><h3>GH₵ 84,200</h3><p>Revenue This Month</p><span class="trend trend-up">↑ 5.4%</span></div>
+    </div>
+  </div>
+
+  <!-- Stat Cards Row 2 -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#d1fae5">🟢</div>
+      <div class="stat-info"><h3>1,042</h3><p>Active Users Today</p><span class="trend trend-up">↑ 4.7%</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fef3c7">📦</div>
+      <div class="stat-info"><h3>127</h3><p>Orders Today</p><span class="trend trend-down">↓ 2.1%</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fee2e2">🚨</div>
+      <div class="stat-info"><h3>12</h3><p>Reports Pending</p><span class="trend trend-down" style="color:#ef4444">Needs attention</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#e0f2fe">💬</div>
+      <div class="stat-info"><h3>89</h3><p>Flagged Messages</p><span class="trend trend-down">↑ 5 new</span></div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
+    <div class="chart-card lg:col-span-2">
+      <h4>User Growth — Last 6 Months</h4>
+      <canvas id="userGrowthChart" height="100"></canvas>
+    </div>
+    <div class="chart-card">
+      <h4>Platform Distribution</h4>
+      <canvas id="platformChart" height="180"></canvas>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+    <div class="chart-card">
+      <h4>Business Registrations</h4>
+      <canvas id="bizChart" height="120"></canvas>
+    </div>
+    <div class="chart-card">
+      <h4>Marketplace Sales (GH₵)</h4>
+      <canvas id="salesChart" height="120"></canvas>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="chart-card">
+    <div class="section-hdr" style="margin-bottom:0.8rem">
+      <h4 style="margin:0">Recent Activity</h4>
+      <button class="act-btn act-view" onclick="showPage('users',null)">View All</button>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>User</th><th>Action</th><th>Time</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:30px;height:30px;border-radius:50%;background:#e8f5ee;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--green)">KA</div>Kofi Asare</div></td><td>Registered new account</td><td style="color:#9ca3af">2 min ago</td><td><span class="badge-status badge-active">Active</span></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:30px;height:30px;border-radius:50%;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#92400e">AM</div>Abena Mensah</div></td><td>Submitted business listing</td><td style="color:#9ca3af">15 min ago</td><td><span class="badge-status badge-pending">Pending</span></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:30px;height:30px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#1e40af">OB</div>Owusu Boateng</div></td><td>Reported a post</td><td style="color:#9ca3af">32 min ago</td><td><span class="badge-status badge-pending">Review</span></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:30px;height:30px;border-radius:50%;background:#f3e8ff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#7c3aed">YD</div>Yaa Darko</div></td><td>Uploaded music track</td><td style="color:#9ca3af">1 hr ago</td><td><span class="badge-status badge-verified">Verified</span></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:30px;height:30px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#991b1b">NK</div>Nana Kwame</div></td><td>Account suspended</td><td style="color:#9ca3af">2 hr ago</td><td><span class="badge-status badge-suspended">Suspended</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== USERS PAGE ===== -->
+<div class="page" id="page-users">
+  <div class="section-hdr">
+    <h2>User Management</h2>
+    <button class="act-btn act-approve" style="padding:0.5rem 1rem;font-size:0.82rem">+ Add User</button>
+  </div>
+  <div class="filter-bar">
+    <input type="text" placeholder="🔍 Search users…" style="flex:1;min-width:180px">
+    <select><option>All Roles</option><option>Admin</option><option>Moderator</option><option>Member</option><option>Business Owner</option></select>
+    <select><option>All Status</option><option>Active</option><option>Suspended</option><option>Pending</option></select>
+    <select><option>All Locations</option><option>Akropong</option><option>Aburi</option><option>Mampong</option><option>Larteh</option></select>
+  </div>
+  <div class="chart-card" style="padding:0;overflow:hidden">
+    <table class="data-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Location</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:50%;background:#e8f5ee;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--green)">KA</div>Kofi Asare</div></td><td style="color:#6b7280">[email]</td><td style="color:#6b7280">[phone]</td><td>Member</td><td>Akropong</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem;flex-wrap:wrap"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-suspend">Suspend</button><button class="act-btn act-delete">Delete</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:50%;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#92400e">AM</div>Abena Mensah</div></td><td style="color:#6b7280">[email]</td><td style="color:#6b7280">[phone]</td><td>Business Owner</td><td>Aburi</td><td><span class="badge-status badge-verified">Verified</span></td><td style="display:flex;gap:0.3rem;flex-wrap:wrap"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-suspend">Suspend</button><button class="act-btn act-delete">Delete</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#1e40af">OB</div>Owusu Boateng</div></td><td style="color:#6b7280">[email]</td><td style="color:#6b7280">[phone]</td><td>Moderator</td><td>Mampong</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem;flex-wrap:wrap"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-suspend">Suspend</button><button class="act-btn act-delete">Delete</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#991b1b">NK</div>Nana Kwame</div></td><td style="color:#6b7280">[email]</td><td style="color:#6b7280">[phone]</td><td>Member</td><td>Larteh</td><td><span class="badge-status badge-suspended">Suspended</span></td><td style="display:flex;gap:0.3rem;flex-wrap:wrap"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-approve">Restore</button><button class="act-btn act-delete">Delete</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:50%;background:#f3e8ff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#7c3aed">YD</div>Yaa Darko</div></td><td style="color:#6b7280">[email]</td><td style="color:#6b7280">[phone]</td><td>Artist</td><td>Akropong</td><td><span class="badge-status badge-verified">Verified</span></td><td style="display:flex;gap:0.3rem;flex-wrap:wrap"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-suspend">Suspend</button><button class="act-btn act-delete">Delete</button></td></tr>
+      </tbody>
+    </table>
+    <div style="padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #f3f4f6">
+      <span style="font-size:0.8rem;color:#9ca3af">Showing 5 of 12,480 users</span>
+      <div style="display:flex;gap:0.4rem">
+        <button class="act-btn act-view">← Prev</button>
+        <button class="act-btn act-view" style="background:var(--green);color:white">1</button>
+        <button class="act-btn act-view">2</button>
+        <button class="act-btn act-view">3</button>
+        <button class="act-btn act-view">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BUSINESSES PAGE ===== -->
+<div class="page" id="page-businesses">
+  <div class="section-hdr">
+    <h2>Business Management</h2>
+    <button class="act-btn act-approve" style="padding:0.5rem 1rem;font-size:0.82rem">+ Add Business</button>
+  </div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="switchSubTab(this,'biz')">All Businesses</div>
+    <div class="sub-tab" onclick="switchSubTab(this,'biz')">Pending Approval <span style="background:#fef3c7;color:#92400e;padding:0.1rem 0.4rem;border-radius:10px;font-size:0.7rem">8</span></div>
+    <div class="sub-tab" onclick="switchSubTab(this,'biz')">Verified</div>
+    <div class="sub-tab" onclick="switchSubTab(this,'biz')">Reported</div>
+  </div>
+  <div class="filter-bar">
+    <input type="text" placeholder="🔍 Search businesses…" style="flex:1;min-width:180px">
+    <select><option>All Categories</option><option>Retail</option><option>Food</option><option>Services</option><option>Crafts</option></select>
+    <select><option>All Status</option><option>Approved</option><option>Pending</option><option>Rejected</option></select>
+  </div>
+  <div class="chart-card" style="padding:0;overflow:hidden">
+    <table class="data-table">
+      <thead><tr><th>Business</th><th>Owner</th><th>Category</th><th>Location</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:8px;background:#e8f5ee;display:flex;align-items:center;justify-content:center;font-size:1rem">🏪</div>Akropong Mart</div></td><td>Kofi Asare</td><td>Retail</td><td>Akropong</td><td><span class="badge-status badge-verified">Verified</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-approve">Feature</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:8px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:1rem">🍽️</div>Aburi Kitchen</div></td><td>Abena Mensah</td><td>Food</td><td>Aburi</td><td><span class="badge-status badge-pending">Pending</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-approve">Approve</button><button class="act-btn act-reject">Reject</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:8px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:1rem">🧵</div>Kente Weavers Co.</div></td><td>Yaa Darko</td><td>Crafts</td><td>Mampong</td><td><span class="badge-status badge-verified">Verified</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-approve">Feature</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:8px;background:#fee2e2;display:flex;align-items:center;justify-content:center;font-size:1rem">💊</div>Hills Pharmacy</div></td><td>Owusu Boateng</td><td>Health</td><td>Larteh</td><td><span class="badge-status badge-pending">Pending</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-approve">Approve</button><button class="act-btn act-reject">Reject</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== POSTS PAGE ===== -->
+<div class="page" id="page-posts">
+  <div class="section-hdr"><h2>Posts Moderation</h2></div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="switchSubTab(this,'posts')">All Posts</div>
+    <div class="sub-tab" onclick="switchSubTab(this,'posts')">Reported <span style="background:#fee2e2;color:#991b1b;padding:0.1rem 0.4rem;border-radius:10px;font-size:0.7rem">7</span></div>
+    <div class="sub-tab" onclick="switchSubTab(this,'posts')">Trending</div>
+  </div>
+  <div class="chart-card" style="padding:0;overflow:hidden">
+    <table class="data-table">
+      <thead><tr><th>User</th><th>Post Preview</th><th>Likes</th><th>Reports</th><th>Date</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr><td>Kofi Asare</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6b7280">"The Odwira festival was amazing this year…"</td><td>142</td><td><span style="color:#ef4444;font-weight:700">0</span></td><td style="color:#9ca3af">Mar 15</td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-approve">Pin</button><button class="act-btn act-delete">Remove</button></td></tr>
+        <tr><td>Nana Kwame</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6b7280">"Check out this new product I found…"</td><td>23</td><td><span style="color:#ef4444;font-weight:700">3</span></td><td style="color:#9ca3af">Mar 14</td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-suspend">Warn</button><button class="act-btn act-delete">Remove</button></td></tr>
+        <tr><td>Abena Mensah</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6b7280">"New menu items available at Aburi Kitchen!"</td><td>89</td><td><span style="color:#ef4444;font-weight:700">0</span></td><td style="color:#9ca3af">Mar 13</td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-approve">Pin</button><button class="act-btn act-delete">Remove</button></td></tr>
+        <tr><td>Unknown User</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6b7280">"Buy cheap followers now! Click here…"</td><td>2</td><td><span style="color:#ef4444;font-weight:700">12</span></td><td style="color:#9ca3af">Mar 12</td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-suspend">Warn</button><button class="act-btn act-delete">Remove</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== GROUPS PAGE ===== -->
+<div class="page" id="page-groups">
+  <div class="section-hdr"><h2>Groups Management</h2><button class="act-btn act-approve" style="padding:0.5rem 1rem;font-size:0.82rem">+ Create Group</button></div>
+  <div class="chart-card" style="padding:0;overflow:hidden">
+    <table class="data-table">
+      <thead><tr><th>Group Name</th><th>Type</th><th>Members</th><th>Town</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr><td>Akropong Official</td><td>Official Town</td><td>2,340</td><td>Akropong</td><td><span class="badge-status badge-verified">Verified</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-delete">Remove</button></td></tr>
+        <tr><td>Aburi Youth Connect</td><td>Community</td><td>876</td><td>Aburi</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-delete">Remove</button></td></tr>
+        <tr><td>Mampong Traders</td><td>Business</td><td>412</td><td>Mampong</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-delete">Remove</button></td></tr>
+        <tr><td>Larteh Prayer Group</td><td>Religious</td><td>198</td><td>Larteh</td><td><span class="badge-status badge-pending">Pending</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-approve">Approve</button><button class="act-btn act-delete">Remove</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== STORES PAGE ===== -->
+<div class="page" id="page-stores">
+  <div class="section-hdr"><h2>Stores Management</h2></div>
+  <div class="chart-card" style="padding:0;overflow:hidden">
+    <table class="data-table">
+      <thead><tr><th>Store</th><th>Owner</th><th>Products</th><th>Orders</th><th>Revenue</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr><td>Akropong Crafts</td><td>Yaa Darko</td><td>34</td><td>120</td><td>GH₵ 4,800</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-suspend">Suspend</button></td></tr>
+        <tr><td>Hills Organic</td><td>Kofi Asare</td><td>18</td><td>67</td><td>GH₵ 2,100</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-suspend">Suspend</button></td></tr>
+        <tr><td>Aburi Textiles</td><td>Abena Mensah</td><td>52</td><td>0</td><td>GH₵ 0</td><td><span class="badge-status badge-pending">Pending</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-approve">Approve</button><button class="act-btn act-reject">Reject</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== RESTAURANTS PAGE ===== -->
+<div class="page" id="page-restaurants">
+  <div class="section-hdr"><h2>Restaurants Management</h2></div>
+  <div class="chart-card" style="padding:0;overflow:hidden">
+    <table class="data-table">
+      <thead><tr><th>Restaurant</th><th>Owner</th><th>Cuisine</th><th>Orders Today</th><th>Rating</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr><td><div style="display:flex;align-items:center;gap:0.5rem"><span>🍽️</span>Aunty Esi's Kitchen</div></td><td>Esi Boateng</td><td>Ghanaian</td><td>34</td><td>⭐ 4.8</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-suspend">Suspend</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.5rem"><span>🍽️</span>Hillside Waakye</div></td><td>Kwame Osei</td><td>Street Food</td><td>89</td><td>⭐ 4.6</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-suspend">Suspend</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.5rem"><span>🍽️</span>Aburi Garden Grill</div></td><td>Nana Ama</td><td>Continental</td><td>0</td><td>⭐ 4.2</td><td><span class="badge-status badge-pending">Pending</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-approve">Approve</button><button class="act-btn act-reject">Reject</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== MUSIC PAGE ===== -->
+<div class="page" id="page-music">
+  <div class="section-hdr"><h2>Music Management</h2></div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="switchSubTab(this,'music')">All Tracks</div>
+    <div class="sub-tab" onclick="switchSubTab(this,'music')">Pending Review</div>
+    <div class="sub-tab" onclick="switchSubTab(this,'music')">Top Charts</div>
+  </div>
+  <div class="chart-card" style="padding:0;overflow:hidden">
+    <table class="data-table">
+      <thead><tr><th>Track</th><th>Artist</th><th>Genre</th><th>Downloads</th><th>Plays</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr><td><div style="display:flex;align-items:center;gap:0.5rem"><span>🎵</span>Asaase Yaa</div></td><td>Nana Kwame & The Roots</td><td>Highlife</td><td>1,240</td><td>8,900</td><td><span class="badge-status badge-active">Published</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-approve">Feature</button><button class="act-btn act-delete">Remove</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.5rem"><span>🎶</span>Highlife Journey</div></td><td>Amakye Beats</td><td>Highlife</td><td>890</td><td>5,400</td><td><span class="badge-status badge-active">Published</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-approve">Feature</button><button class="act-btn act-delete">Remove</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.5rem"><span>🥁</span>Okyeame Riddim</div></td><td>DJ Akropong</td><td>Afrobeats</td><td>0</td><td>0</td><td><span class="badge-status badge-pending">Pending</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-approve">Approve</button><button class="act-btn act-reject">Reject</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== MESSAGES PAGE ===== -->
+<div class="page" id="page-messages">
+  <div class="section-hdr"><h2>Flagged Messages</h2></div>
+  <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:10px;padding:0.8rem 1rem;margin-bottom:1rem;font-size:0.82rem;color:#92400e">
+    ⚠️ Admin only views flagged/reported messages. Private conversations are not accessible.
+  </div>
+  <div class="chart-card" style="padding:0;overflow:hidden">
+    <table class="data-table">
+      <thead><tr><th>Sender</th><th>Receiver</th><th>Message Preview</th><th>Report Reason</th><th>Date</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr><td>Nana Kwame</td><td>Abena Mensah</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6b7280">"Click this link to win a prize…"</td><td><span class="badge-status badge-suspended">Spam</span></td><td style="color:#9ca3af">Mar 16</td><td style="display:flex;gap:0.3rem"><button class="act-btn act-delete">Delete</button><button class="act-btn act-suspend">Warn</button><button class="act-btn act-reject">Ban</button></td></tr>
+        <tr><td>Unknown</td><td>Kofi Asare</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6b7280">"You are a disgrace to the community…"</td><td><span class="badge-status badge-suspended">Harassment</span></td><td style="color:#9ca3af">Mar 15</td><td style="display:flex;gap:0.3rem"><button class="act-btn act-delete">Delete</button><button class="act-btn act-suspend">Warn</button><button class="act-btn act-reject">Ban</button></td></tr>
+        <tr><td>Seller123</td><td>Multiple</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6b7280">"Buy cheap products, best prices…"</td><td><span class="badge-status badge-suspended">Spam</span></td><td style="color:#9ca3af">Mar 14</td><td style="display:flex;gap:0.3rem"><button class="act-btn act-delete">Delete</button><button class="act-btn act-suspend">Warn</button><button class="act-btn act-reject">Ban</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== REPORTS PAGE ===== -->
+<div class="page" id="page-reports">
+  <div class="section-hdr"><h2>Reports & Moderation</h2></div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="switchSubTab(this,'reports')">User Reports</div>
+    <div class="sub-tab" onclick="switchSubTab(this,'reports')">Post Reports</div>
+    <div class="sub-tab" onclick="switchSubTab(this,'reports')">Business Complaints</div>
+    <div class="sub-tab" onclick="switchSubTab(this,'reports')">Spam</div>
+  </div>
+  <div class="grid grid-cols-1 gap-4">
+    <div class="chart-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">
+            <span class="badge-status badge-suspended">Harassment</span>
+            <span style="font-size:0.75rem;color:#9ca3af">Report #1042 · Mar 16, 2026</span>
+          </div>
+          <p style="font-size:0.88rem;font-weight:600;margin-bottom:0.3rem">Reporter: Kofi Asare</p>
+          <p style="font-size:0.82rem;color:#6b7280;margin-bottom:0.5rem">Reason: User sent threatening messages and used offensive language in the community group.</p>
+          <p style="font-size:0.78rem;color:#9ca3af">Evidence: Screenshot attached · Reported user: Nana Kwame</p>
+        </div>
+        <div style="display:flex;gap:0.4rem;flex-shrink:0">
+          <button class="act-btn act-view">Review</button>
+          <button class="act-btn act-suspend">Warn User</button>
+          <button class="act-btn act-reject">Ban User</button>
+          <button class="act-btn act-approve">Dismiss</button>
+        </div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">
+            <span class="badge-status badge-pending">Misinformation</span>
+            <span style="font-size:0.75rem;color:#9ca3af">Report #1041 · Mar 15, 2026</span>
+          </div>
+          <p style="font-size:0.88rem;font-weight:600;margin-bottom:0.3rem">Reporter: Abena Mensah</p>
+          <p style="font-size:0.82rem;color:#6b7280;margin-bottom:0.5rem">Reason: Post contains false information about a local business, damaging its reputation.</p>
+          <p style="font-size:0.78rem;color:#9ca3af">Evidence: Post link attached · Reported post ID: #5821</p>
+        </div>
+        <div style="display:flex;gap:0.4rem;flex-shrink:0">
+          <button class="act-btn act-view">Review</button>
+          <button class="act-btn act-delete">Remove Post</button>
+          <button class="act-btn act-suspend">Warn User</button>
+          <button class="act-btn act-approve">Dismiss</button>
+        </div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">
+            <span class="badge-status badge-suspended">Spam</span>
+            <span style="font-size:0.75rem;color:#9ca3af">Report #1040 · Mar 14, 2026</span>
+          </div>
+          <p style="font-size:0.88rem;font-weight:600;margin-bottom:0.3rem">Reporter: System (Auto-detected)</p>
+          <p style="font-size:0.82rem;color:#6b7280;margin-bottom:0.5rem">Reason: Account sending bulk promotional messages to multiple users without consent.</p>
+          <p style="font-size:0.78rem;color:#9ca3af">Evidence: 47 flagged messages · Account: Seller123</p>
+        </div>
+        <div style="display:flex;gap:0.4rem;flex-shrink:0">
+          <button class="act-btn act-view">Review</button>
+          <button class="act-btn act-reject">Ban Account</button>
+          <button class="act-btn act-approve">Dismiss</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NOTIFICATIONS PAGE ===== -->
+<div class="page" id="page-notifications">
+  <div class="section-hdr"><h2>Send Notification</h2></div>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+    <div class="lg:col-span-2 form-card">
+      <h4 style="font-weight:700;margin-bottom:1.2rem;font-size:0.95rem">Create Announcement</h4>
+      <div style="margin-bottom:1rem"><label>Title</label><input type="text" placeholder="Notification title…"></div>
+      <div style="margin-bottom:1rem"><label>Message</label><textarea rows="5" placeholder="Write your announcement here…"></textarea></div>
+      <div style="margin-bottom:1.2rem">
+        <label style="margin-bottom:0.6rem">Audience</label>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+          <button class="audience-btn active" onclick="toggleAudience(this)">All Users</button>
+          <button class="audience-btn" onclick="toggleAudience(this)">Businesses</button>
+          <button class="audience-btn" onclick="toggleAudience(this)">Artists</button>
+          <button class="audience-btn" onclick="toggleAudience(this)">Akropong</button>
+          <button class="audience-btn" onclick="toggleAudience(this)">Aburi</button>
+          <button class="audience-btn" onclick="toggleAudience(this)">Mampong</button>
+          <button class="audience-btn" onclick="toggleAudience(this)">Larteh</button>
+        </div>
+      </div>
+      <div style="margin-bottom:1.2rem"><label>Schedule (optional)</label><input type="datetime-local"></div>
+      <div style="display:flex;gap:0.6rem">
+        <button style="padding:0.65rem 1.5rem;background:var(--green);color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.88rem">Send Now</button>
+        <button style="padding:0.65rem 1.5rem;background:#f3f4f6;color:#374151;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.88rem">Save Draft</button>
+      </div>
+    </div>
+    <div>
+      <div class="chart-card" style="margin-bottom:1rem">
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:0.8rem">Recent Notifications</h4>
+        <div style="space-y:0.6rem">
+          <div style="padding:0.7rem 0;border-bottom:1px solid #f3f4f6">
+            <p style="font-size:0.82rem;font-weight:600">Odwira Festival Reminder</p>
+            <p style="font-size:0.75rem;color:#9ca3af">All Users · Mar 10 · 12,480 sent</p>
+          </div>
+          <div style="padding:0.7rem 0;border-bottom:1px solid #f3f4f6">
+            <p style="font-size:0.82rem;font-weight:600">Power Maintenance Alert</p>
+            <p style="font-size:0.75rem;color:#9ca3af">Akropong · Mar 8 · 2,340 sent</p>
+          </div>
+          <div style="padding:0.7rem 0">
+            <p style="font-size:0.82rem;font-weight:600">New Business Features</p>
+            <p style="font-size:0.75rem;color:#9ca3af">Businesses · Mar 5 · 348 sent</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ANALYTICS PAGE ===== -->
+<div class="page" id="page-analytics">
+  <div class="section-hdr"><h2>Analytics</h2>
+    <select style="padding:0.45rem 0.9rem;border:1px solid #e5e7eb;border-radius:8px;font-size:0.82rem;background:white;outline:none">
+      <option>Last 30 Days</option><option>Last 3 Months</option><option>Last 6 Months</option><option>This Year</option>
+    </select>
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+    <div class="stat-card"><div class="stat-icon" style="background:#e8f5ee">📈</div><div class="stat-info"><h3>+1,240</h3><p>New Users</p><span class="trend trend-up">↑ 8.2%</span></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:#fef3c7">🎵</div><div class="stat-info"><h3>24,800</h3><p>Music Downloads</p><span class="trend trend-up">↑ 15%</span></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:#dbeafe">🛒</div><div class="stat-info"><h3>GH₵ 84,200</h3><p>Marketplace Sales</p><span class="trend trend-up">↑ 5.4%</span></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:#f3e8ff">🌍</div><div class="stat-info"><h3>18</h3><p>Active Regions</p><span class="trend trend-up">↑ 2 new</span></div></div>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+    <div class="chart-card"><h4>User Growth — 12 Months</h4><canvas id="analyticsUserChart" height="130"></canvas></div>
+    <div class="chart-card"><h4>Active Users Daily</h4><canvas id="analyticsActiveChart" height="130"></canvas></div>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+    <div class="chart-card"><h4>Business Registrations by Month</h4><canvas id="analyticsBizChart" height="130"></canvas></div>
+    <div class="chart-card"><h4>Music Downloads by Genre</h4><canvas id="analyticsMusicChart" height="130"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h4>Top Active Regions</h4>
+    <table class="data-table">
+      <thead><tr><th>Region</th><th>Users</th><th>Posts</th><th>Businesses</th><th>Activity Score</th></tr></thead>
+      <tbody>
+        <tr><td>Akropong</td><td>4,200</td><td>1,840</td><td>120</td><td><div style="display:flex;align-items:center;gap:0.5rem"><div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px"><div style="width:85%;height:100%;background:var(--green);border-radius:3px"></div></div><span style="font-size:0.78rem;color:#6b7280">85</span></div></td></tr>
+        <tr><td>Aburi</td><td>3,100</td><td>1,200</td><td>87</td><td><div style="display:flex;align-items:center;gap:0.5rem"><div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px"><div style="width:72%;height:100%;background:var(--green);border-radius:3px"></div></div><span style="font-size:0.78rem;color:#6b7280">72</span></div></td></tr>
+        <tr><td>Mampong</td><td>2,400</td><td>890</td><td>64</td><td><div style="display:flex;align-items:center;gap:0.5rem"><div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px"><div style="width:58%;height:100%;background:var(--gold);border-radius:3px"></div></div><span style="font-size:0.78rem;color:#6b7280">58</span></div></td></tr>
+        <tr><td>Larteh</td><td>1,800</td><td>620</td><td>42</td><td><div style="display:flex;align-items:center;gap:0.5rem"><div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px"><div style="width:44%;height:100%;background:var(--gold);border-radius:3px"></div></div><span style="font-size:0.78rem;color:#6b7280">44</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== SETTINGS PAGE ===== -->
+<div class="page" id="page-settings">
+  <div class="section-hdr"><h2>Settings</h2></div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="switchSubTab(this,'settings')">General</div>
+    <div class="sub-tab" onclick="switchSubTab(this,'settings')">Security</div>
+    <div class="sub-tab" onclick="switchSubTab(this,'settings')">Integrations</div>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+    <div class="form-card">
+      <h4 style="font-weight:700;margin-bottom:1.2rem;font-size:0.95rem">General Settings</h4>
+      <div style="margin-bottom:1rem"><label>Site Name</label><input type="text" value="Akuapeman.com"></div>
+      <div style="margin-bottom:1rem"><label>Tagline</label><input type="text" value="Home of the Akuapem Community"></div>
+      <div style="margin-bottom:1rem"><label>Contact Email</label><input type="email" value="[admin-email]"></div>
+      <div style="margin-bottom:1rem"><label>Default Language</label><select><option>English</option><option>Twi</option></select></div>
+      <div style="margin-bottom:1.2rem"><label>Theme Color</label>
+        <div style="display:flex;gap:0.6rem;margin-top:0.4rem">
+          <div style="width:32px;height:32px;border-radius:50%;background:#1a6b3c;cursor:pointer;border:3px solid var(--dark)"></div>
+          <div style="width:32px;height:32px;border-radius:50%;background:#1a3a6b;cursor:pointer;border:3px solid transparent"></div>
+          <div style="width:32px;height:32px;border-radius:50%;background:#6b1a1a;cursor:pointer;border:3px solid transparent"></div>
+        </div>
+      </div>
+      <button style="padding:0.65rem 1.5rem;background:var(--green);color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.88rem">Save Changes</button>
+    </div>
+    <div class="form-card">
+      <h4 style="font-weight:700;margin-bottom:1.2rem;font-size:0.95rem">Security Settings</h4>
+      <div style="margin-bottom:1rem"><label>Minimum Password Length</label><input type="number" value="8"></div>
+      <div style="margin-bottom:1rem"><label>Max Login Attempts</label><input type="number" value="5"></div>
+      <div style="margin-bottom:1rem"><label>Session Timeout (minutes)</label><input type="number" value="60"></div>
+      <div style="margin-bottom:1.2rem">
+        <label style="margin-bottom:0.6rem">Two-Factor Authentication</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0.7rem;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb">
+          <span style="font-size:0.85rem">Require 2FA for Admins</span>
+          <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+      <button style="padding:0.65rem 1.5rem;background:var(--green);color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.88rem">Save Changes</button>
+    </div>
+    <div class="form-card">
+      <h4 style="font-weight:700;margin-bottom:1.2rem;font-size:0.95rem">Integrations</h4>
+      <div style="margin-bottom:1rem"><label>Email SMTP Host</label><input type="text" placeholder="smtp.example.com"></div>
+      <div style="margin-bottom:1rem"><label>SMTP Port</label><input type="number" placeholder="587"></div>
+      <div style="margin-bottom:1rem"><label>SMS Gateway API Key</label><input type="text" placeholder="Enter API key…"></div>
+      <div style="margin-bottom:1.2rem"><label>Payment API Key</label><input type="text" placeholder="Enter payment API key…"></div>
+      <button style="padding:0.65rem 1.5rem;background:var(--green);color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.88rem">Save Integrations</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ROLES PAGE ===== -->
+<div class="page" id="page-roles">
+  <div class="section-hdr"><h2>Admin Management & Roles</h2><button class="act-btn act-approve" style="padding:0.5rem 1rem;font-size:0.82rem">+ Add Admin</button></div>
+
+  <!-- Admin Users Table -->
+  <div class="chart-card" style="padding:0;overflow:hidden;margin-bottom:1.5rem">
+    <div style="padding:1rem 1.2rem;border-bottom:1px solid #f3f4f6;font-weight:700;font-size:0.9rem">Admin Accounts</div>
+    <table class="data-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Last Active</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--dark)">SA</div>Super Admin</div></td><td style="color:#6b7280">[admin-email]</td><td><span class="badge-status badge-verified">Super Admin</span></td><td style="color:#9ca3af">Now</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#1e40af">OB</div>Owusu Boateng</div></td><td style="color:#6b7280">[email]</td><td><span class="badge-status badge-active">Moderator</span></td><td style="color:#9ca3af">2 hr ago</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-delete">Remove</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div style="width:32px;height:32px;border-radius:50%;background:#f3e8ff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#7c3aed">YD</div>Yaa Darko</div></td><td style="color:#6b7280">[email]</td><td><span class="badge-status badge-pending">Support</span></td><td style="color:#9ca3af">1 day ago</td><td><span class="badge-status badge-active">Active</span></td><td style="display:flex;gap:0.3rem"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button><button class="act-btn act-delete">Remove</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Role Permission Cards -->
+  <h3 style="font-size:1rem;font-weight:700;margin-bottom:1rem;color:var(--dark)">Role Permissions</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="role-card" style="border-top-color:var(--gold)">
+      <h4>🔑 Super Admin</h4>
+      <div class="perm-item">User Management <div class="toggle on"></div></div>
+      <div class="perm-item">Content Moderation <div class="toggle on"></div></div>
+      <div class="perm-item">Analytics <div class="toggle on"></div></div>
+      <div class="perm-item">Financial Data <div class="toggle on"></div></div>
+      <div class="perm-item">Settings <div class="toggle on"></div></div>
+      <div class="perm-item">Admin Management <div class="toggle on"></div></div>
+    </div>
+    <div class="role-card">
+      <h4>🛡 Admin</h4>
+      <div class="perm-item">User Management <div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Content Moderation <div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Analytics <div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Financial Data <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Settings <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Admin Management <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+    </div>
+    <div class="role-card" style="border-top-color:#6b7280">
+      <h4>⚖️ Moderator</h4>
+      <div class="perm-item">User Management <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Content Moderation <div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Analytics <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Financial Data <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Settings <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Admin Management <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+    </div>
+    <div class="role-card" style="border-top-color:#9ca3af">
+      <h4>🎧 Support</h4>
+      <div class="perm-item">User Management <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Content Moderation <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Analytics <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Financial Data <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Settings <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="perm-item">Admin Management <div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+    </div>
+  </div>
+</div>
+
+</main><!-- end main-content -->
+
+<script>
+// ===== PAGE NAVIGATION =====
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  // Close sidebar on mobile
+  if (window.innerWidth <= 768) toggleSidebar(false);
+  // Init charts if needed
+  if (id === 'dashboard') initDashboardCharts();
+  if (id === 'analytics') initAnalyticsCharts();
+}
+
+// ===== SIDEBAR TOGGLE =====
+function toggleSidebar(force) {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebarOverlay');
+  const open = force !== undefined ? force : !sb.classList.contains('open');
+  sb.classList.toggle('open', open);
+  ov.classList.toggle('open', open);
+}
+
+// ===== DROPDOWN =====
+function toggleDropdown() {
+  document.getElementById('profileDropdown').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.profile-btn')) {
+    document.getElementById('profileDropdown').classList.remove('open');
+  }
+});
+
+// ===== SUB TABS =====
+function switchSubTab(el, group) {
+  el.closest('.sub-tabs').querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ===== AUDIENCE TOGGLE =====
+function toggleAudience(btn) {
+  btn.classList.toggle('active');
+}
+
+// ===== CHARTS =====
+const months6 = ['Oct','Nov','Dec','Jan','Feb','Mar'];
+const months12 = ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+const chartDefaults = { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: '#f3f4f6' } } } };
+
+let dashChartsInit = false;
+function initDashboardCharts() {
+  if (dashChartsInit) return;
+  dashChartsInit = true;
+
+  new Chart(document.getElementById('userGrowthChart'), {
+    type: 'line',
+    data: {
+      labels: months6,
+      datasets: [{ label: 'Users', data: [9800,10200,10800,11200,11900,12480], borderColor: '#1a6b3c', backgroundColor: 'rgba(26,107,60,0.08)', fill: true, tension: 0.4, pointBackgroundColor: '#1a6b3c' }]
+    },
+    options: { ...chartDefaults, plugins: { legend: { display: false } } }
+  });
+
+  new Chart(document.getElementById('platformChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Users','Businesses','Artists','Stores'],
+      datasets: [{ data: [12480,348,210,95], backgroundColor: ['#1a6b3c','#d4a017','#1a1a2e','#6b7280'], borderWidth: 0 }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }, cutout: '65%' }
+  });
+
+  new Chart(document.getElementById('bizChart'), {
+    type: 'bar',
+    data: {
+      labels: months6,
+      datasets: [{ data: [28,35,42,38,55,62], backgroundColor: '#d4a017', borderRadius: 6 }]
+    },
+    options: chartDefaults
+  });
+
+  new Chart(document.getElementById('salesChart'), {
+    type: 'line',
+    data: {
+      labels: months6,
+      datasets: [{ data: [52000,61000,58000,72000,79000,84200], borderColor: '#d4a017', backgroundColor: 'rgba(212,160,23,0.08)', fill: true, tension: 0.4, pointBackgroundColor: '#d4a017' }]
+    },
+    options: chartDefaults
+  });
+}
+
+let analyticsChartsInit = false;
+function initAnalyticsCharts() {
+  if (analyticsChartsInit) return;
+  analyticsChartsInit = true;
+
+  new Chart(document.getElementById('analyticsUserChart'), {
+    type: 'line',
+    data: {
+      labels: months12,
+      datasets: [{ data: [7200,7800,8100,8600,9000,9400,9800,10200,10800,11200,11900,12480], borderColor: '#1a6b3c', backgroundColor: 'rgba(26,107,60,0.08)', fill: true, tension: 0.4 }]
+    },
+    options: chartDefaults
+  });
+
+  new Chart(document.getElementById('analyticsActiveChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      datasets: [{ data: [820,1042,980,1100,950,780,640], backgroundColor: '#1a6b3c', borderRadius: 6 }]
+    },
+    options: chartDefaults
+  });
+
+  new Chart(document.getElementById('analyticsBizChart'), {
+    type: 'bar',
+    data: {
+      labels: months12,
+      datasets: [{ data: [18,22,25,28,30,35,28,35,42,38,55,62], backgroundColor: '#d4a017', borderRadius: 6 }]
+    },
+    options: chartDefaults
+  });
+
+  new Chart(document.getElementById('analyticsMusicChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Highlife','Gospel','Afrobeats','Traditional','Other'],
+      datasets: [{ data: [42,28,18,8,4], backgroundColor: ['#1a6b3c','#d4a017','#1a1a2e','#6b7280','#d1d5db'], borderWidth: 0 }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }, cutout: '60%' }
+  });
+}
+
+// Init dashboard charts on load
+window.addEventListener('load', initDashboardCharts);
+</script>
+</body>
+</html>
