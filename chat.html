@@ -482,7 +482,7 @@
   </div>
 </nav>
 
-<!-- ===== LOGIN VIEW ===== -->
+<!-- ===== COMMUNITY ENTRY PROMPT ===== -->
 <div id="view-login" class="view active">
   <div class="login-wrap">
     <div class="login-card">
@@ -494,31 +494,17 @@
         </div>
       </div>
       <div class="login-body">
-        <h3>Join the Community</h3>
-        <div class="form-group">
-          <label>Your Town</label>
-          <select id="loginTown">
-            <option value="" disabled selected>Select your town</option>
-            <option>Akropong</option><option>Aburi</option><option>Mampong</option>
-            <option>Larteh</option><option>Dawu</option><option>Tutu</option>
-            <option>Berekuso</option><option>Adukrom</option>
-          </select>
+        <div style="text-align:center;margin-bottom:1.5rem">
+          <div style="font-size:2.5rem;margin-bottom:0.6rem">👋</div>
+          <h3 id="entryGreeting" style="font-size:1.1rem;font-weight:800;color:var(--dark);margin-bottom:0.4rem">Welcome!</h3>
+          <p style="font-size:0.88rem;color:var(--gray);line-height:1.6">The Community Chat is a space to connect with people across the Akuapem ridge. Would you like to enter?</p>
         </div>
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" id="loginName" placeholder="Kofi Mensah">
+        <button class="login-btn" onclick="enterCommunity()">Yes, Enter Community →</button>
+        <div class="login-divider">don't have an account?</div>
+        <a href="login.html" style="display:block;text-align:center;font-size:0.9rem;font-weight:700;color:white;padding:0.75rem;border-radius:10px;background:var(--gold);color:var(--dark);text-decoration:none;transition:background 0.2s" onmouseover="this.style.background='#e6b520'" onmouseout="this.style.background='var(--gold)'">Create an Account</a>
+        <div style="margin-top:0.8rem;text-align:center">
+          <a href="index.html" style="font-size:0.85rem;color:var(--gray);font-weight:600">← Back to Home</a>
         </div>
-        <div class="form-group">
-          <label>Phone / Email</label>
-          <input type="text" id="loginContact" placeholder="+233 24 000 0000 or email">
-        </div>
-        <button class="login-btn" onclick="doLogin()">Enter Community →</button>
-        <div class="login-divider">or continue with</div>
-        <div class="social-login">
-          <button class="social-btn" onclick="doLogin()">🌐 Google</button>
-          <button class="social-btn" onclick="doLogin()">📘 Facebook</button>
-        </div>
-        <p class="login-footer">By joining you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a></p>
       </div>
     </div>
   </div>
@@ -968,24 +954,46 @@ const TOWN_POSTS = [
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
+  // Try to pull identity from main session
+  const mainSession = JSON.parse(localStorage.getItem('akm_session') || 'null');
   currentUser = JSON.parse(localStorage.getItem('akm_community_user') || 'null');
+
+  if (!currentUser && mainSession) {
+    // Auto-build community user from main account
+    const initials = mainSession.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    currentUser = { name: mainSession.name, town: mainSession.town || 'Akropong', initials };
+    localStorage.setItem('akm_community_user', JSON.stringify(currentUser));
+  }
+
   if (currentUser) {
+    // Update greeting in case they land on prompt first
+    const g = document.getElementById('entryGreeting');
+    if (g) g.textContent = 'Welcome, ' + currentUser.name.split(' ')[0] + '!';
     showMainApp();
   } else {
+    // Show the entry prompt — pull name from main session if available
+    if (mainSession) {
+      const g = document.getElementById('entryGreeting');
+      if (g) g.textContent = 'Welcome, ' + mainSession.name.split(' ')[0] + '!';
+    }
     showView('login');
   }
 });
 
-function doLogin() {
-  const nameVal = document.getElementById('loginName').value.trim();
-  const townVal = document.getElementById('loginTown').value;
-  if (!nameVal) { document.getElementById('loginName').focus(); return; }
-  if (!townVal) { document.getElementById('loginTown').focus(); return; }
-  const initials = nameVal.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
-  currentUser = { name: nameVal, town: townVal, initials };
+function enterCommunity() {
+  const mainSession = JSON.parse(localStorage.getItem('akm_session') || 'null');
+  if (mainSession) {
+    const initials = mainSession.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    currentUser = { name: mainSession.name, town: mainSession.town || 'Akropong', initials };
+  } else {
+    // Guest fallback — use a generic name
+    currentUser = { name: 'Guest', town: 'Akropong', initials: 'GU' };
+  }
   localStorage.setItem('akm_community_user', JSON.stringify(currentUser));
   showMainApp();
 }
+
+function doLogin() { enterCommunity(); }
 
 function showMainApp() {
   updateUserUI();
@@ -1021,7 +1029,7 @@ function showView(name) {
 }
 
 function switchView(name, btn) {
-  if (!currentUser && name !== 'login') { showView('login'); return; }
+  if (!currentUser && name !== 'login') { enterCommunity(); return; }
   showView(name);
   if (name === 'profile') renderProfile();
   if (name === 'notifications') renderNotifications();

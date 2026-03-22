@@ -51,6 +51,28 @@
     .pd-condition-new { color:var(--green); }
     .pd-condition-used { color:#e67e22; }
 
+    /* Chat modal */
+    .chat-modal { max-width:420px; }
+    .chat-modal .modal-body { padding:0; display:flex; flex-direction:column; height:480px; }
+    .chat-seller-bar { padding:0.9rem 1.2rem; background:#f0f8f4; border-bottom:1px solid #e0ede6; display:flex; align-items:center; gap:0.8rem; }
+    .chat-seller-avatar { width:40px; height:40px; border-radius:50%; background:var(--green); color:white; display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:700; flex-shrink:0; }
+    .chat-seller-info .seller-name { font-weight:700; font-size:0.9rem; color:var(--dark); }
+    .chat-seller-info .seller-item { font-size:0.75rem; color:var(--gray); }
+    .chat-msgs { flex:1; overflow-y:auto; padding:1rem; display:flex; flex-direction:column; gap:0.7rem; background:#f9f9f6; }
+    .chat-msg-bubble { max-width:78%; padding:0.6rem 0.85rem; border-radius:14px; font-size:0.85rem; line-height:1.5; }
+    .chat-msg-bubble.me { background:var(--green); color:white; border-radius:14px 14px 2px 14px; align-self:flex-end; }
+    .chat-msg-bubble.them { background:white; border:1px solid #eee; border-radius:14px 14px 14px 2px; align-self:flex-start; }
+    .chat-msg-bubble .btime { font-size:0.68rem; opacity:0.6; margin-top:0.25rem; text-align:right; }
+    .chat-msg-bubble.them .btime { text-align:left; }
+    .chat-input-row { padding:0.7rem 0.9rem; border-top:1px solid #eee; display:flex; gap:0.5rem; background:white; }
+    .chat-input-row input { flex:1; padding:0.55rem 0.9rem; border:1px solid #ddd; border-radius:20px; font-size:0.85rem; outline:none; }
+    .chat-input-row input:focus { border-color:var(--green); }
+    .chat-send { background:var(--green); color:white; border:none; border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:0.95rem; flex-shrink:0; }
+    .chat-send:hover { background:#0d3d22; }
+    /* Name prompt */
+    .name-prompt { padding:1.5rem; display:flex; flex-direction:column; gap:0.8rem; }
+    .name-prompt p { font-size:0.88rem; color:var(--gray); }
+
     @media(max-width:600px) {
       .store-toolbar { flex-direction:column; align-items:stretch; }
       .store-toolbar input, .store-toolbar select { width:100%; }
@@ -70,7 +92,10 @@
 <div class="section" style="padding-top:1.5rem;">
   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
     <div><span id="productCount" style="color:var(--gray); font-size:0.9rem;"></span></div>
-    <a href="store-auth.html" class="btn btn-gold" style="font-size:0.88rem; padding:0.6rem 1.4rem;">+ Sell Something</a>
+    <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
+      <button onclick="openMyChats()" style="background:white;border:2px solid var(--green);color:var(--green);padding:0.5rem 1.1rem;border-radius:20px;font-size:0.85rem;font-weight:700;cursor:pointer" id="myChatsBtn">💬 My Chats</button>
+      <a href="store-auth.html" class="btn btn-gold" style="font-size:0.88rem; padding:0.6rem 1.4rem;">+ Sell Something</a>
+    </div>
   </div>
   <div class="store-toolbar">
     <input type="text" id="searchInput" placeholder="🔍  Search products..." oninput="filterProducts()">
@@ -108,22 +133,48 @@
   </div>
 </div>
 
-<!-- Contact Seller Modal -->
+<!-- Chat with Seller Modal -->
 <div class="modal-overlay" id="contactModal">
-  <div class="modal">
+  <div class="modal chat-modal">
     <div class="modal-header">
-      <h3 id="contactTitle">Contact Seller</h3>
+      <h3 id="contactTitle">Chat with Seller</h3>
       <button class="modal-close" onclick="closeContact()">✕</button>
     </div>
-    <div class="modal-body">
-      <div id="sellerInfo" style="background:#f0f8f4; border-radius:10px; padding:1rem; margin-bottom:1.2rem; font-size:0.9rem;"></div>
-      <div class="form-group"><label>Your Name</label><input type="text" id="buyerName" placeholder="Kofi Mensah"></div>
-      <div class="form-group"><label>Your Phone / WhatsApp</label><input type="tel" id="buyerPhone" placeholder="+233 24 000 0000"></div>
-      <div class="form-group"><label>Message to Seller</label>
-        <textarea id="buyerMsg" rows="3" placeholder="Hi, I'm interested in your item..."></textarea>
+    <div class="modal-body" id="chatModalBody">
+      <!-- Step 1: enter your name -->
+      <div class="name-prompt" id="namePromptStep">
+        <p>Enter your name to start chatting with the seller.</p>
+        <div class="form-group" style="margin:0"><label>Your Name</label><input type="text" id="buyerNameInput" placeholder="e.g. Kofi Mensah" style="width:100%;padding:0.65rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:0.9rem;outline:none"></div>
+        <button class="btn btn-gold" style="width:100%" onclick="startChat()">Start Chat</button>
       </div>
-      <button class="btn btn-gold" style="width:100%;" onclick="sendInquiry()">Send Message</button>
-      <div id="inquirySent" style="display:none; text-align:center; color:var(--green); font-weight:600; margin-top:1rem;">✅ Message sent to seller!</div>
+      <!-- Step 2: chat UI -->
+      <div id="chatStep" style="display:none;flex-direction:column;height:100%">
+        <div class="chat-seller-bar">
+          <button onclick="goBackToConvos()" title="Back to conversations" style="background:none;border:none;cursor:pointer;color:var(--green);font-size:1.2rem;padding:0.1rem 0.3rem 0.1rem 0;line-height:1;flex-shrink:0" aria-label="Back">&#8592;</button>
+          <div class="chat-seller-avatar" id="chatSellerAvatar">?</div>
+          <div class="chat-seller-info">
+            <div class="seller-name" id="chatSellerName">Seller</div>
+            <div class="seller-item" id="chatItemLabel"></div>
+          </div>
+        </div>
+        <div class="chat-msgs" id="buyerMsgArea"></div>
+        <div class="chat-input-row">
+          <input type="text" id="buyerChatInput" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendBuyerMsg()">
+          <button class="chat-send" onclick="sendBuyerMsg()">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- My Chats Modal (buyer's past conversations) -->
+<div class="modal-overlay" id="myChatsModal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header" style="background:var(--dark)">
+      <h3>💬 My Conversations</h3>
+      <button class="modal-close" onclick="document.getElementById('myChatsModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:0;max-height:420px;overflow-y:auto" id="myChatsListBody">
     </div>
   </div>
 </div>
@@ -256,27 +307,213 @@ function switchImg(emoji, el) {
 
 function closeProduct() { document.getElementById('productModal').classList.remove('open'); }
 
-// ===== CONTACT =====
+// ===== BUYER CHAT =====
+let activeChatThread = null;
+let activeBuyerName = localStorage.getItem('akm_buyer_name') || '';
+
+function getChats() { return JSON.parse(localStorage.getItem('akm_chats') || '{}'); }
+function saveChats(c) { localStorage.setItem('akm_chats', JSON.stringify(c)); }
+
 function openContact(id, title, seller, town, price) {
-  document.getElementById('contactTitle').textContent = 'Buy: ' + title;
-  document.getElementById('sellerInfo').innerHTML =
-    `<strong>Item:</strong> ${title}<br>
-     <strong>Price:</strong> <span style="color:var(--green); font-weight:700;">GH₵ ${price}</span><br>
-     <strong>Seller:</strong> ${seller} &nbsp;·&nbsp; 📍 ${town}`;
-  document.getElementById('buyerMsg').value = `Hi ${seller}, I'm interested in your "${title}" listed for GH₵ ${price}. Is it still available?`;
-  document.getElementById('inquirySent').style.display = 'none';
+  activeChatThread = null;
+  // Hide inline convos list if visible
+  const convosEl = document.getElementById('inlineConvosList');
+  if (convosEl) convosEl.style.display = 'none';
+  document.getElementById('contactTitle').textContent = 'Chat with ' + seller;
+  document.getElementById('chatSellerName').textContent = seller;
+  document.getElementById('chatItemLabel').textContent = '📦 ' + title + ' · GH₵ ' + price;
+  // Seller avatar initials
+  const initials = seller.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('chatSellerAvatar').textContent = initials;
+
+  // Find or create thread
+  const chats = getChats();
+  // Thread key: sellerId (use seller name as proxy) + productId
+  const threadKey = 'thread_' + seller.replace(/\s/g,'_') + '_' + id;
+
+  if (!chats[threadKey]) {
+    // Find seller session from users
+    const users = JSON.parse(localStorage.getItem('akm_users') || '[]');
+    const sellerUser = users.find(u => u.name === seller);
+    chats[threadKey] = {
+      id: threadKey,
+      sellerId: sellerUser ? sellerUser.id : seller,
+      sellerName: seller,
+      buyerName: activeBuyerName || '',
+      itemId: id,
+      itemTitle: title,
+      messages: [],
+      lastTime: null,
+      unreadSeller: false,
+      unreadBuyer: false
+    };
+    saveChats(chats);
+  }
+  activeChatThread = threadKey;
+
+  if (activeBuyerName) {
+    chats[threadKey].buyerName = activeBuyerName;
+    saveChats(chats);
+    showChatStep();
+  } else {
+    document.getElementById('namePromptStep').style.display = 'flex';
+    document.getElementById('chatStep').style.display = 'none';
+    document.getElementById('buyerNameInput').value = '';
+  }
   document.getElementById('contactModal').classList.add('open');
 }
 
-function closeContact() { document.getElementById('contactModal').classList.remove('open'); }
+function startChat() {
+  const name = document.getElementById('buyerNameInput').value.trim();
+  if (!name) { document.getElementById('buyerNameInput').focus(); return; }
+  activeBuyerName = name;
+  localStorage.setItem('akm_buyer_name', name);
+  const chats = getChats();
+  if (chats[activeChatThread]) {
+    chats[activeChatThread].buyerName = name;
+    saveChats(chats);
+  }
+  showChatStep();
+}
 
-function sendInquiry() {
-  document.getElementById('inquirySent').style.display = 'block';
-  setTimeout(closeContact, 1800);
+function showChatStep() {
+  document.getElementById('namePromptStep').style.display = 'none';
+  const step = document.getElementById('chatStep');
+  step.style.display = 'flex';
+  renderBuyerMessages();
+  // Auto-send greeting if first message
+  const chats = getChats();
+  const thread = chats[activeChatThread];
+  if (thread && thread.messages.length === 0) {
+    const greeting = { from: 'buyer', text: `Hi ${thread.sellerName}, I'm interested in your "${thread.itemTitle}". Is it still available?`, time: Date.now() };
+    thread.messages.push(greeting);
+    thread.lastTime = greeting.time;
+    thread.unreadSeller = true;
+    saveChats(chats);
+    renderBuyerMessages();
+  }
+}
+
+function renderBuyerMessages() {
+  const chats = getChats();
+  const thread = chats[activeChatThread];
+  if (!thread) return;
+  const area = document.getElementById('buyerMsgArea');
+  area.innerHTML = thread.messages.map(m => `
+    <div class="chat-msg-bubble ${m.from==='buyer'?'me':'them'}">
+      ${m.text}
+      <div class="btime">${formatBuyerTime(m.time)}</div>
+    </div>`).join('');
+  area.scrollTop = area.scrollHeight;
+}
+
+function sendBuyerMsg() {
+  const input = document.getElementById('buyerChatInput');
+  const text = input.value.trim();
+  if (!text || !activeChatThread) return;
+  const chats = getChats();
+  const thread = chats[activeChatThread];
+  if (!thread) return;
+  const msg = { from: 'buyer', text, time: Date.now() };
+  thread.messages.push(msg);
+  thread.lastTime = msg.time;
+  thread.unreadSeller = true;
+  saveChats(chats);
+  input.value = '';
+  renderBuyerMessages();
+}
+
+function formatBuyerTime(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  const now = new Date();
+  if (d.toDateString() === now.toDateString()) return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleDateString([], {month:'short',day:'numeric'});
+}
+
+// Poll for seller replies every 4s while chat is open
+setInterval(() => {
+  if (activeChatThread && document.getElementById('contactModal').classList.contains('open')) {
+    renderBuyerMessages();
+  }
+}, 4000);
+
+function closeContact() {
+  document.getElementById('contactModal').classList.remove('open');
+  activeChatThread = null;
+}
+
+function goBackToConvos() {
+  // Hide chat step, show the conversations list inside the same modal
+  document.getElementById('chatStep').style.display = 'none';
+  document.getElementById('namePromptStep').style.display = 'none';
+  activeChatThread = null;
+  document.getElementById('contactTitle').textContent = '💬 My Conversations';
+  // Reuse the convos list panel inside the modal body
+  const body = document.getElementById('chatModalBody');
+  const chats = getChats();
+  const buyerName = localStorage.getItem('akm_buyer_name') || '';
+  const myThreads = Object.values(chats).filter(t => !buyerName || t.buyerName === buyerName)
+    .sort((a,b) => (b.lastTime||0) - (a.lastTime||0));
+  let convosHtml = '';
+  if (!myThreads.length) {
+    convosHtml = '<div style="padding:2.5rem 1.5rem;text-align:center;color:var(--gray);font-size:0.88rem">No conversations yet.</div>';
+  } else {
+    convosHtml = myThreads.map(t => {
+      const last = t.messages[t.messages.length-1];
+      const initials = t.sellerName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+      return `<div onclick="openContact(${t.itemId},'${t.itemTitle.replace(/'/g,"\\'")}','${t.sellerName.replace(/'/g,"\\'")}','',0)" style="display:flex;align-items:center;gap:0.8rem;padding:0.9rem 1.2rem;border-bottom:1px solid #f5f5f5;cursor:pointer;transition:background 0.15s" onmouseover="this.style.background='#f9f9f6'" onmouseout="this.style.background='white'">
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0">${initials}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:0.88rem;color:var(--dark)">${t.sellerName}</div>
+          <div style="font-size:0.75rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.itemTitle}</div>
+          <div style="font-size:0.72rem;color:#bbb;margin-top:0.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${last ? last.text.substring(0,45)+'…' : ''}</div>
+        </div>
+        ${t.unreadBuyer ? '<div style="width:8px;height:8px;background:#e74c3c;border-radius:50%;flex-shrink:0"></div>' : ''}
+      </div>`;
+    }).join('');
+  }
+  // Inject a convos-list div (replace any existing one)
+  let convosEl = document.getElementById('inlineConvosList');
+  if (!convosEl) {
+    convosEl = document.createElement('div');
+    convosEl.id = 'inlineConvosList';
+    convosEl.style.cssText = 'flex:1;overflow-y:auto;max-height:440px';
+    body.appendChild(convosEl);
+  }
+  convosEl.style.display = 'block';
+  convosEl.innerHTML = convosHtml;
 }
 
 document.getElementById('contactModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeContact(); });
 document.getElementById('productModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeProduct(); });
+
+function openMyChats() {
+  const chats = getChats();
+  const buyerName = localStorage.getItem('akm_buyer_name') || '';
+  const myThreads = Object.values(chats).filter(t => !buyerName || t.buyerName === buyerName);
+  const body = document.getElementById('myChatsListBody');
+  if (!myThreads.length) {
+    body.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--gray);font-size:0.88rem">No conversations yet.<br>Click "Contact Seller" on any product to start chatting.</div>';
+  } else {
+    body.innerHTML = myThreads.sort((a,b)=>(b.lastTime||0)-(a.lastTime||0)).map(t => {
+      const last = t.messages[t.messages.length-1];
+      const initials = t.sellerName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+      return `<div style="display:flex;align-items:center;gap:0.8rem;padding:0.9rem 1.2rem;border-bottom:1px solid #f5f5f5;cursor:pointer" onclick="document.getElementById('myChatsModal').classList.remove('open');openContact(${t.itemId},'${t.itemTitle.replace(/'/g,"\\'")}','${t.sellerName.replace(/'/g,"\\'")}','',0)">
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0">${initials}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:0.88rem">${t.sellerName}</div>
+          <div style="font-size:0.75rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.itemTitle}</div>
+          <div style="font-size:0.72rem;color:#bbb;margin-top:0.1rem">${last ? last.text.substring(0,40)+'…' : ''}</div>
+        </div>
+        ${t.unreadBuyer ? '<div style="width:8px;height:8px;background:#e74c3c;border-radius:50%;flex-shrink:0"></div>' : ''}
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('myChatsModal').classList.add('open');
+}
+
+document.getElementById('myChatsModal').addEventListener('click', e => { if(e.target===e.currentTarget) e.currentTarget.classList.remove('open'); });
 
 renderCats();
 filterProducts();

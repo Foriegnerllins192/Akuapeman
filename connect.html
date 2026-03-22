@@ -78,31 +78,19 @@
       </div>
       <div class="feature-card">
         <div class="icon">💬</div>
-        <h3>Sign Up to Chat</h3>
-        <p>Create your free account to join the conversation, share media, and connect with the Akuapem community.</p>
+        <h3>Join the Community</h3>
+        <p>Connect with Akuapem people worldwide. Share pictures, videos, and advertise your local products.</p>
         <br>
-        <div class="form-group"><input type="text" id="chatSignupName" placeholder="Your Name"></div>
-        <div class="form-group">
-          <select id="chatSignupTown" style="width:100%; padding:0.7rem 1rem; border:1px solid #ddd; border-radius:8px; font-size:0.95rem; background:white;">
-            <option value="" disabled selected>Select Your Town</option>
-            <option>Akropong</option><option>Aburi</option><option>Mampong</option>
-            <option>Larteh</option><option>Dawu</option><option>Tutu</option>
-            <option>Berekuso</option><option>Adukrom</option>
-          </select>
-        </div>
-        <div class="form-group"><input type="email" placeholder="Email Address"></div>
-        <div class="form-group"><input type="password" placeholder="Password"></div>
-        <button class="btn btn-gold" style="width:100%;" onclick="joinCommunityChat()">Join Community Chat →</button>
-        <p style="margin-top:1rem; font-size:0.85rem; color:var(--gray);">Already have an account? <a href="chat.html" style="color:var(--green);">Sign In</a></p>
+        <button class="btn btn-gold" style="width:100%;" onclick="goToCommunityChat()">Enter Community Chat →</button>
+        <p style="margin-top:1rem; font-size:0.85rem; color:var(--gray); text-align:center;">Don't have an account? <a href="login.html" style="color:var(--green); font-weight:600;">Create one free</a></p>
       </div>
       <script>
-        function joinCommunityChat() {
-          const name = document.getElementById('chatSignupName').value.trim();
-          const town = document.getElementById('chatSignupTown').value;
-          if (!name) { document.getElementById('chatSignupName').focus(); return; }
-          if (!town) { document.getElementById('chatSignupTown').focus(); return; }
-          const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
-          localStorage.setItem('akm_community_user', JSON.stringify({ name, town, initials }));
+        function goToCommunityChat() {
+          const session = JSON.parse(localStorage.getItem('akm_session') || 'null');
+          if (session) {
+            const initials = session.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+            localStorage.setItem('akm_community_user', JSON.stringify({ name: session.name, town: session.town || 'Akropong', initials }));
+          }
           window.location.href = 'chat.html';
         }
       </script>

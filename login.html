@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Akuapeman</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f0f2f5; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ===== TOP BAR ===== */
+    .login-topbar {
+      background: var(--green); padding: 0.8rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .login-topbar .logo-wrap { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .logo-icon { width: 36px; height: 36px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1rem; color: var(--dark); flex-shrink: 0; }
+    .login-topbar span { color: var(--gold); font-size: 1.1rem; font-weight: 800; }
+    .topbar-back { color: rgba(255,255,255,0.8); font-size: 0.85rem; text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
+    .topbar-back:hover { color: white; }
+
+    /* ===== MAIN LAYOUT ===== */
+    .login-page { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+    .login-card {
+      background: white; border-radius: 20px; width: 100%; max-width: 440px;
+      overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    }
+
+    /* ===== CARD HERO ===== */
+    .card-hero {
+      height: 170px; background: linear-gradient(135deg, var(--green) 0%, #0d3d22 100%);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; color: white; text-align: center; position: relative; overflow: hidden;
+    }
+    .card-hero-bg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 8rem; opacity: 0.1; }
+    .card-hero-content { position: relative; }
+    .card-hero h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .card-hero p { font-size: 0.85rem; opacity: 0.85; }
+
+    /* ===== TABS ===== */
+    .auth-tabs { display: flex; border-bottom: 2px solid #f0f2f5; }
+    .auth-tab {
+      flex: 1; padding: 0.9rem; text-align: center; font-weight: 700;
+      font-size: 0.9rem; cursor: pointer; color: var(--gray);
+      border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+    }
+    .auth-tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+    /* ===== FORM BODY ===== */
+    .card-body { padding: 1.8rem; }
+    .auth-form { display: none; }
+    .auth-form.active { display: block; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: #444; margin-bottom: 0.4rem; }
+    .form-group input, .form-group select {
+      width: 100%; padding: 0.72rem 1rem; border: 1.5px solid #e4e6ea;
+      border-radius: 10px; font-size: 0.92rem; outline: none;
+      transition: border-color 0.2s; font-family: inherit;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: var(--green); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .submit-btn {
+      width: 100%; background: var(--green); color: white; border: none;
+      border-radius: 10px; padding: 0.85rem; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; margin-top: 0.5rem;
+      font-family: inherit;
+    }
+    .submit-btn:hover { background: #0d3d22; }
+    .err-msg {
+      background: #fff0f0; color: #c0392b; border-radius: 8px;
+      padding: 0.7rem 1rem; font-size: 0.85rem; margin-bottom: 1rem; display: none;
+    }
+    .divider { display: flex; align-items: center; gap: 0.8rem; margin: 1rem 0; color: var(--gray); font-size: 0.82rem; }
+    .divider::before, .divider::after { content: ''; flex: 1; border-top: 1px solid #e4e6ea; }
+    .switch-link { text-align: center; font-size: 0.85rem; color: var(--gray); margin-top: 1rem; }
+    .switch-link a { color: var(--green); font-weight: 700; cursor: pointer; }
+
+    @media (max-width: 480px) {
+      .card-body { padding: 1.3rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .card-hero { height: 140px; }
+      .card-hero h2 { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="login-topbar">
+  <a href="index.html" class="logo-wrap">
+    <div class="logo-icon">A</div>
+    <span>Akuapeman</span>
+  </a>
+  <a href="index.html" class="topbar-back">← Back to Home</a>
+</div>
+
+<!-- LOGIN PAGE -->
+<div class="login-page">
+  <div class="login-card">
+
+    <!-- Hero -->
+    <div class="card-hero">
+      <div class="card-hero-bg">🏔️</div>
+      <div class="card-hero-content">
+        <h2>Welcome Back</h2>
+        <p>Sign in to your Akuapeman account</p>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs" id="authTabs">
+      <div class="auth-tab active" onclick="switchTab('login')">Sign In</div>
+      <div class="auth-tab" onclick="switchTab('signup')">Create Account</div>
+    </div>
+
+    <!-- Forms -->
+    <div class="card-body" id="cardBody">
+
+      <!-- LOGIN FORM -->
+      <form class="auth-form active" id="loginForm" onsubmit="doLogin(event)">
+        <div class="err-msg" id="loginErr"></div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPass" placeholder="Your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="submit-btn">Sign In →</button>
+        <div class="divider">or</div>
+        <div class="switch-link">No account? <a onclick="switchTab('signup')">Create one free</a></div>
+      </form>
+
+      <!-- SIGNUP FORM -->
+      <form class="auth-form" id="signupForm" onsubmit="doSignup(event)">
+        <div class="err-msg" id="signupErr"></div>
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" id="suFirst" placeholder="Kofi" required></div>
+          <div class="form-group"><label>Last Name</label><input type="text" id="suLast" placeholder="Mensah" required></div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="suEmail" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Phone / WhatsApp</label>
+          <input type="tel" id="suPhone" placeholder="+233 24 000 0000">
+        </div>
+        <div class="form-group">
+          <label>Your Town</label>
+          <select id="suTown" required>
+            <option value="">Select your town</option>
+            <option>Akropong</option><option>Aburi</option><option>Mampong</option>
+            <option>Larteh</option><option>Dawu</option><option>Tutu</option>
+            <option>Adukrom</option><option>Mamfe</option><option>Nsawam</option>
+            <option>Berekuso</option><option>Pakro</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="suPass" placeholder="Min. 6 characters" minlength="6" required autocomplete="new-password">
+        </div>
+        <button type="submit" class="submit-btn">Create Account →</button>
+        <p style="text-align:center;font-size:0.75rem;color:var(--gray);margin-top:0.8rem">By signing up you agree to our terms of service.</p>
+        <div class="divider">or</div>
+        <div class="switch-link">Already have an account? <a onclick="switchTab('login')">Sign in</a></div>
+      </form>
+
+    </div>
+
+    <!-- SUCCESS / REDIRECT SCREEN (replaces form after login) -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">✅</div>
+      <h3 id="successName">Welcome back!</h3>
+      <p>You're now signed in. Where would you like to go?</p>
+
+      <div class="community-prompt">
+        <div class="cp-icon">💬</div>
+        <div class="cp-text">
+          <strong>Community Chat is separate</strong>
+          Your main account is ready. The Community Chat has its own space — want to visit it?
+        </div>
+      </div>
+
+      <div class="success-actions">
+        <a href="index.html" class="action-btn primary">
+          <span class="btn-icon">🏠</span>
+          <span class="btn-text">Go to Home<small>Browse news, towns & marketplace</small></span>
+        </a>
+        <a href="chat.html" class="action-btn ghost">
+          <span class="btn-icon">💬</span>
+          <span class="btn-text">Visit Community Chat<small>Connect with people in your town</small></span>
+        </a>
+        <a href="store.html" class="action-btn secondary">
+          <span class="btn-icon">🛒</span>
+          <span class="btn-text">Go to Marketplace<small>Buy and sell local products</small></span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== HELPERS =====
+function getUsers() { return JSON.parse(localStorage.getItem('akm_users') || '[]'); }
+function saveUsers(u) { localStorage.setItem('akm_users', JSON.stringify(u)); }
+function setSession(u) { localStorage.setItem('akm_session', JSON.stringify(u)); }
+
+function showErr(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 4000);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t, i) =>
+    t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'signup'))
+  );
+  document.getElementById('loginForm').classList.toggle('active', tab === 'login');
+  document.getElementById('signupForm').classList.toggle('active', tab === 'signup');
+}
+
+// ===== SHOW SUCCESS SCREEN =====
+function showSuccess(name) {
+  document.getElementById('authTabs').style.display = 'none';
+  document.getElementById('cardBody').style.display = 'none';
+  const screen = document.getElementById('successScreen');
+  screen.classList.add('show');
+  document.getElementById('successName').textContent = 'Welcome, ' + name.split(' ')[0] + '!';
+}
+
+// ===== LOGIN =====
+function doLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPass').value;
+  const users = getUsers();
+  const user  = users.find(u => u.email === email && u.pass === pass);
+  if (!user) { showErr('loginErr', 'Incorrect email or password.'); return; }
+  setSession(user);
+  window.location.href = 'index.html';
+}
+
+// ===== SIGNUP =====
+function doSignup(e) {
+  e.preventDefault();
+  const email = document.getElementById('suEmail').value.trim();
+  const users = getUsers();
+  if (users.find(u => u.email === email)) {
+    showErr('signupErr', 'An account with this email already exists.'); return;
+  }
+  const user = {
+    id: Date.now(),
+    name:   document.getElementById('suFirst').value.trim() + ' ' + document.getElementById('suLast').value.trim(),
+    email,
+    phone:  document.getElementById('suPhone').value.trim(),
+    town:   document.getElementById('suTown').value,
+    pass:   document.getElementById('suPass').value,
+    joined: new Date().toLocaleDateString()
+  };
+  users.push(user);
+  saveUsers(users);
+  setSession(user);
+  window.location.href = 'index.html';
+}
+
+// If already logged in, go home
+const existing = JSON.parse(localStorage.getItem('akm_session') || 'null');
+if (existing) window.location.href = 'index.html';
+</script>
+</body>
+</html>

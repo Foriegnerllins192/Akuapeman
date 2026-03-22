@@ -13,6 +13,39 @@ body { font-family: 'Segoe UI', sans-serif; color: var(--dark); background: var(
 a { text-decoration: none; color: inherit; }
 img { max-width: 100%; }
 
+/* ===== NAV AUTH ===== */
+.nav-auth { display: flex; align-items: center; margin-left: 0.5rem; }
+.nav-login-btn {
+  background: var(--gold); color: var(--dark); padding: 0.45rem 1.1rem;
+  border-radius: 20px; font-size: 0.85rem; font-weight: 700;
+  text-decoration: none; transition: background 0.2s; white-space: nowrap;
+}
+.nav-login-btn:hover { background: #e6b520; }
+.nav-user-btn {
+  display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
+  padding: 0.35rem 0.8rem 0.35rem 0.4rem; border-radius: 20px;
+  background: rgba(255,255,255,0.15); position: relative; transition: background 0.2s;
+}
+.nav-user-btn:hover { background: rgba(255,255,255,0.25); }
+.nav-avatar {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--gold);
+  color: var(--dark); display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 800; flex-shrink: 0;
+}
+.nav-username { color: white; font-size: 0.85rem; font-weight: 600; }
+.nav-dropdown {
+  display: none; position: absolute; top: calc(100% + 8px); right: 0;
+  background: white; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  min-width: 170px; z-index: 1100; overflow: hidden;
+}
+.nav-dropdown.open { display: block; }
+.nav-dropdown a {
+  display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1rem;
+  font-size: 0.85rem; color: #374151; text-decoration: none; transition: background 0.15s;
+}
+.nav-dropdown a:hover { background: #f3f4f6; }
+.nav-dropdown hr { border: none; border-top: 1px solid #f3f4f6; margin: 0.2rem 0; }
+
 /* ===== NAVBAR ===== */
 nav {
   background: var(--green);
@@ -177,6 +210,7 @@ footer {
   .nav-links.open { display: flex; }
   .hamburger { display: flex; }
   nav { padding: 0 1rem; }
+  .nav-auth { display: none; }
 
   /* Hero */
   .hero { padding: 3rem 1.2rem; }

@@ -14,6 +14,7 @@ const navHTML = `
     <li><a href="about.html">About Us</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
+  <div class="nav-auth" id="navAuth"></div>
   <div class="hamburger" onclick="toggleNav()">
     <span></span><span></span><span></span>
   </div>
@@ -64,7 +65,48 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.nav-links a').forEach(a => {
       if (a.getAttribute('href') === page) a.classList.add('active');
     });
+
+    // Render auth area
+    renderNavAuth();
   }
+});
+
+function renderNavAuth() {
+  const authEl = document.getElementById('navAuth');
+  if (!authEl) return;
+  const session = JSON.parse(localStorage.getItem('akm_session') || 'null');
+  if (session) {
+    const initials = session.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    authEl.innerHTML = `
+      <div class="nav-user-btn" onclick="toggleNavDropdown()">
+        <div class="nav-avatar">${initials}</div>
+        <span class="nav-username">${session.name.split(' ')[0]}</span>
+        <span style="font-size:0.65rem;opacity:0.7">▼</span>
+        <div class="nav-dropdown" id="navDropdown">
+          <a href="index.html">🏠 Home</a>
+          <a href="store-dashboard.html">🛒 My Store</a>
+          <hr>
+          <a href="#" onclick="navLogout()">↩ Sign Out</a>
+        </div>
+      </div>`;
+  } else {
+    authEl.innerHTML = `<a href="login.html" class="nav-login-btn">Sign In</a>`;
+  }
+}
+
+function toggleNavDropdown() {
+  document.getElementById('navDropdown').classList.toggle('open');
+}
+
+function navLogout() {
+  localStorage.removeItem('akm_session');
+  localStorage.removeItem('akm_community_user');
+  window.location.href = 'login.html';
+}
+
+document.addEventListener('click', e => {
+  const dd = document.getElementById('navDropdown');
+  if (dd && !e.target.closest('.nav-user-btn')) dd.classList.remove('open');
 });
 
 function toggleNav() {

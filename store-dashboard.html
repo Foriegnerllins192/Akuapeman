@@ -69,6 +69,47 @@
     .modal-close { background:none; border:none; color:white; font-size:1.4rem; cursor:pointer; }
     .modal-body { padding:1.4rem; }
 
+    /* ===== SELLER CHAT ===== */
+    .msg-layout { display:grid; grid-template-columns:280px 1fr; gap:0; height:calc(100vh - 160px); min-height:400px; background:white; border-radius:14px; box-shadow:var(--shadow); overflow:hidden; }
+    .msg-list { border-right:1px solid #eee; overflow-y:auto; }
+    .msg-list-header { padding:1rem 1.2rem; border-bottom:1px solid #eee; font-weight:700; font-size:0.9rem; color:var(--dark); background:#fafafa; }
+    .msg-thread-item { display:flex; align-items:center; gap:0.8rem; padding:0.9rem 1.2rem; cursor:pointer; border-bottom:1px solid #f5f5f5; transition:background 0.15s; }
+    .msg-thread-item:hover { background:#f9f9f6; }
+    .msg-thread-item.active { background:#f0f8f4; border-left:3px solid var(--green); }
+    .msg-thread-item.unread .thread-name { font-weight:800; }
+    .msg-thread-item.unread .thread-preview { color:var(--dark); font-weight:600; }
+    .thread-avatar { width:40px; height:40px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:700; color:var(--dark); flex-shrink:0; }
+    .thread-info { flex:1; min-width:0; }
+    .thread-name { font-size:0.88rem; font-weight:600; color:var(--dark); }
+    .thread-preview { font-size:0.75rem; color:var(--gray); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:0.15rem; }
+    .thread-meta { font-size:0.7rem; color:#bbb; white-space:nowrap; }
+    .unread-dot { width:8px; height:8px; background:#e74c3c; border-radius:50%; flex-shrink:0; }
+    /* Chat window */
+    .chat-window { display:flex; flex-direction:column; }
+    .chat-win-header { padding:0.9rem 1.2rem; border-bottom:1px solid #eee; display:flex; align-items:center; gap:0.8rem; background:#fafafa; }
+    .chat-win-header .buyer-name { font-weight:700; font-size:0.95rem; }
+    .chat-win-header .buyer-item { font-size:0.78rem; color:var(--gray); }
+    .chat-messages { flex:1; overflow-y:auto; padding:1.2rem; display:flex; flex-direction:column; gap:0.8rem; background:#f9f9f6; }
+    .chat-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--gray); font-size:0.9rem; gap:0.5rem; }
+    .chat-empty div { font-size:2.5rem; }
+    .msg-bubble { max-width:72%; padding:0.65rem 0.9rem; border-radius:14px; font-size:0.85rem; line-height:1.5; }
+    .msg-bubble.buyer { background:white; border:1px solid #eee; border-radius:14px 14px 14px 2px; align-self:flex-start; }
+    .msg-bubble.seller { background:var(--green); color:white; border-radius:14px 14px 2px 14px; align-self:flex-end; }
+    .msg-bubble .msg-time { font-size:0.68rem; opacity:0.6; margin-top:0.3rem; }
+    .msg-bubble.buyer .msg-time { text-align:left; }
+    .msg-bubble.seller .msg-time { text-align:right; }
+    .chat-input-bar { padding:0.8rem 1rem; border-top:1px solid #eee; display:flex; gap:0.6rem; background:white; }
+    .chat-input-bar input { flex:1; padding:0.6rem 1rem; border:1px solid #ddd; border-radius:20px; font-size:0.88rem; outline:none; }
+    .chat-input-bar input:focus { border-color:var(--green); }
+    .chat-send-btn { background:var(--green); color:white; border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1rem; flex-shrink:0; transition:background 0.2s; }
+    .chat-send-btn:hover { background:#0d3d22; }
+    .no-thread-selected { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--gray); gap:0.5rem; }
+    .no-thread-selected div { font-size:3rem; }
+    @media(max-width:600px) {
+      .msg-layout { grid-template-columns:1fr; height:auto; }
+      .msg-list { max-height:220px; border-right:none; border-bottom:1px solid #eee; }
+    }
+
     /* Responsive */
     @media(max-width:768px) {
       .dash-wrap { grid-template-columns:1fr; }
@@ -109,6 +150,7 @@
       <li><a href="#" class="active" onclick="showPanel('overview',this)"><span class="nav-icon">📊</span> Overview</a></li>
       <li><a href="#" onclick="showPanel('post',this)"><span class="nav-icon">➕</span> Post an Item</a></li>
       <li><a href="#" onclick="showPanel('listings',this)"><span class="nav-icon">📦</span> My Listings</a></li>
+      <li><a href="#" onclick="showPanel('messages',this)"><span class="nav-icon">💬</span> Messages <span id="msgBadge" style="display:none;background:#e74c3c;color:white;font-size:0.65rem;padding:0.1rem 0.45rem;border-radius:20px;font-weight:700;margin-left:auto">0</span></a></li>
       <li><a href="#" onclick="showPanel('profile',this)"><span class="nav-icon">👤</span> My Profile</a></li>
       <li style="margin-top:auto; padding-top:2rem;"><a href="store.html"><span class="nav-icon">🛒</span> Browse Store</a></li>
     </ul>
@@ -191,6 +233,39 @@
     <div class="dash-panel" id="panel-listings">
       <h2>📦 My Listings</h2>
       <div id="myListings" class="listings-list"></div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="dash-panel" id="panel-messages">
+      <h2>💬 Messages from Buyers</h2>
+      <div class="msg-layout">
+        <!-- Thread list -->
+        <div class="msg-list">
+          <div class="msg-list-header">Conversations</div>
+          <div id="sellerThreadList"><div style="padding:2rem;text-align:center;color:var(--gray);font-size:0.85rem">No messages yet</div></div>
+        </div>
+        <!-- Chat window -->
+        <div class="chat-window" id="sellerChatWindow">
+          <div class="no-thread-selected" id="noThreadMsg">
+            <div>💬</div>
+            <p>Select a conversation to reply</p>
+          </div>
+          <div id="activeChatArea" style="display:none;flex-direction:column;height:100%">
+            <div class="chat-win-header">
+              <div class="thread-avatar" id="activeBuyerAvatar">?</div>
+              <div>
+                <div class="buyer-name" id="activeBuyerName">Buyer</div>
+                <div class="buyer-item" id="activeBuyerItem"></div>
+              </div>
+            </div>
+            <div class="chat-messages" id="sellerMsgArea"></div>
+            <div class="chat-input-bar">
+              <input type="text" id="sellerReplyInput" placeholder="Type a reply…" onkeydown="if(event.key==='Enter')sendSellerReply()">
+              <button class="chat-send-btn" onclick="sendSellerReply()">➤</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- PROFILE -->
@@ -304,6 +379,7 @@ function showPanel(name, linkEl) {
   if (linkEl) linkEl.classList.add('active');
   if (name === 'listings') renderListings();
   if (name === 'overview') updateStats();
+  if (name === 'messages') { renderSellerThreads(); }
   // Close sidebar on mobile
   document.getElementById('sidebar').classList.remove('open');
 }
@@ -469,6 +545,107 @@ function logout() {
   localStorage.removeItem('akm_session');
   window.location.href = 'store-auth.html';
 }
+
+// ===== SELLER MESSAGES =====
+let activeThreadId = null;
+
+function getChats() { return JSON.parse(localStorage.getItem('akm_chats') || '{}'); }
+function saveChats(c) { localStorage.setItem('akm_chats', JSON.stringify(c)); }
+
+function getSellerThreads() {
+  const chats = getChats();
+  return Object.values(chats).filter(t => t.sellerId === session.id);
+}
+
+function renderSellerThreads() {
+  const threads = getSellerThreads().sort((a,b) => (b.lastTime||0) - (a.lastTime||0));
+  const el = document.getElementById('sellerThreadList');
+  const badge = document.getElementById('msgBadge');
+  const unreadCount = threads.filter(t => t.unreadSeller).length;
+  if (unreadCount > 0) { badge.style.display='inline'; badge.textContent=unreadCount; }
+  else { badge.style.display='none'; }
+  if (!threads.length) { el.innerHTML='<div style="padding:2rem;text-align:center;color:var(--gray);font-size:0.85rem">No messages yet</div>'; return; }
+  el.innerHTML = threads.map(t => {
+    const initials = t.buyerName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    const last = t.messages[t.messages.length-1];
+    return `<div class="msg-thread-item${t.id===activeThreadId?' active':''}${t.unreadSeller?' unread':''}" onclick="openSellerThread('${t.id}')">
+      <div class="thread-avatar" style="background:#dbeafe;color:#1e40af">${initials}</div>
+      <div class="thread-info">
+        <div class="thread-name">${t.buyerName}</div>
+        <div class="thread-preview">${last ? last.text : ''}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem">
+        <div class="thread-meta">${last ? formatTime(last.time) : ''}</div>
+        ${t.unreadSeller ? '<div class="unread-dot"></div>' : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openSellerThread(id) {
+  activeThreadId = id;
+  const chats = getChats();
+  const thread = chats[id];
+  if (!thread) return;
+  thread.unreadSeller = false;
+  saveChats(chats);
+  document.getElementById('noThreadMsg').style.display = 'none';
+  const area = document.getElementById('activeChatArea');
+  area.style.display = 'flex';
+  const initials = thread.buyerName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('activeBuyerAvatar').textContent = initials;
+  document.getElementById('activeBuyerName').textContent = thread.buyerName;
+  document.getElementById('activeBuyerItem').textContent = '📦 ' + thread.itemTitle;
+  renderSellerMessages(thread.messages);
+  renderSellerThreads();
+}
+
+function renderSellerMessages(messages) {
+  const area = document.getElementById('sellerMsgArea');
+  area.innerHTML = messages.map(m => `
+    <div class="msg-bubble ${m.from==='seller'?'seller':'buyer'}">
+      ${m.text}
+      <div class="msg-time">${formatTime(m.time)}</div>
+    </div>`).join('');
+  area.scrollTop = area.scrollHeight;
+}
+
+function sendSellerReply() {
+  const input = document.getElementById('sellerReplyInput');
+  const text = input.value.trim();
+  if (!text || !activeThreadId) return;
+  const chats = getChats();
+  const thread = chats[activeThreadId];
+  if (!thread) return;
+  const msg = { from: 'seller', text, time: Date.now() };
+  thread.messages.push(msg);
+  thread.lastTime = msg.time;
+  thread.unreadBuyer = true;
+  saveChats(chats);
+  input.value = '';
+  renderSellerMessages(thread.messages);
+  renderSellerThreads();
+}
+
+function formatTime(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  const now = new Date();
+  if (d.toDateString() === now.toDateString()) return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleDateString([], {month:'short',day:'numeric'});
+}
+
+// Poll for new messages every 5s when on messages panel
+setInterval(() => {
+  if (document.getElementById('panel-messages').classList.contains('active')) {
+    renderSellerThreads();
+    if (activeThreadId) {
+      const chats = getChats();
+      const thread = chats[activeThreadId];
+      if (thread) renderSellerMessages(thread.messages);
+    }
+  }
+}, 5000);
 
 document.getElementById('editModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeEdit(); });
 </script>
